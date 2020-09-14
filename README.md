@@ -22,10 +22,10 @@ user management APIs to register, login, etc."* with little to no configuration.
 only at the right time to build a valid JWT or a valid user session.
 
 If these objectives will be achieved we will never have to loose time again configuring 
-a WSO2/Gluu/Keycloak or scaffolding any identity schema for small to medium project where
-OAUTH/SSAML/etc. are not required.
+a WSO2/Gluu/Keycloak or scaffolding any identity schema for small to medium projects where
+OAUTH/SAML/SSOetc. are not required.
 
-We will just model our users like IDs, start a container/machine for BodyGuardServer and
+We will just model our schema with user IDs, start a container/machine for BodyGuardServer and
 add the BodyGuardClient to our application.
 
 Things to improve:
