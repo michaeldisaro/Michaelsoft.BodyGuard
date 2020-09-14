@@ -17,18 +17,16 @@ namespace Michaelsoft.BodyGuard.Server.Services
             _aesIv = EncodingHelper.FromSafeUrlBase64(encryptionSettings.DataEncryptionIv);
         }
 
-        public string Encrypt<T>(T data) where T : notnull 
+        public string Encrypt(string data)
         {
-            var json = JsonConvert.SerializeObject(data);
-            var encrypted = AesHelper.EncryptStringToBytes_Aes(json, _aesKey, _aesIv);
+            var encrypted = AesHelper.EncryptStringToBytes_Aes(data, _aesKey, _aesIv);
             return EncodingHelper.ToSafeUrlBase64(encrypted);
         }
 
-        public T Decrypt<T>(string payload) where T : notnull
+        public string Decrypt(string data)
         {
-            var encrypted = EncodingHelper.FromSafeUrlBase64(payload);
-            var json = AesHelper.DecryptStringFromBytes_Aes(encrypted, _aesKey, _aesIv);
-            return JsonConvert.DeserializeObject<T>(json);
+            var encrypted = EncodingHelper.FromSafeUrlBase64(data);
+            return AesHelper.DecryptStringFromBytes_Aes(encrypted, _aesKey, _aesIv);
         }
 
     }

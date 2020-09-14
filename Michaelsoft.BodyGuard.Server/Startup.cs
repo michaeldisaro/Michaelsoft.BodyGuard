@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Michaelsoft.BodyGuard.Common.Encryption;
+using Michaelsoft.BodyGuard.Server.Extensions;
 using Michaelsoft.BodyGuard.Server.Services;
 using Michaelsoft.BodyGuard.Server.Settings;
 using Microsoft.AspNetCore.Builder;
@@ -29,22 +30,8 @@ namespace Michaelsoft.BodyGuard.Server
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.Configure<EncryptionSettings>
-                (Configuration.GetSection(nameof(EncryptionSettings)));
-
-            services.AddSingleton<IEncryptionSettings>
-                (sp => sp.GetRequiredService<IOptions<EncryptionSettings>>().Value);
-
-
-            services.Configure<UserStoreDatabaseSettings>
-                (Configuration.GetSection(nameof(UserStoreDatabaseSettings)));
-
-            services.AddSingleton<IUserStoreDatabaseSettings>
-                (sp => sp.GetRequiredService<IOptions<UserStoreDatabaseSettings>>().Value);
-
-            services.AddSingleton<DatabaseEncryptionService>();
-            services.AddSingleton<UserService>();
-
+            services.AddEncryptionService(Configuration);
+            services.AddUserService(Configuration);
             services.AddControllers();
         }
 

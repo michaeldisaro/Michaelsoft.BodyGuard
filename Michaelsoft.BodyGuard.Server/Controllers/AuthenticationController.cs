@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using System;
+using System.Text.Json;
 using Michaelsoft.BodyGuard.Common.Extensions;
 using Michaelsoft.BodyGuard.Common.HttpModels.Authentication;
 using Michaelsoft.BodyGuard.Server.DatabaseModels;
@@ -23,6 +24,21 @@ namespace Michaelsoft.BodyGuard.Server.Controllers
             _userService = userService;
         }
 
+        [HttpGet("[action]/{id}")]
+        [Produces("application/json")]
+        public UserDataResponse UserData(string id)
+        {
+            var user = _userService.Get(id);
+
+            var data = _encryptionService.Decrypt(user.EncryptedData);
+
+            return new UserDataResponse
+            {
+                Id = id,
+                Data = data
+            };
+        }
+
         [HttpPost("[action]")]
         [Produces("application/json")]
         public UserCreateResponse UserCreate([FromBody]
@@ -32,15 +48,16 @@ namespace Michaelsoft.BodyGuard.Server.Controllers
             {
                 HashedEmail = userCreateRequest.EmailAddress.Sha1(),
                 HashedPassword = userCreateRequest.Password.Sha1(),
-                EncryptedData = _encryptionService.Encrypt(userCreateRequest.UserData)
+                EncryptedData = _encryptionService.Encrypt(userCreateRequest.UserData.ToString()),
+                Created = DateTime.Now,
+                Updated = DateTime.Now
             };
 
-            var result = _userService.Create(user);
+            var inserted = _userService.Create(user);
 
             return new UserCreateResponse
             {
-                Created = true,
-                Id = result.Id
+                Id = inserted.Id
             };
         }
 

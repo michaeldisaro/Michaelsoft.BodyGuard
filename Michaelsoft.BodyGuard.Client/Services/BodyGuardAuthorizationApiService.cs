@@ -6,7 +6,7 @@ using Newtonsoft.Json;
 
 namespace Michaelsoft.BodyGuard.Client.Services
 {
-    public class BodyGuardAuthorizationApiService : BodyGuardBaseService
+    public class BodyGuardAuthorizationApiService : BodyGuardBaseApiService
     {
 
         public BodyGuardAuthorizationApiService(IBodyGuardClientSettings settings,

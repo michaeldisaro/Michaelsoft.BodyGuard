@@ -1,4 +1,5 @@
-﻿using MongoDB.Bson;
+﻿using System;
+using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
 namespace Michaelsoft.BodyGuard.Server.DatabaseModels
@@ -15,6 +16,10 @@ namespace Michaelsoft.BodyGuard.Server.DatabaseModels
         public string HashedPassword { get; set; }
 
         public string EncryptedData { get; set; }
+
+        public DateTime Created { get; set; }
+
+        public DateTime Updated { get; set; }
 
     }
 }
