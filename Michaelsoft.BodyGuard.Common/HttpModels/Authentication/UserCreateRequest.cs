@@ -1,6 +1,6 @@
-﻿namespace Michaelsoft.BodyGuard.Common.RequestModels
+﻿namespace Michaelsoft.BodyGuard.Common.HttpModels.Authentication
 {
-    public class RegisterUser
+    public class UserCreateRequest
     {
 
         public string EmailAddress { get; set; }

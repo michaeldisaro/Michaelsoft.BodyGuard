@@ -1,17 +1,9 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Michaelsoft.BodyGuard.Client.Interfaces;
-using Michaelsoft.BodyGuard.Client.Services;
-using Michaelsoft.BodyGuard.Client.Settings;
+using Michaelsoft.BodyGuard.Client.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Options;
 
 namespace Michaelsoft.BodyGuard.TestWebApp
 {
@@ -27,14 +19,7 @@ namespace Michaelsoft.BodyGuard.TestWebApp
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.Configure<BodyGuardClientSettings>
-                (Configuration.GetSection(nameof(BodyGuardClientSettings)));
-
-            services.AddSingleton<IBodyGuardClientSettings>
-                (sp => sp.GetRequiredService<IOptions<BodyGuardClientSettings>>().Value);
-
-            services.AddSingleton<ConnectionService>();
-
+            services.AddBodyGuardApi(Configuration);
             services.AddRazorPages();
         }
 

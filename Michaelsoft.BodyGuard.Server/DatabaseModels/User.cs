@@ -14,5 +14,7 @@ namespace Michaelsoft.BodyGuard.Server.DatabaseModels
 
         public string HashedPassword { get; set; }
 
+        public string EncryptedData { get; set; }
+
     }
 }
