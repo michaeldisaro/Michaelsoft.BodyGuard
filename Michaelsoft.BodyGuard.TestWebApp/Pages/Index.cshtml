@@ -5,10 +5,45 @@
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <a asp-page-handler="CreateUser" class="btn btn-primary">Create User</a>
-    @if (Model.CreatedUser != null)
+    <h1 class="display-4">BodyGuard Authentication Test</h1>
+    @if (Model.UserData != null)
     {
-        <p>@Model.CreatedUser.Name</p>
+        <article>
+            <p>@Model.UserData.Name</p>
+            <p>@Model.UserData.Surname</p>
+            <p>@Model.UserData.EmailAddress</p>
+        </article>
     }
+    <div class="row">
+        <form asp-page-handler="CreateUser">
+            <div class="col-12">
+                <input type="text" class="form-control" asp-for="UserCreateForm.EmailAddress">
+            </div>
+            <div class="col-12">
+                <input type="password" class="form-control" asp-for="UserCreateForm.Password">
+            </div>
+            <div class="col-12">
+                <input type="text" class="form-control" asp-for="UserCreateForm.Surname">
+            </div>
+            <div class="col-12">
+                <input type="text" class="form-control" asp-for="UserCreateForm.Name">
+            </div>
+            <input type="submit" class="btn btn-primary" value="Create User">
+        </form>
+    </div>
+    <div class="row">
+        <form asp-page-handler="UpdateUser">
+            <div class="col-12">
+                <input type="hidden" asp-for="UserUpdateForm.Id">
+            </div>
+            <div class="col-12">
+                <input type="text" class="form-control input-group" asp-for="UserUpdateForm.Surname">
+            </div>
+            <div class="col-12">
+                <input type="text" class="form-control input-group" asp-for="UserUpdateForm.Name">
+            </div>
+            <input type="submit" class="btn btn-primary" value="Update User">
+        </form>
+    </div>
+
 </div>

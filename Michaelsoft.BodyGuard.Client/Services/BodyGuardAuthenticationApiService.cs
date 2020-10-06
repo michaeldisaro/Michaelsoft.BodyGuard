@@ -19,16 +19,6 @@ namespace Michaelsoft.BodyGuard.Client.Services
             BasePath = $"{settings.BasePath}/Authentication/";
         }
 
-        public async Task<UserDataResponse> UserData(string id)
-        {
-            var baseApiResult = await GetRequest<UserDataResponse>($"UserData/{id}");
-
-            if (!baseApiResult.Success)
-                throw new Exception(baseApiResult.Message);
-
-            return baseApiResult.Response;
-        }
-
         public async Task<UserCreateResponse> UserCreate(string email,
                                                          string password,
                                                          dynamic userData)
@@ -41,6 +31,43 @@ namespace Michaelsoft.BodyGuard.Client.Services
             };
 
             var baseApiResult = await PostRequest<UserCreateResponse>("UserCreate", userCreateRequest);
+
+            if (!baseApiResult.Success)
+                throw new Exception(baseApiResult.Message);
+
+            return baseApiResult.Response;
+        }
+
+        public async Task<UserDataResponse> GetUserData(string id)
+        {
+            var baseApiResult = await GetRequest<UserDataResponse>($"GetUserData/{id}");
+
+            if (!baseApiResult.Success)
+                throw new Exception(baseApiResult.Message);
+
+            return baseApiResult.Response;
+        }
+
+        public async Task<UserUpdateResponse> UpdateUserData(string id,
+                                                             dynamic userData)
+        {
+            var userUpdateRequest = new UserUpdateRequest
+            {
+                Id = id,
+                UserData = userData
+            };
+
+            var baseApiResult = await PutRequest<UserUpdateResponse>($"UpdateUserData/{id}", userUpdateRequest);
+
+            if (!baseApiResult.Success)
+                throw new Exception(baseApiResult.Message);
+
+            return baseApiResult.Response;
+        }
+
+        public async Task<UserDeleteResponse> UserDelete(string id)
+        {
+            var baseApiResult = await GetRequest<UserDeleteResponse>($"UserDelete/{id}");
 
             if (!baseApiResult.Success)
                 throw new Exception(baseApiResult.Message);

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net.Http;
 using System.Text.Json;
 using Michaelsoft.BodyGuard.Common.Extensions;
 using Michaelsoft.BodyGuard.Common.HttpModels.Authentication;
@@ -15,28 +16,9 @@ namespace Michaelsoft.BodyGuard.Server.Controllers
 
         private readonly UserService _userService;
 
-        private readonly DatabaseEncryptionService _encryptionService;
-
-        public AuthenticationController(UserService userService,
-                                        DatabaseEncryptionService encryptionService)
+        public AuthenticationController(UserService userService)
         {
-            _encryptionService = encryptionService;
             _userService = userService;
-        }
-
-        [HttpGet("[action]/{id}")]
-        [Produces("application/json")]
-        public UserDataResponse UserData(string id)
-        {
-            var user = _userService.Get(id);
-
-            var data = _encryptionService.Decrypt(user.EncryptedData);
-
-            return new UserDataResponse
-            {
-                Id = id,
-                Data = data
-            };
         }
 
         [HttpPost("[action]")]
@@ -44,21 +26,92 @@ namespace Michaelsoft.BodyGuard.Server.Controllers
         public UserCreateResponse UserCreate([FromBody]
                                              UserCreateRequest userCreateRequest)
         {
-            var user = new User
+            try
             {
-                HashedEmail = userCreateRequest.EmailAddress.Sha1(),
-                HashedPassword = userCreateRequest.Password.Sha1(),
-                EncryptedData = _encryptionService.Encrypt(userCreateRequest.UserData.ToString()),
-                Created = DateTime.Now,
-                Updated = DateTime.Now
-            };
-
-            var inserted = _userService.Create(user);
-
-            return new UserCreateResponse
+                var user = _userService.Create(
+                                               userCreateRequest.EmailAddress,
+                                               userCreateRequest.Password,
+                                               userCreateRequest.UserData);
+                return new UserCreateResponse
+                {
+                    Id = user.Id
+                };
+            }
+            catch (Exception ex)
             {
-                Id = inserted.Id
-            };
+                return new UserCreateResponse
+                {
+                    Success = false,
+                    Message = ex.Message
+                };
+            }
+        }
+
+        [HttpGet("[action]/{id}")]
+        [Produces("application/json")]
+        public UserDataResponse GetUserData(string id)
+        {
+            try
+            {
+                var data = _userService.GetData(id);
+                return new UserDataResponse
+                {
+                    Id = id,
+                    Data = data
+                };
+            }
+            catch (Exception ex)
+            {
+                return new UserDataResponse
+                {
+                    Success = false,
+                    Message = ex.Message
+                };
+            }
+        }
+
+        [HttpPut("[action]/{id}")]
+        [Produces("application/json")]
+        public UserUpdateResponse UpdateUserData(string id,
+                                                 [FromBody]
+                                                 UserUpdateRequest userUpdateRequest)
+        {
+            try
+            {
+                if (!id.Equals(userUpdateRequest.Id))
+                    throw new HttpRequestException("User id in path is not equal to user id in body.");
+                _userService.UpdateData(
+                                        userUpdateRequest.Id,
+                                        userUpdateRequest.UserData);
+                return new UserUpdateResponse();
+            }
+            catch (Exception ex)
+            {
+                return new UserUpdateResponse
+                {
+                    Success = false,
+                    Message = ex.Message
+                };
+            }
+        }
+
+        [HttpDelete("[action]/{id}")]
+        [Produces("application/json")]
+        public UserDeleteResponse UserDelete(string id)
+        {
+            try
+            {
+                _userService.Delete(id);
+                return new UserDeleteResponse();
+            }
+            catch (Exception ex)
+            {
+                return new UserDeleteResponse
+                {
+                    Success = false,
+                    Message = ex.Message
+                };
+            }
         }
 
     }

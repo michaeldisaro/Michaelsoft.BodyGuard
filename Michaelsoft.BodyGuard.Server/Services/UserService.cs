@@ -1,7 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Text.Json;
 using Michaelsoft.BodyGuard.Server.DatabaseModels;
 using Michaelsoft.BodyGuard.Server.Settings;
 using MongoDB.Driver;
+using BCrypt.Net;
+using Michaelsoft.BodyGuard.Common.Extensions;
+using Michaelsoft.BodyGuard.Server.Exceptions;
 
 namespace Michaelsoft.BodyGuard.Server.Services
 {
@@ -10,31 +15,85 @@ namespace Michaelsoft.BodyGuard.Server.Services
 
         private readonly IMongoCollection<User> _users;
 
-        public UserService(IUserStoreDatabaseSettings settings)
+        private readonly DatabaseEncryptionService _encryptionService;
+
+        public UserService(IUserStoreDatabaseSettings settings,
+                           DatabaseEncryptionService encryptionService)
         {
+            _encryptionService = encryptionService;
             var client = new MongoClient(settings.ConnectionString);
             var database = client.GetDatabase(settings.DatabaseName);
-
             _users = database.GetCollection<User>(settings.UsersCollectionName);
         }
 
-        public List<User> Get() => _users.Find(user => true).ToList();
+        //public List<User> GetAll() => _users.Find(user => true).ToList();
 
-        public User Get(string id) => _users.Find<User>(user => user.Id == id).FirstOrDefault();
+        private User GetById(string id) => _users.Find<User>(user => user.Id == id).FirstOrDefault();
 
-        public User Create(User user)
+        private User GetByHashedEmail(string hashedEmail) =>
+            _users.Find<User>(user => user.HashedEmail == hashedEmail).FirstOrDefault();
+
+        private string HashPassword(string password)
         {
+            var salt = BCrypt.Net.BCrypt.GenerateSalt();
+            return BCrypt.Net.BCrypt.HashPassword(password, salt);
+        }
+
+        private bool VerifyPassword(User user,
+                                    string password)
+        {
+            return BCrypt.Net.BCrypt.Verify(password, user.HashedPassword);
+        }
+
+        public User Create(string emailAddress,
+                           string password,
+                           JsonElement userData)
+        {
+            var user = new User
+            {
+                HashedEmail = emailAddress.Sha1(),
+                HashedPassword = HashPassword(password),
+                EncryptedData = _encryptionService.Encrypt(userData.ToString()),
+                Created = DateTime.Now,
+                Updated = DateTime.Now
+            };
+            var existing = GetByHashedEmail(user.HashedEmail);
+            if (existing != null) return existing;
             _users.InsertOne(user);
             return user;
         }
 
-        public void Update(string id,
-                           User userIn) =>
-            _users.ReplaceOne(user => user.Id == id, userIn);
+        public User Access(string emailAddress,
+                           string password)
+        {
+            var hashedEmail = emailAddress.Sha1();
+            var user = GetByHashedEmail(hashedEmail);
+            if (user == null) throw new UserNotFoundException();
+            return VerifyPassword(user, password) ? user : throw new WrongPasswordException();
+        }
 
-        public void Remove(User userIn) => _users.DeleteOne(user => user.Id == userIn.Id);
+        public void Delete(string id)
+        {
+            var user = GetById(id);
+            if (user == null) throw new UserNotFoundException();
+            _users.DeleteOne(u => u.Id == user.Id);
+        }
 
-        public void Remove(string id) => _users.DeleteOne(user => user.Id == id);
+        public string GetData(string id)
+        {
+            var user = GetById(id);
+            if (user == null) throw new UserNotFoundException();
+            return _encryptionService.Decrypt(user.EncryptedData);
+        }
+
+        public void UpdateData(string id,
+                               JsonElement userData)
+        {
+            var user = GetById(id);
+            if (user == null) throw new UserNotFoundException();
+            user.EncryptedData = _encryptionService.Encrypt(userData.ToString());
+            _users.ReplaceOne(u => u.Id == user.Id, user);
+        }
 
     }
 }

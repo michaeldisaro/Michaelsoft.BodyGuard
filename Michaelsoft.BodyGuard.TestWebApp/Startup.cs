@@ -20,7 +20,7 @@ namespace Michaelsoft.BodyGuard.TestWebApp
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddBodyGuardApi(Configuration);
-            services.AddRazorPages();
+            services.AddRazorPages().AddRazorRuntimeCompilation();
         }
 
         public void Configure(IApplicationBuilder app,
