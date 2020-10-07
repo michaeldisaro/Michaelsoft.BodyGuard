@@ -6,44 +6,51 @@
 
 <div class="text-center">
     <h1 class="display-4">BodyGuard Authentication Test</h1>
-    @if (Model.UserData != null)
+    <form asp-page-handler="CreateUser">
+        <div class="row mb-1">
+            <div class="col-3">
+                <input type="text" class="form-control form-inline" asp-for="UserCreateForm.EmailAddress" placeholder="Email Address">
+            </div>
+            <div class="col-3">
+                <input type="password" class="form-control form-inline" asp-for="UserCreateForm.Password" placeholder="Password">
+            </div>
+            <div class="col-3">
+                <input type="text" class="form-control form-inline" asp-for="UserCreateForm.Surname" placeholder="Surname">
+            </div>
+            <div class="col-3">
+                <input type="text" class="form-control form-inline" asp-for="UserCreateForm.Name" placeholder="Name">
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-12">
+                <input type="submit" class="btn btn-primary btn-block" value="Create User">
+            </div>
+        </div>
+    </form>
+    @foreach (var kvp in Model.UsersData)
     {
-        <article>
-            <p>@Model.UserData.Name</p>
-            <p>@Model.UserData.Surname</p>
-            <p>@Model.UserData.EmailAddress</p>
-        </article>
-    }
-    <div class="row">
-        <form asp-page-handler="CreateUser">
-            <div class="col-12">
-                <input type="text" class="form-control" asp-for="UserCreateForm.EmailAddress">
-            </div>
-            <div class="col-12">
-                <input type="password" class="form-control" asp-for="UserCreateForm.Password">
-            </div>
-            <div class="col-12">
-                <input type="text" class="form-control" asp-for="UserCreateForm.Surname">
-            </div>
-            <div class="col-12">
-                <input type="text" class="form-control" asp-for="UserCreateForm.Name">
-            </div>
-            <input type="submit" class="btn btn-primary" value="Create User">
-        </form>
-    </div>
-    <div class="row">
         <form asp-page-handler="UpdateUser">
-            <div class="col-12">
-                <input type="hidden" asp-for="UserUpdateForm.Id">
+            <div class="row mb-1">
+                <div class="col-3">
+                    <input type="text" class="form-control form-inline input-group" readonly asp-for="UserUpdateForm.Id" value="@kvp.Key">
+                </div>
+                <div class="col-2">
+                    <input type="text" class="form-control form-inline input-group" asp-for="UserUpdateForm.Name" value="@kvp.Value.Name">
+                </div>
+                <div class="col-2">
+                    <input type="text" class="form-control form-inline input-group" asp-for="UserUpdateForm.Surname" value="@kvp.Value.Surname">
+                </div>
+                <div class="col-3">
+                    <input type="text" class="form-control form-inline input-group" asp-for="UserUpdateForm.EmailAddress" value="@kvp.Value.EmailAddress">
+                </div>
+                <div class="col-1">
+                    <input type="submit" class="btn btn-primary btn-block" value="Save">
+                </div>
+                <div class="col-1">
+                    <a class="btn btn-primary btn-block" asp-page-handler="DeleteUser" asp-route-id="@kvp.Key">X</a>
+                </div>
             </div>
-            <div class="col-12">
-                <input type="text" class="form-control input-group" asp-for="UserUpdateForm.Surname">
-            </div>
-            <div class="col-12">
-                <input type="text" class="form-control input-group" asp-for="UserUpdateForm.Name">
-            </div>
-            <input type="submit" class="btn btn-primary" value="Update User">
         </form>
-    </div>
+    }
 
 </div>

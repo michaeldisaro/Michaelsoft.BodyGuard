@@ -26,7 +26,7 @@ namespace Michaelsoft.BodyGuard.Server.Services
             _users = database.GetCollection<User>(settings.UsersCollectionName);
         }
 
-        //public List<User> GetAll() => _users.Find(user => true).ToList();
+        public List<User> GetAll() => _users.Find(user => true).ToList();
 
         private User GetById(string id) => _users.Find<User>(user => user.Id == id).FirstOrDefault();
 

@@ -112,6 +112,34 @@ namespace Michaelsoft.BodyGuard.Client.Services
             }
         }
 
+        protected async Task<BaseApiResult> DeleteRequest<T>(string url,
+                                                          Dictionary<string, string> queryParams = null) where T : class
+        {
+            try
+            {
+                using var client = HttpClientFactory.CreateClient();
+                client.BaseAddress = new Uri($"{BasePath}");
+
+                if (queryParams != null)
+                    url = QueryHelpers.AddQueryString(url, queryParams);
+
+                var uri = new Uri(url, UriKind.Relative);
+
+                var response = await client.DeleteAsync(uri);
+
+                return await BuildBaseApiResultFromResponse<T>(response);
+            }
+            catch (Exception ex)
+            {
+                // TODO: Log exception
+                return new BaseApiResult
+                {
+                    Success = false,
+                    Message = ex.Message
+                };
+            }
+        }
+        
         protected async Task<BaseApiResult> BuildBaseApiResultFromResponse<T>(HttpResponseMessage response)
             where T : class
         {

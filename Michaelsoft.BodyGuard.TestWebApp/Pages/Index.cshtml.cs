@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using Michaelsoft.BodyGuard.Client.Services;
 using Michaelsoft.BodyGuard.TestWebApp.Models;
@@ -23,7 +24,7 @@ namespace Michaelsoft.BodyGuard.TestWebApp.Pages
             _logger = logger;
         }
 
-        public User UserData { get; set; }
+        public Dictionary<string, User> UsersData { get; set; } = new Dictionary<string, User>();
 
         [BindProperty]
         public UserCreate UserCreateForm { get; set; }
@@ -31,42 +32,59 @@ namespace Michaelsoft.BodyGuard.TestWebApp.Pages
         [BindProperty]
         public UserUpdate UserUpdateForm { get; set; }
 
+        private async Task LoadData()
+        {
+            var userDataResponse = await _bodyGuardAuthenticationApiService.GetUsersData();
+            if (!userDataResponse.Success) return;
+            foreach (var kvp in userDataResponse.UsersData)
+                UsersData.Add(kvp.Key, JsonConvert.DeserializeObject<User>(kvp.Value));
+        }
+
+        public async Task<IActionResult> OnGet()
+        {
+            await LoadData();
+            return Page();
+        }
+
         public async Task<IActionResult> OnPostCreateUser()
         {
-            var result = await _bodyGuardAuthenticationApiService.UserCreate
-                             (UserCreateForm.EmailAddress,
-                              UserCreateForm.Password,
-                              new User
-                              {
-                                  Name = UserCreateForm.Name,
-                                  Surname = UserCreateForm.Surname,
-                                  EmailAddress = UserCreateForm.EmailAddress
-                              });
+            var userCreateResponse = await _bodyGuardAuthenticationApiService.UserCreate
+                                         (UserCreateForm.EmailAddress,
+                                          UserCreateForm.Password,
+                                          new User
+                                          {
+                                              Name = UserCreateForm.Name,
+                                              Surname = UserCreateForm.Surname,
+                                              EmailAddress = UserCreateForm.EmailAddress
+                                          });
 
-            var data = await _bodyGuardAuthenticationApiService.GetUserData(result.Id);
-            UserData = JsonConvert.DeserializeObject<User>(data.Data);
-            UserUpdateForm.Id = result.Id;
-            return Page();
+            if (!userCreateResponse.Success) return Page();
+            await LoadData();
+            return RedirectToPage("Index");
         }
 
         public async Task<IActionResult> OnPostUpdateUser()
         {
-            var data = await _bodyGuardAuthenticationApiService.GetUserData(UserUpdateForm.Id);
-            var user = JsonConvert.DeserializeObject<User>(data.Data);
+            var userUpdateResponse = await _bodyGuardAuthenticationApiService.UpdateUserData
+                                         (UserUpdateForm.Id,
+                                          new User
+                                          {
+                                              Name = UserUpdateForm.Name,
+                                              Surname = UserUpdateForm.Surname,
+                                              EmailAddress = UserUpdateForm.EmailAddress
+                                          });
 
-            var result = await _bodyGuardAuthenticationApiService.UpdateUserData
-                             (UserUpdateForm.Id,
-                              new User
-                              {
-                                  Name = UserUpdateForm.Name,
-                                  Surname = UserUpdateForm.Surname,
-                                  EmailAddress = user.EmailAddress
-                              });
+            if (!userUpdateResponse.Success) return Page();
+            await LoadData();
+            return RedirectToPage("Index");
+        }
 
-            data = await _bodyGuardAuthenticationApiService.GetUserData(UserUpdateForm.Id);
-            UserData = JsonConvert.DeserializeObject<User>(data.Data);
-
-            return Page();
+        public async Task<IActionResult> OnGetDeleteUser(string id)
+        {
+            var userDeleteResponse = await _bodyGuardAuthenticationApiService.UserDelete(id);
+            if (!userDeleteResponse.Success) return Page();
+            await LoadData();
+            return RedirectToPage("Index");
         }
 
         public class UserCreate
@@ -98,6 +116,9 @@ namespace Michaelsoft.BodyGuard.TestWebApp.Pages
 
             [Required]
             public string Surname { get; set; }
+
+            [Required]
+            public string EmailAddress { get; set; }
 
         }
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Text.Json;
 using Michaelsoft.BodyGuard.Common.Extensions;
@@ -40,6 +41,34 @@ namespace Michaelsoft.BodyGuard.Server.Controllers
             catch (Exception ex)
             {
                 return new UserCreateResponse
+                {
+                    Success = false,
+                    Message = ex.Message
+                };
+            }
+        }
+
+        [HttpGet("[action]")]
+        [Produces("application/json")]
+        public UsersDataResponse GetUsersData()
+        {
+            try
+            {
+                var usersData = new Dictionary<string, string>();
+                var users = _userService.GetAll();
+                foreach (var user in users)
+                {
+                    var data = _userService.GetData(user.Id);
+                    usersData.Add(user.Id, data);
+                }
+                return new UsersDataResponse
+                {
+                    UsersData = usersData
+                };
+            }
+            catch (Exception ex)
+            {
+                return new UsersDataResponse
                 {
                     Success = false,
                     Message = ex.Message

@@ -37,6 +37,16 @@ namespace Michaelsoft.BodyGuard.Client.Services
 
             return baseApiResult.Response;
         }
+        
+        public async Task<UsersDataResponse> GetUsersData()
+        {
+            var baseApiResult = await GetRequest<UsersDataResponse>($"GetUsersData");
+
+            if (!baseApiResult.Success)
+                throw new Exception(baseApiResult.Message);
+
+            return baseApiResult.Response;
+        }
 
         public async Task<UserDataResponse> GetUserData(string id)
         {
@@ -67,7 +77,7 @@ namespace Michaelsoft.BodyGuard.Client.Services
 
         public async Task<UserDeleteResponse> UserDelete(string id)
         {
-            var baseApiResult = await GetRequest<UserDeleteResponse>($"UserDelete/{id}");
+            var baseApiResult = await DeleteRequest<UserDeleteResponse>($"UserDelete/{id}");
 
             if (!baseApiResult.Success)
                 throw new Exception(baseApiResult.Message);
