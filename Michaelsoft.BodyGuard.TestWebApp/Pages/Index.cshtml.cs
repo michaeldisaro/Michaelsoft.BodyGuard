@@ -17,9 +17,13 @@ namespace Michaelsoft.BodyGuard.TestWebApp.Pages
 
         private readonly BodyGuardAuthenticationApiService _bodyGuardAuthenticationApiService;
 
+        private readonly BodyGuardUserApiService _bodyGuardUserApiService;
+
         public IndexModel(ILogger<IndexModel> logger,
-                          BodyGuardAuthenticationApiService bodyGuardAuthenticationApiService)
+                          BodyGuardAuthenticationApiService bodyGuardAuthenticationApiService,
+                          BodyGuardUserApiService bodyGuardUserApiService)
         {
+            _bodyGuardUserApiService = bodyGuardUserApiService;
             _bodyGuardAuthenticationApiService = bodyGuardAuthenticationApiService;
             _logger = logger;
         }
@@ -34,10 +38,10 @@ namespace Michaelsoft.BodyGuard.TestWebApp.Pages
 
         private async Task LoadData()
         {
-            var userDataResponse = await _bodyGuardAuthenticationApiService.GetUsersData();
+            var userDataResponse = await _bodyGuardUserApiService.GetUsers();
             if (!userDataResponse.Success) return;
-            foreach (var kvp in userDataResponse.UsersData)
-                UsersData.Add(kvp.Key, JsonConvert.DeserializeObject<User>(kvp.Value));
+            foreach (var (userId, userData) in userDataResponse.UsersData)
+                UsersData.Add(userId, JsonConvert.DeserializeObject<User>(userData));
         }
 
         public async Task<IActionResult> OnGet()
@@ -48,7 +52,7 @@ namespace Michaelsoft.BodyGuard.TestWebApp.Pages
 
         public async Task<IActionResult> OnPostCreateUser()
         {
-            var userCreateResponse = await _bodyGuardAuthenticationApiService.UserCreate
+            var userCreateResponse = await _bodyGuardAuthenticationApiService.Register
                                          (UserCreateForm.EmailAddress,
                                           UserCreateForm.Password,
                                           new User
@@ -65,7 +69,7 @@ namespace Michaelsoft.BodyGuard.TestWebApp.Pages
 
         public async Task<IActionResult> OnPostUpdateUser()
         {
-            var userUpdateResponse = await _bodyGuardAuthenticationApiService.UpdateUserData
+            var userUpdateResponse = await _bodyGuardUserApiService.UpdateUser
                                          (UserUpdateForm.Id,
                                           new User
                                           {
@@ -81,7 +85,7 @@ namespace Michaelsoft.BodyGuard.TestWebApp.Pages
 
         public async Task<IActionResult> OnGetDeleteUser(string id)
         {
-            var userDeleteResponse = await _bodyGuardAuthenticationApiService.UserDelete(id);
+            var userDeleteResponse = await _bodyGuardUserApiService.DeleteUser(id);
             if (!userDeleteResponse.Success) return Page();
             await LoadData();
             return RedirectToPage("Index");

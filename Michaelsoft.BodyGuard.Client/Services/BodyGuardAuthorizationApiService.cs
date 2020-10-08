@@ -10,10 +10,9 @@ namespace Michaelsoft.BodyGuard.Client.Services
     {
 
         public BodyGuardAuthorizationApiService(IBodyGuardClientSettings settings,
-                                                IHttpClientFactory httpClientFactory)
+                                                IHttpClientFactory httpClientFactory):
+            base(settings, httpClientFactory)
         {
-            HttpClientFactory = httpClientFactory;
-            BasePath = $"{settings.BasePath}/Authorization/";
         }
 
     }

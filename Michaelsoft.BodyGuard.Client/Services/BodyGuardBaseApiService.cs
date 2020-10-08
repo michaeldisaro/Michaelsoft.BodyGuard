@@ -4,6 +4,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using Michaelsoft.BodyGuard.Client.Models;
+using Michaelsoft.BodyGuard.Client.Settings;
 using Microsoft.AspNetCore.WebUtilities;
 using Newtonsoft.Json;
 
@@ -12,17 +13,24 @@ namespace Michaelsoft.BodyGuard.Client.Services
     public class BodyGuardBaseApiService
     {
 
-        protected string BasePath;
+        private readonly string _basePath;
 
-        protected IHttpClientFactory HttpClientFactory;
+        private readonly IHttpClientFactory _httpClientFactory;
+
+        protected BodyGuardBaseApiService(IBodyGuardClientSettings settings,
+                                          IHttpClientFactory httpClientFactory)
+        {
+            _httpClientFactory = httpClientFactory;
+            _basePath = $"{settings.BasePath}/";
+        }
 
         protected async Task<BaseApiResult> GetRequest<T>(string url,
                                                           Dictionary<string, string> queryParams = null) where T : class
         {
             try
             {
-                using var client = HttpClientFactory.CreateClient();
-                client.BaseAddress = new Uri($"{BasePath}");
+                using var client = _httpClientFactory.CreateClient();
+                client.BaseAddress = new Uri($"{_basePath}");
 
                 if (queryParams != null)
                     url = QueryHelpers.AddQueryString(url, queryParams);
@@ -51,8 +59,8 @@ namespace Michaelsoft.BodyGuard.Client.Services
         {
             try
             {
-                using var client = HttpClientFactory.CreateClient();
-                client.BaseAddress = new Uri($"{BasePath}");
+                using var client = _httpClientFactory.CreateClient();
+                client.BaseAddress = new Uri($"{_basePath}");
 
                 if (queryParams != null)
                     url = QueryHelpers.AddQueryString(url, queryParams);
@@ -85,8 +93,8 @@ namespace Michaelsoft.BodyGuard.Client.Services
         {
             try
             {
-                using var client = HttpClientFactory.CreateClient();
-                client.BaseAddress = new Uri($"{BasePath}");
+                using var client = _httpClientFactory.CreateClient();
+                client.BaseAddress = new Uri($"{_basePath}");
 
                 if (queryParams != null)
                     url = QueryHelpers.AddQueryString(url, queryParams);
@@ -117,8 +125,8 @@ namespace Michaelsoft.BodyGuard.Client.Services
         {
             try
             {
-                using var client = HttpClientFactory.CreateClient();
-                client.BaseAddress = new Uri($"{BasePath}");
+                using var client = _httpClientFactory.CreateClient();
+                client.BaseAddress = new Uri($"{_basePath}");
 
                 if (queryParams != null)
                     url = QueryHelpers.AddQueryString(url, queryParams);
@@ -139,8 +147,8 @@ namespace Michaelsoft.BodyGuard.Client.Services
                 };
             }
         }
-        
-        protected async Task<BaseApiResult> BuildBaseApiResultFromResponse<T>(HttpResponseMessage response)
+
+        private async Task<BaseApiResult> BuildBaseApiResultFromResponse<T>(HttpResponseMessage response)
             where T : class
         {
             try

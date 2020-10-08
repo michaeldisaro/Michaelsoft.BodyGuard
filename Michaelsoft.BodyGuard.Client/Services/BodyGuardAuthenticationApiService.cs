@@ -13,15 +13,14 @@ namespace Michaelsoft.BodyGuard.Client.Services
     {
 
         public BodyGuardAuthenticationApiService(IBodyGuardClientSettings settings,
-                                                 IHttpClientFactory httpClientFactory)
+                                                 IHttpClientFactory httpClientFactory) :
+            base(settings, httpClientFactory)
         {
-            HttpClientFactory = httpClientFactory;
-            BasePath = $"{settings.BasePath}/Authentication/";
         }
 
-        public async Task<UserCreateResponse> UserCreate(string email,
-                                                         string password,
-                                                         dynamic userData)
+        public async Task<UserCreateResponse> Register(string email,
+                                                       string password,
+                                                       dynamic userData)
         {
             var userCreateRequest = new UserCreateRequest
             {
@@ -30,54 +29,7 @@ namespace Michaelsoft.BodyGuard.Client.Services
                 UserData = userData
             };
 
-            var baseApiResult = await PostRequest<UserCreateResponse>("UserCreate", userCreateRequest);
-
-            if (!baseApiResult.Success)
-                throw new Exception(baseApiResult.Message);
-
-            return baseApiResult.Response;
-        }
-        
-        public async Task<UsersDataResponse> GetUsersData()
-        {
-            var baseApiResult = await GetRequest<UsersDataResponse>($"GetUsersData");
-
-            if (!baseApiResult.Success)
-                throw new Exception(baseApiResult.Message);
-
-            return baseApiResult.Response;
-        }
-
-        public async Task<UserDataResponse> GetUserData(string id)
-        {
-            var baseApiResult = await GetRequest<UserDataResponse>($"GetUserData/{id}");
-
-            if (!baseApiResult.Success)
-                throw new Exception(baseApiResult.Message);
-
-            return baseApiResult.Response;
-        }
-
-        public async Task<UserUpdateResponse> UpdateUserData(string id,
-                                                             dynamic userData)
-        {
-            var userUpdateRequest = new UserUpdateRequest
-            {
-                Id = id,
-                UserData = userData
-            };
-
-            var baseApiResult = await PutRequest<UserUpdateResponse>($"UpdateUserData/{id}", userUpdateRequest);
-
-            if (!baseApiResult.Success)
-                throw new Exception(baseApiResult.Message);
-
-            return baseApiResult.Response;
-        }
-
-        public async Task<UserDeleteResponse> UserDelete(string id)
-        {
-            var baseApiResult = await DeleteRequest<UserDeleteResponse>($"UserDelete/{id}");
+            var baseApiResult = await PostRequest<UserCreateResponse>("Register", userCreateRequest);
 
             if (!baseApiResult.Success)
                 throw new Exception(baseApiResult.Message);
