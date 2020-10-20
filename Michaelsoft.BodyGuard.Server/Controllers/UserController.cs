@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.Net.Http;
 using Michaelsoft.BodyGuard.Common.HttpModels.Authentication;
 using Michaelsoft.BodyGuard.Server.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Michaelsoft.BodyGuard.Server.Controllers
 {
     [ApiController]
     [Route("/")]
+    [Authorize]
     public class UserController
     {
 

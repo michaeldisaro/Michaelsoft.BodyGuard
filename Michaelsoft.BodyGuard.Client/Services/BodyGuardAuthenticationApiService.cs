@@ -20,7 +20,7 @@ namespace Michaelsoft.BodyGuard.Client.Services
 
         public async Task<UserCreateResponse> Register(string email,
                                                        string password,
-                                                       dynamic userData)
+                                                       dynamic userData = null)
         {
             var userCreateRequest = new UserCreateRequest
             {

@@ -53,7 +53,7 @@ namespace Michaelsoft.BodyGuard.Server.Services
             {
                 HashedEmail = emailAddress.Sha1(),
                 HashedPassword = HashPassword(password),
-                EncryptedData = _encryptionService.Encrypt(userData.ToString()),
+                EncryptedData = userData.ValueEquals("") ? null : _encryptionService.Encrypt(userData.ToString()),
                 Created = DateTime.Now,
                 Updated = DateTime.Now
             };
@@ -83,7 +83,7 @@ namespace Michaelsoft.BodyGuard.Server.Services
         {
             var user = GetById(id);
             if (user == null) throw new UserNotFoundException();
-            return _encryptionService.Decrypt(user.EncryptedData);
+            return user.EncryptedData == null ? null : _encryptionService.Decrypt(user.EncryptedData);
         }
 
         public void UpdateData(string id,

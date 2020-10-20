@@ -1,9 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 using Newtonsoft.Json;
 
 namespace Michaelsoft.BodyGuard.Common.HttpModels.Authentication
 {
-    public class UserCreateRequest
+    public class UserLoginRequest
     {
 
         [Required]
@@ -13,8 +13,6 @@ namespace Michaelsoft.BodyGuard.Common.HttpModels.Authentication
         [Required]
         [JsonRequired]
         public string Password { get; set; }
-
-        public dynamic UserData { get; set; }
 
     }
 }
