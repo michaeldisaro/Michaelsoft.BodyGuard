@@ -47,13 +47,13 @@ namespace Michaelsoft.BodyGuard.Server.Services
 
         public User Create(string emailAddress,
                            string password,
-                           JsonElement userData)
+                           JsonElement? userData = null)
         {
             var user = new User
             {
                 HashedEmail = emailAddress.Sha1(),
                 HashedPassword = HashPassword(password),
-                EncryptedData = userData.ValueEquals("") ? null : _encryptionService.Encrypt(userData.ToString()),
+                EncryptedData = userData == null || userData.Value.ValueEquals("") ? null : _encryptionService.Encrypt(userData.ToString()),
                 Created = DateTime.Now,
                 Updated = DateTime.Now
             };
