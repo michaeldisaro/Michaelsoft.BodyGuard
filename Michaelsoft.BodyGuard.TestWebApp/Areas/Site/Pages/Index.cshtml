@@ -1,7 +1,19 @@
 ﻿@page
+@using Michaelsoft.BodyGuard.Client.Models
 @model IndexModel
 @{
     ViewData["Title"] = "Home page";
+}
+
+@{
+    await Html.RenderPartialAsync(
+                                  "~/Views/Shared/_loginForm.cshtml",
+                                  new LoginForm
+                                  {
+                                      SuccessUrl = "/Site/Success",
+                                      FailureUrl = "/Site/Failure",
+                                      SubmitLabel = "Accedi"
+                                  });
 }
 
 <div class="text-center">

@@ -53,7 +53,9 @@ namespace Michaelsoft.BodyGuard.Server.Services
             {
                 HashedEmail = emailAddress.Sha1(),
                 HashedPassword = HashPassword(password),
-                EncryptedData = userData == null || userData.Value.ValueEquals("") ? null : _encryptionService.Encrypt(userData.ToString()),
+                EncryptedData = userData == null || userData.Value.ValueEquals("")
+                                    ? null
+                                    : _encryptionService.Encrypt(userData.ToString()),
                 Created = DateTime.Now,
                 Updated = DateTime.Now
             };

@@ -1,10 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using Michaelsoft.BodyGuard.Client.Models;
 using Michaelsoft.BodyGuard.Client.Settings;
+using Michaelsoft.BodyGuard.Common.Extensions;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.WebUtilities;
 using Newtonsoft.Json;
 
@@ -17,9 +21,13 @@ namespace Michaelsoft.BodyGuard.Client.Services
 
         private readonly IHttpClientFactory _httpClientFactory;
 
+        private readonly IHttpContextAccessor _httpContextAccessor;
+
         protected BodyGuardBaseApiService(IBodyGuardClientSettings settings,
-                                          IHttpClientFactory httpClientFactory)
+                                          IHttpClientFactory httpClientFactory,
+                                          IHttpContextAccessor httpContextAccessor)
         {
+            _httpContextAccessor = httpContextAccessor;
             _httpClientFactory = httpClientFactory;
             _basePath = $"{settings.BasePath}/";
         }
@@ -29,8 +37,7 @@ namespace Michaelsoft.BodyGuard.Client.Services
         {
             try
             {
-                using var client = _httpClientFactory.CreateClient();
-                client.BaseAddress = new Uri($"{_basePath}");
+                using var client = GetClient();
 
                 if (queryParams != null)
                     url = QueryHelpers.AddQueryString(url, queryParams);
@@ -59,8 +66,7 @@ namespace Michaelsoft.BodyGuard.Client.Services
         {
             try
             {
-                using var client = _httpClientFactory.CreateClient();
-                client.BaseAddress = new Uri($"{_basePath}");
+                using var client = GetClient();
 
                 if (queryParams != null)
                     url = QueryHelpers.AddQueryString(url, queryParams);
@@ -85,16 +91,15 @@ namespace Michaelsoft.BodyGuard.Client.Services
                 };
             }
         }
-        
+
         protected async Task<BaseApiResult> PutRequest<T>(string url,
-                                                           dynamic requestObject,
-                                                           Dictionary<string, string> queryParams = null)
+                                                          dynamic requestObject,
+                                                          Dictionary<string, string> queryParams = null)
             where T : class
         {
             try
             {
-                using var client = _httpClientFactory.CreateClient();
-                client.BaseAddress = new Uri($"{_basePath}");
+                using var client = GetClient();
 
                 if (queryParams != null)
                     url = QueryHelpers.AddQueryString(url, queryParams);
@@ -121,12 +126,12 @@ namespace Michaelsoft.BodyGuard.Client.Services
         }
 
         protected async Task<BaseApiResult> DeleteRequest<T>(string url,
-                                                          Dictionary<string, string> queryParams = null) where T : class
+                                                             Dictionary<string, string> queryParams = null)
+            where T : class
         {
             try
             {
-                using var client = _httpClientFactory.CreateClient();
-                client.BaseAddress = new Uri($"{_basePath}");
+                using var client = GetClient();
 
                 if (queryParams != null)
                     url = QueryHelpers.AddQueryString(url, queryParams);
@@ -148,6 +153,19 @@ namespace Michaelsoft.BodyGuard.Client.Services
             }
         }
 
+        private HttpClient GetClient()
+        {
+            var client = _httpClientFactory.CreateClient();
+            client.BaseAddress = new Uri($"{_basePath}");
+
+            _httpContextAccessor.HttpContext.Request.Cookies.TryGetValue("bearer", out var bearer);
+
+            if (bearer.IsNullOrEmpty()) return client;
+
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", bearer);
+            return client;
+        }
+
         private async Task<BaseApiResult> BuildBaseApiResultFromResponse<T>(HttpResponseMessage response)
             where T : class
         {
@@ -157,11 +175,20 @@ namespace Michaelsoft.BodyGuard.Client.Services
                     throw new Exception(response.ReasonPhrase);
 
                 var json = await response.Content.ReadAsStringAsync();
+                var authenticated = response.Headers.TryGetValues("bearer", out var bearers);
+
+                if (authenticated)
+                {
+                    var bearer = bearers.FirstOrDefault();
+                    _httpContextAccessor.HttpContext.Response.Cookies.Append
+                        ("bearer", bearer,
+                         new CookieOptions {Expires = DateTime.Now.AddMinutes(60), IsEssential = true});
+                }
 
                 return new BaseApiResult
                 {
                     Success = true,
-                    Response = JsonConvert.DeserializeObject<T>(json)
+                    Response = JsonConvert.DeserializeObject<T>(json),
                 };
             }
             catch (Exception ex)

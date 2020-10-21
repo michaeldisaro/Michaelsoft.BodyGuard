@@ -19,6 +19,8 @@ namespace Michaelsoft.BodyGuard.Client.Extensions
                 (sp => sp.GetRequiredService<IOptions<BodyGuardClientSettings>>().Value);
             
             services.AddHttpClient();
+            services.AddHttpContextAccessor();
+            
             services.AddSingleton<BodyGuardAuthenticationApiService>();
             services.AddSingleton<BodyGuardUserApiService>();
             services.AddSingleton<BodyGuardAuthorizationApiService>();

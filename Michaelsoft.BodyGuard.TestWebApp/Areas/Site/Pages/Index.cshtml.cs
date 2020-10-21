@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 
-namespace Michaelsoft.BodyGuard.TestWebApp.Pages
+namespace Michaelsoft.BodyGuard.TestWebApp.Areas.Site.Pages
 {
     public class IndexModel : PageModel
     {
@@ -41,7 +41,10 @@ namespace Michaelsoft.BodyGuard.TestWebApp.Pages
             var userDataResponse = await _bodyGuardUserApiService.GetUsers();
             if (!userDataResponse.Success) return;
             foreach (var (userId, userData) in userDataResponse.UsersData)
-                UsersData.Add(userId, JsonConvert.DeserializeObject<User>(userData));
+            {
+                var user = userData == null ? new User() : JsonConvert.DeserializeObject<User>(userData);
+                UsersData.Add(userId, user);
+            }
         }
 
         public async Task<IActionResult> OnGet()

@@ -7,6 +7,8 @@
 
         public string Message { get; set; }
         
+        public string Bearer { get; set; }
+        
         public dynamic Response { get; set; }
 
     }

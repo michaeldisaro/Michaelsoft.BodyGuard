@@ -76,8 +76,8 @@ namespace Michaelsoft.BodyGuard.Server.Controllers
         [HttpPut("User/{id}")]
         [Produces("application/json")]
         public UserUpdateResponse Update(string id,
-                                                 [FromBody]
-                                                 UserUpdateRequest userUpdateRequest)
+                                         [FromBody]
+                                         UserUpdateRequest userUpdateRequest)
         {
             try
             {

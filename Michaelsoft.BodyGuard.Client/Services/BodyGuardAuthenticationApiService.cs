@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Michaelsoft.BodyGuard.Client.Settings;
 using Michaelsoft.BodyGuard.Common.HttpModels.Authentication;
+using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 
 namespace Michaelsoft.BodyGuard.Client.Services
@@ -13,8 +14,9 @@ namespace Michaelsoft.BodyGuard.Client.Services
     {
 
         public BodyGuardAuthenticationApiService(IBodyGuardClientSettings settings,
-                                                 IHttpClientFactory httpClientFactory) :
-            base(settings, httpClientFactory)
+                                                 IHttpClientFactory httpClientFactory,
+                                                 IHttpContextAccessor httpContextAccessor) :
+            base(settings, httpClientFactory, httpContextAccessor)
         {
         }
 
@@ -30,6 +32,23 @@ namespace Michaelsoft.BodyGuard.Client.Services
             };
 
             var baseApiResult = await PostRequest<UserCreateResponse>("Register", userCreateRequest);
+
+            if (!baseApiResult.Success)
+                throw new Exception(baseApiResult.Message);
+
+            return baseApiResult.Response;
+        }
+
+        public async Task<UserLoginResponse> Login(string email,
+                                                   string password)
+        {
+            var userLoginRequest = new UserLoginRequest
+            {
+                EmailAddress = email,
+                Password = password
+            };
+
+            var baseApiResult = await PostRequest<UserLoginResponse>("Login", userLoginRequest);
 
             if (!baseApiResult.Success)
                 throw new Exception(baseApiResult.Message);

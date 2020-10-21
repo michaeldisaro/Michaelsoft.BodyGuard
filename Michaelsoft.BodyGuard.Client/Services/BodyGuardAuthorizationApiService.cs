@@ -2,6 +2,7 @@
 using System.Net.Http;
 using System.Text;
 using Michaelsoft.BodyGuard.Client.Settings;
+using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 
 namespace Michaelsoft.BodyGuard.Client.Services
@@ -10,8 +11,9 @@ namespace Michaelsoft.BodyGuard.Client.Services
     {
 
         public BodyGuardAuthorizationApiService(IBodyGuardClientSettings settings,
-                                                IHttpClientFactory httpClientFactory):
-            base(settings, httpClientFactory)
+                                                IHttpClientFactory httpClientFactory,
+                                                IHttpContextAccessor httpContextAccessor) :
+            base(settings, httpClientFactory, httpContextAccessor)
         {
         }
 
