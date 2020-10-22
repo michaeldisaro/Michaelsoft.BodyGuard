@@ -1,68 +1,33 @@
 ﻿@page
 @using Michaelsoft.BodyGuard.Client.Models
 @model IndexModel
+
 @{
     ViewData["Title"] = "Home page";
 }
 
-@{
-    await Html.RenderPartialAsync(
-                                  "~/Views/Shared/_loginForm.cshtml",
-                                  new LoginForm
-                                  {
-                                      SuccessUrl = "/Site/Success",
-                                      FailureUrl = "/Site/Failure",
-                                      SubmitLabel = "Accedi"
-                                  });
-}
-
 <div class="text-center">
-    <h1 class="display-4">BodyGuard Authentication Test</h1>
-    <form asp-page-handler="CreateUser">
-        <div class="row mb-1">
-            <div class="col-3">
-                <input type="text" class="form-control form-inline" asp-for="UserCreateForm.EmailAddress" placeholder="Email Address">
-            </div>
-            <div class="col-3">
-                <input type="password" class="form-control form-inline" asp-for="UserCreateForm.Password" placeholder="Password">
-            </div>
-            <div class="col-3">
-                <input type="text" class="form-control form-inline" asp-for="UserCreateForm.Surname" placeholder="Surname">
-            </div>
-            <div class="col-3">
-                <input type="text" class="form-control form-inline" asp-for="UserCreateForm.Name" placeholder="Name">
-            </div>
-        </div>
-        <div class="row mb-3">
-            <div class="col-12">
-                <input type="submit" class="btn btn-primary btn-block" value="Create User">
-            </div>
-        </div>
-    </form>
-    @foreach (var (userId, userData) in Model.UsersData)
-    {
-        <form asp-page-handler="UpdateUser">
-            <div class="row mb-1">
-                <div class="col-3">
-                    <input type="text" class="form-control form-inline input-group" readonly asp-for="UserUpdateForm.Id" value="@userId">
-                </div>
-                <div class="col-2">
-                    <input type="text" class="form-control form-inline input-group" asp-for="UserUpdateForm.Name" value="@userData.Name">
-                </div>
-                <div class="col-2">
-                    <input type="text" class="form-control form-inline input-group" asp-for="UserUpdateForm.Surname" value="@userData.Surname">
-                </div>
-                <div class="col-3">
-                    <input type="text" class="form-control form-inline input-group" asp-for="UserUpdateForm.EmailAddress" value="@userData.EmailAddress">
-                </div>
-                <div class="col-1">
-                    <input type="submit" class="btn btn-primary btn-block" value="Save">
-                </div>
-                <div class="col-1">
-                    <a class="btn btn-primary btn-block" asp-page-handler="DeleteUser" asp-route-id="@userId">X</a>
-                </div>
-            </div>
-        </form>
+    <legend class="display-4">BodyGuard Authentication Test</legend>
+
+    <div class="alert alert-primary">@Model.Message</div>
+
+    @{
+        await Html.RenderPartialAsync(
+                                      "~/Views/Shared/_LoginForm.cshtml",
+                                      new LoginForm
+                                      {
+                                          SuccessUrl = "/Site/Success",
+                                          FailureUrl = "/Site/Failure",
+                                          SubmitLabel = "Accedi"
+                                      });
     }
 
+    @{
+        await Html.RenderPartialAsync(
+                                      "~/Views/Shared/_UserList.cshtml",
+                                      new UserList
+                                      {
+                                          UsersData = Model.UsersData
+                                      });
+    }
 </div>

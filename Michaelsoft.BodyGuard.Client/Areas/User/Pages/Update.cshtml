@@ -1,0 +1,7 @@
+﻿@page
+@using Michaelsoft.BodyGuard.Client.Models
+@model Michaelsoft.BodyGuard.Client.Areas.User.Pages.Update
+
+@{
+    await Html.RenderPartialAsync("_UpdateForm", Model.UpdateForm);
+}

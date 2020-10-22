@@ -1,0 +1,22 @@
+﻿@model Michaelsoft.BodyGuard.Client.Models.RegistrationForm
+
+<form method="post" asp-area="Authentication" asp-page="/Registration">
+    <div class="registration-form">
+        <input type="hidden" asp-for="SuccessUrl">
+        <input type="hidden" asp-for="FailureUrl">
+        <input type="hidden" asp-for="SubmitLabel">
+        <div class="form-group">
+            <label asp-for="CreateRequest.EmailAddress"></label>
+            <input type="text" asp-for="CreateRequest.EmailAddress"/>
+            <span asp-validation-for="CreateRequest.EmailAddress" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="CreateRequest.Password"></label>
+            <input type="password" asp-for="CreateRequest.Password"/>
+            <span asp-validation-for="CreateRequest.Password" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary">@Model.SubmitLabel</button>
+        </div>
+    </div>
+</form>

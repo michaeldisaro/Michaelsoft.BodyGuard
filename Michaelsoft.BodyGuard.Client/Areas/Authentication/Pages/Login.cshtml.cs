@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
+using Michaelsoft.BodyGuard.Client.Interfaces;
 using Michaelsoft.BodyGuard.Client.Models;
-using Michaelsoft.BodyGuard.Client.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
@@ -9,9 +9,9 @@ namespace Michaelsoft.BodyGuard.Client.Areas.Authentication.Pages
     public class Login : PageModel
     {
 
-        private readonly BodyGuardAuthenticationApiService _authenticationApiService;
+        private readonly IBodyGuardAuthenticationApiService _authenticationApiService;
 
-        public Login(BodyGuardAuthenticationApiService authenticationApiService)
+        public Login(IBodyGuardAuthenticationApiService authenticationApiService)
         {
             _authenticationApiService = authenticationApiService;
         }
@@ -23,7 +23,8 @@ namespace Michaelsoft.BodyGuard.Client.Areas.Authentication.Pages
         {
             LoginForm = new LoginForm
             {
-                SuccessUrl = "/Authentication/Login"
+                SuccessUrl = "/Authentication/Login",
+                FailureUrl = "/Authentication/Login"
             };
         }
 

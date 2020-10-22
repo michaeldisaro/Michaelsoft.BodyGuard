@@ -22,6 +22,7 @@ namespace Michaelsoft.BodyGuard.Server.Controllers
             _userService = userService;
         }
 
+        [AllowAnonymous]
         [HttpPost("[action]")]
         [Produces("application/json")]
         public UserCreateResponse Register([FromBody]
@@ -49,7 +50,8 @@ namespace Michaelsoft.BodyGuard.Server.Controllers
         }
 
         [AllowAnonymous]
-        [HttpPost, Route("[action]")]
+        [HttpPost("[action]")]
+        [Produces("application/json")]
         public UserLoginResponse Login([FromBody]
                                        UserLoginRequest request)
         {

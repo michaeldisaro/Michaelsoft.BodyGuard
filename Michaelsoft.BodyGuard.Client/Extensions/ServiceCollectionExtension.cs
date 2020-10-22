@@ -1,4 +1,6 @@
-﻿using Michaelsoft.BodyGuard.Client.Services;
+﻿using Michaelsoft.BodyGuard.Client.Interfaces;
+using Michaelsoft.BodyGuard.Client.Models;
+using Michaelsoft.BodyGuard.Client.Services;
 using Michaelsoft.BodyGuard.Client.Settings;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -10,7 +12,7 @@ namespace Michaelsoft.BodyGuard.Client.Extensions
     {
 
         public static void AddBodyGuardApi(this IServiceCollection services,
-                                        IConfiguration configuration)
+                                              IConfiguration configuration)
         {
             services.Configure<BodyGuardClientSettings>
                 (configuration.GetSection(nameof(BodyGuardClientSettings)));
@@ -20,10 +22,10 @@ namespace Michaelsoft.BodyGuard.Client.Extensions
             
             services.AddHttpClient();
             services.AddHttpContextAccessor();
-            
-            services.AddSingleton<BodyGuardAuthenticationApiService>();
-            services.AddSingleton<BodyGuardUserApiService>();
-            services.AddSingleton<BodyGuardAuthorizationApiService>();
+
+            services.AddSingleton<IBodyGuardAuthenticationApiService, BodyGuardAuthenticationApiService>();
+            services.AddSingleton<IBodyGuardUserApiService, BodyGuardUserApiService>();
+            services.AddSingleton<IBodyGuardAuthorizationApiService, BodyGuardAuthorizationApiService>();
         }
 
     }

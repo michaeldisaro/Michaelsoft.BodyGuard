@@ -1,0 +1,16 @@
+﻿@using Michaelsoft.BodyGuard.Client.Models
+@model Michaelsoft.BodyGuard.Client.Models.UserList
+
+@foreach (var userData in Model.UsersData)
+{
+    <h4>@userData.Id</h4>
+    {
+        await Html.RenderPartialAsync("_UpdateForm", new UpdateForm
+        {
+            SuccessUrl = "/Site/Success",
+            FailureUrl = "/Site/Failure",
+            SubmitLabel = "Aggiorna",
+            UserData = userData
+        });
+    }
+}

@@ -1,0 +1,27 @@
+﻿@model Michaelsoft.BodyGuard.Client.Models.UpdateForm
+
+@{
+    var userDataType = Model.UserData.GetType();
+    var userDataProperties = userDataType.GetProperties();
+}
+
+<form method="post" asp-area="User" asp-page="/Update">
+    <div class="update-form">
+        <input type="hidden" asp-for="SuccessUrl">
+        <input type="hidden" asp-for="FailureUrl">
+        <input type="hidden" asp-for="SubmitLabel">
+        @foreach (var propertyInfo in userDataProperties)
+        {
+            var formProperty = $"UserData.{propertyInfo.Name}";
+            var propertyValue = userDataType.GetProperty(propertyInfo.Name)!.GetValue(Model.UserData, null);
+            <div class="form-group">
+                @Html.Label(propertyInfo.Name)
+                @Html.TextBox(formProperty, propertyValue)
+                @*@Html.ValidationMessage(formProperty)*@
+            </div>
+        }
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary">@Model.SubmitLabel</button>
+        </div>
+    </div>
+</form>

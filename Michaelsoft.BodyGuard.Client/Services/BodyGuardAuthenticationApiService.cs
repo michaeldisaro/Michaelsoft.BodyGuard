@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using Michaelsoft.BodyGuard.Client.Interfaces;
 using Michaelsoft.BodyGuard.Client.Settings;
 using Michaelsoft.BodyGuard.Common.HttpModels.Authentication;
 using Microsoft.AspNetCore.Http;
@@ -10,7 +11,7 @@ using Newtonsoft.Json;
 
 namespace Michaelsoft.BodyGuard.Client.Services
 {
-    public class BodyGuardAuthenticationApiService : BodyGuardBaseApiService
+    public class BodyGuardAuthenticationApiService : BodyGuardBaseApiService, IBodyGuardAuthenticationApiService
     {
 
         public BodyGuardAuthenticationApiService(IBodyGuardClientSettings settings,

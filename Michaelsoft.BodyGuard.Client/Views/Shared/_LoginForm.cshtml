@@ -1,6 +1,6 @@
 ﻿@model Michaelsoft.BodyGuard.Client.Models.LoginForm
 
-<form method="post" asp-area="Authentication" asp-page="/Login" asp-route-returnurl="@Model.SuccessUrl">
+<form method="post" asp-area="Authentication" asp-page="/Login">
     <div class="login-form">
         <input type="hidden" asp-for="SuccessUrl">
         <input type="hidden" asp-for="FailureUrl">

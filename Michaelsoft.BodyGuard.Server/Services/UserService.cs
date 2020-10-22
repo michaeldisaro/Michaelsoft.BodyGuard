@@ -7,6 +7,7 @@ using MongoDB.Driver;
 using BCrypt.Net;
 using Michaelsoft.BodyGuard.Common.Extensions;
 using Michaelsoft.BodyGuard.Server.Exceptions;
+using Newtonsoft.Json;
 
 namespace Michaelsoft.BodyGuard.Server.Services
 {
@@ -89,11 +90,12 @@ namespace Michaelsoft.BodyGuard.Server.Services
         }
 
         public void UpdateData(string id,
-                               JsonElement userData)
+                               object userData)
         {
             var user = GetById(id);
             if (user == null) throw new UserNotFoundException();
-            user.EncryptedData = _encryptionService.Encrypt(userData.ToString());
+            var serializedData = userData.ToString();
+            user.EncryptedData = _encryptionService.Encrypt(serializedData);
             _users.ReplaceOne(u => u.Id == user.Id, user);
         }
 

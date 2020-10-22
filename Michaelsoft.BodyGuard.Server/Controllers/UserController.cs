@@ -20,11 +20,12 @@ namespace Michaelsoft.BodyGuard.Server.Controllers
         {
             _userService = userService;
         }
-
+        
         [HttpGet("Users")]
         [Produces("application/json")]
         public UsersDataResponse List()
         {
+            // TODO: check if logged user is admin
             try
             {
                 var usersData = new Dictionary<string, string>();
@@ -54,6 +55,7 @@ namespace Michaelsoft.BodyGuard.Server.Controllers
         [Produces("application/json")]
         public UserDataResponse Get(string id)
         {
+            // TODO: check if logged user is admin or this user
             try
             {
                 var data = _userService.GetData(id);
@@ -79,6 +81,7 @@ namespace Michaelsoft.BodyGuard.Server.Controllers
                                          [FromBody]
                                          UserUpdateRequest userUpdateRequest)
         {
+            // TODO: check if logged user is admin or this user
             try
             {
                 if (!id.Equals(userUpdateRequest.Id))
@@ -102,6 +105,7 @@ namespace Michaelsoft.BodyGuard.Server.Controllers
         [Produces("application/json")]
         public UserDeleteResponse Delete(string id)
         {
+            // TODO: check if logged user is admin
             try
             {
                 _userService.Delete(id);

@@ -1,0 +1,7 @@
+﻿<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="BodyGuard" type="CompoundRunConfigurationType">
+    <toRun name="Michaelsoft.BodyGuard.TestWebApp" type="LaunchSettings" />
+    <toRun name="Michaelsoft.BodyGuard.Server" type="LaunchSettings" />
+    <method v="2" />
+  </configuration>
+</component>
