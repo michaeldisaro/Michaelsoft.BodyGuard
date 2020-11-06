@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using Michaelsoft.BodyGuard.Client.Interfaces;
 using Michaelsoft.BodyGuard.Client.Models;
-using Michaelsoft.BodyGuard.Client.Models.Entities;
+using Michaelsoft.BodyGuard.Common.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;

@@ -2,11 +2,17 @@
 using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Michaelsoft.BodyGuard.Common.Enums;
+using Michaelsoft.BodyGuard.Common.Extensions;
 using Michaelsoft.BodyGuard.Common.HttpModels.Authentication;
+using Michaelsoft.BodyGuard.Common.Models;
 using Michaelsoft.BodyGuard.Server.Services;
+using Michaelsoft.BodyGuard.Server.Settings;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
 
 namespace Michaelsoft.BodyGuard.Server.Controllers
 {
@@ -17,8 +23,12 @@ namespace Michaelsoft.BodyGuard.Server.Controllers
 
         private readonly UserService _userService;
 
-        public AuthenticationController(UserService userService)
+        private readonly JwtSettings _jwtSettings;
+
+        public AuthenticationController(UserService userService,
+                                        IOptions<JwtSettings> jwtSettings)
         {
+            _jwtSettings = jwtSettings.Value;
             _userService = userService;
         }
 
@@ -63,6 +73,27 @@ namespace Michaelsoft.BodyGuard.Server.Controllers
                 {
                     new Claim("sub", user.Id)
                 };
+
+                if (!_jwtSettings.AdditionalClaims.IsNullOrEmpty())
+                {
+                    var additionalClaims = new List<string>();
+                    if (_jwtSettings.AdditionalClaims.Contains(";"))
+                        additionalClaims.AddRange(_jwtSettings.AdditionalClaims.Split(";"));
+                    else
+                        additionalClaims.Add(_jwtSettings.AdditionalClaims);
+
+                    var userData =
+                        JsonConvert.DeserializeObject<User>(_userService.GetData(user.Id));
+
+                    foreach (var ac in additionalClaims)
+                    {
+                        var property = Claims.ClaimToUserProperty[ac];
+                        var value = userData.GetType().GetProperty(property)?.GetValue(userData, null)?.ToString();
+                        if (!value.IsNullOrEmpty())
+                            claims.Add(new Claim(ac, value));
+                    }
+                }
+
 /*
                 var roles = await _userManager.GetRolesAsync(user);
                 claims.AddRange(roles.Select(r => new Claim("roles", r)));

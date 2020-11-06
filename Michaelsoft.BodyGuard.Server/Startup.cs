@@ -38,7 +38,6 @@ namespace Michaelsoft.BodyGuard.Server
             services.AddUserService(Configuration);
             services.AddControllers();
             
-
             services.Configure<JwtSettings>(Configuration.GetSection("JwtSettings"));
             var settings = Configuration.GetSection("JwtSettings").Get<JwtSettings>();
             services
@@ -146,7 +145,7 @@ namespace Michaelsoft.BodyGuard.Server
             app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
             app.UseAuthentication();
             app.UseAuthorization();
-            app.UseMiddleware<JwtTokenMiddleware>();
+            app.UseMiddleware<JwtMiddleware>();
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }
 

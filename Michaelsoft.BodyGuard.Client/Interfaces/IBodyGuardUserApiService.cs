@@ -1,8 +1,8 @@
 ﻿using System.Threading.Tasks;
 using Michaelsoft.BodyGuard.Client.Models;
-using Michaelsoft.BodyGuard.Client.Models.Entities;
 using Michaelsoft.BodyGuard.Client.Models.Lists;
 using Michaelsoft.BodyGuard.Common.HttpModels.Authentication;
+using Michaelsoft.BodyGuard.Common.Models;
 
 namespace Michaelsoft.BodyGuard.Client.Interfaces
 {

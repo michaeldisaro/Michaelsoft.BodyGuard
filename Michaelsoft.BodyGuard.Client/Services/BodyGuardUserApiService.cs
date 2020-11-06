@@ -4,11 +4,11 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Michaelsoft.BodyGuard.Client.Interfaces;
 using Michaelsoft.BodyGuard.Client.Models;
-using Michaelsoft.BodyGuard.Client.Models.Entities;
 using Michaelsoft.BodyGuard.Client.Models.Lists;
 using Michaelsoft.BodyGuard.Client.Settings;
 using Michaelsoft.BodyGuard.Common.Extensions;
 using Michaelsoft.BodyGuard.Common.HttpModels.Authentication;
+using Michaelsoft.BodyGuard.Common.Models;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 

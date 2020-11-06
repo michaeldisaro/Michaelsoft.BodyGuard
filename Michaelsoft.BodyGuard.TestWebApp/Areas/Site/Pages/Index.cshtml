@@ -1,6 +1,7 @@
 ﻿@page
 @using Michaelsoft.BodyGuard.Client.Models.Forms
 @using Michaelsoft.BodyGuard.Client.Models.Lists
+@using Michaelsoft.BodyGuard.Common.Enums
 @model IndexModel
 
 @{
@@ -20,7 +21,9 @@
                                           SuccessUrl = "/Site/Success",
                                           FailureUrl = "/Site/Failure",
                                           LoginLabel = "Accedi",
-                                          LogoutLabel = "Esci"
+                                          LogoutLabel = "Esci",
+                                          UserClaim = Claims.Email,
+                                          UserMessage = "Benvenuto:"
                                       });
     }
 

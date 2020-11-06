@@ -5,6 +5,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using Michaelsoft.BodyGuard.Common.Enums;
 using Michaelsoft.BodyGuard.Server.Settings;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http;
@@ -14,14 +15,14 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace Michaelsoft.BodyGuard.Server.Services
 {
-    public class JwtTokenMiddleware
+    public class JwtMiddleware
     {
 
         private readonly RequestDelegate _next;
 
         private readonly JwtSettings _jwtSettings;
 
-        public JwtTokenMiddleware(RequestDelegate next,
+        public JwtMiddleware(RequestDelegate next,
                                   IOptions<JwtSettings> jwtSettings)
         {
             _next = next;
@@ -50,7 +51,7 @@ namespace Michaelsoft.BodyGuard.Server.Services
             {
                 {"iss", _jwtSettings.Issuer},
                 {"aud", _jwtSettings.Audience},
-                {"exp", DateTimeOffset.Now.AddMinutes(_jwtSettings.AccessExpiration).ToUnixTimeSeconds()}
+                {"exp", DateTimeOffset.UtcNow.AddMinutes(_jwtSettings.AccessExpiration).ToUnixTimeSeconds()}
             };
 
             var roles = new List<string>();
@@ -60,6 +61,9 @@ namespace Michaelsoft.BodyGuard.Server.Services
                     payload.TryAdd("sub", claim.Value);
 
                 if (new[] {"sub"}.Contains(claim.Type))
+                    payload.TryAdd(claim.Type, claim.Value);
+                
+                if (Claims.ClaimToUserProperty.Keys.Contains(claim.Type))
                     payload.TryAdd(claim.Type, claim.Value);
 
                 if (new[] {"roles", ClaimTypes.Role}.Contains(claim.Type))

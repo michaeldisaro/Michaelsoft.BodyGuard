@@ -4,7 +4,7 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace Michaelsoft.BodyGuard.Server.DatabaseModels
 {
-    public class User
+    public class DbUser
     {
 
         [BsonId]

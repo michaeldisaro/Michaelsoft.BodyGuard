@@ -14,7 +14,7 @@ namespace Michaelsoft.BodyGuard.Server.Services
     public class UserService
     {
 
-        private readonly IMongoCollection<User> _users;
+        private readonly IMongoCollection<DbUser> _users;
 
         private readonly DatabaseEncryptionService _encryptionService;
 
@@ -24,15 +24,15 @@ namespace Michaelsoft.BodyGuard.Server.Services
             _encryptionService = encryptionService;
             var client = new MongoClient(settings.ConnectionString);
             var database = client.GetDatabase(settings.DatabaseName);
-            _users = database.GetCollection<User>(settings.UsersCollectionName);
+            _users = database.GetCollection<DbUser>(settings.UsersCollectionName);
         }
 
-        public List<User> GetAll() => _users.Find(user => true).ToList();
+        public List<DbUser> GetAll() => _users.Find(user => true).ToList();
 
-        private User GetById(string id) => _users.Find<User>(user => user.Id == id).FirstOrDefault();
+        private DbUser GetById(string id) => _users.Find<DbUser>(user => user.Id == id).FirstOrDefault();
 
-        private User GetByHashedEmail(string hashedEmail) =>
-            _users.Find<User>(user => user.HashedEmail == hashedEmail).FirstOrDefault();
+        private DbUser GetByHashedEmail(string hashedEmail) =>
+            _users.Find<DbUser>(user => user.HashedEmail == hashedEmail).FirstOrDefault();
 
         private string HashPassword(string password)
         {
@@ -40,17 +40,17 @@ namespace Michaelsoft.BodyGuard.Server.Services
             return BCrypt.Net.BCrypt.HashPassword(password, salt);
         }
 
-        private bool VerifyPassword(User user,
+        private bool VerifyPassword(DbUser dbUser,
                                     string password)
         {
-            return BCrypt.Net.BCrypt.Verify(password, user.HashedPassword);
+            return BCrypt.Net.BCrypt.Verify(password, dbUser.HashedPassword);
         }
 
-        public User Create(string emailAddress,
+        public DbUser Create(string emailAddress,
                            string password,
                            JsonElement? userData = null)
         {
-            var user = new User
+            var user = new DbUser
             {
                 HashedEmail = emailAddress.Sha1(),
                 HashedPassword = HashPassword(password),
@@ -66,7 +66,7 @@ namespace Michaelsoft.BodyGuard.Server.Services
             return user;
         }
 
-        public User Access(string emailAddress,
+        public DbUser Access(string emailAddress,
                            string password)
         {
             var hashedEmail = emailAddress.Sha1();

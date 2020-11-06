@@ -3,7 +3,7 @@
 @model Michaelsoft.BodyGuard.Client.Models.Forms.AuthenticationForm
 @inject IHttpContextAccessor Accessor
 @{
-    var nick = JwtUtility.GetSubscriber();
+    var nick = JwtUtility.GetUserClaim(Model.UserClaim);
 }
 
 @if (nick == null)
@@ -37,7 +37,7 @@ else
             <input type="hidden" asp-for="FailureUrl">
             <input type="hidden" asp-for="LogoutLabel">
             <div class="form-group">
-                <label>Utente @nick</label>
+                <label>@Model.UserMessage @nick</label>
                 <button type="submit" class="btn btn-primary">@Model.LogoutLabel</button>
             </div>
         </div>

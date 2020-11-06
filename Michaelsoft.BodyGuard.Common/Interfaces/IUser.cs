@@ -1,4 +1,4 @@
-﻿namespace Michaelsoft.BodyGuard.Client.Interfaces
+﻿namespace Michaelsoft.BodyGuard.Common.Interfaces
 {
     public interface IUser
     {
