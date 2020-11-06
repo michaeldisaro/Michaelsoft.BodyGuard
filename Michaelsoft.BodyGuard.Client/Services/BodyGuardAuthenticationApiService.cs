@@ -56,6 +56,16 @@ namespace Michaelsoft.BodyGuard.Client.Services
 
             return baseApiResult.Response;
         }
+        
+        public async Task<UserLogoutResponse> Logout()
+        {
+            var baseApiResult = await PostRequest<UserLogoutResponse>("Logout");
+
+            if (!baseApiResult.Success)
+                throw new Exception(baseApiResult.Message);
+
+            return baseApiResult.Response;
+        }
 
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Michaelsoft.BodyGuard.Client.Interfaces;
 using Michaelsoft.BodyGuard.Client.Models;
+using Michaelsoft.BodyGuard.Client.Models.Forms;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 

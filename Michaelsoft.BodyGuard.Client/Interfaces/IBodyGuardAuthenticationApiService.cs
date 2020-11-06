@@ -13,5 +13,7 @@ namespace Michaelsoft.BodyGuard.Client.Interfaces
         public Task<UserLoginResponse> Login(string email,
                                                    string password);
         
+        public Task<UserLogoutResponse> Logout();
+        
     }
 }

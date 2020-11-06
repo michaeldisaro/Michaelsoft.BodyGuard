@@ -71,7 +71,7 @@ namespace Michaelsoft.BodyGuard.Server.Controllers
                 identity.AddClaims(claims);
 
                 HttpContext.User = new ClaimsPrincipal(identity);
-                
+
                 return new UserLoginResponse
                 {
                     UserId = user.Id
@@ -80,6 +80,30 @@ namespace Michaelsoft.BodyGuard.Server.Controllers
             catch (Exception ex)
             {
                 return new UserLoginResponse
+                {
+                    Success = false,
+                    Message = ex.Message
+                };
+            }
+        }
+
+        [Authorize]
+        [HttpPost("[action]")]
+        [Produces("application/json")]
+        public UserLogoutResponse Logout()
+        {
+            try
+            {
+                HttpContext.User = null;
+
+                return new UserLogoutResponse
+                {
+                    Success = true
+                };
+            }
+            catch (Exception ex)
+            {
+                return new UserLogoutResponse
                 {
                     Success = false,
                     Message = ex.Message

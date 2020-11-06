@@ -1,5 +1,6 @@
 ﻿@page
-@using Michaelsoft.BodyGuard.Client.Models
+@using Michaelsoft.BodyGuard.Client.Models.Forms
+@using Michaelsoft.BodyGuard.Client.Models.Lists
 @model IndexModel
 
 @{
@@ -9,16 +10,17 @@
 <div class="text-center">
     <legend class="display-4">BodyGuard Authentication Test</legend>
 
-    <div class="alert alert-primary">@Model.Message</div>
+    <partial name="_Message" for="Message"/>
 
     @{
         await Html.RenderPartialAsync(
-                                      "~/Views/Shared/_LoginForm.cshtml",
-                                      new LoginForm
+                                      "~/Views/Shared/_AuthenticationForm.cshtml",
+                                      new AuthenticationForm
                                       {
                                           SuccessUrl = "/Site/Success",
                                           FailureUrl = "/Site/Failure",
-                                          SubmitLabel = "Accedi"
+                                          LoginLabel = "Accedi",
+                                          LogoutLabel = "Esci"
                                       });
     }
 
@@ -27,6 +29,9 @@
                                       "~/Views/Shared/_UserList.cshtml",
                                       new UserList
                                       {
+                                          SuccessUrl = "/Site/Success",
+                                          FailureUrl = "/Site/Failure",
+                                          SubmitLabel = "Aggiorna",
                                           UsersData = Model.UsersData
                                       });
     }

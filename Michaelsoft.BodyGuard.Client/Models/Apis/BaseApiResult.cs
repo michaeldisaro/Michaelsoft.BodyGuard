@@ -1,4 +1,4 @@
-﻿namespace Michaelsoft.BodyGuard.Client.Models
+﻿namespace Michaelsoft.BodyGuard.Client.Models.Apis
 {
     public class BaseApiResult
     {

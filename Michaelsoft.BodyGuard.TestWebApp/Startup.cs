@@ -20,7 +20,7 @@ namespace Michaelsoft.BodyGuard.TestWebApp
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddBodyGuardApi(Configuration);
+            services.AddBodyGuard(Configuration);
             
             services.AddRazorPages()
                     .AddRazorPagesOptions(options =>
@@ -44,11 +44,14 @@ namespace Michaelsoft.BodyGuard.TestWebApp
                 app.UseExceptionHandler("/Error");
                 app.UseHsts();
             }
-
+            
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseRouting();
             app.UseAuthorization();
+            
+            app.AddBodyGuard();
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapRazorPages();

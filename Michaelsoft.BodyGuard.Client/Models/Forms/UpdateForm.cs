@@ -1,12 +1,11 @@
-﻿using System;
-using Michaelsoft.BodyGuard.Client.Interfaces;
+﻿using Michaelsoft.BodyGuard.Client.Models.Entities;
 
-namespace Michaelsoft.BodyGuard.Client.Models
+namespace Michaelsoft.BodyGuard.Client.Models.Forms
 {
     public class UpdateForm
     {
 
-        public UserData UserData { get; set; }
+        public User User { get; set; }
 
         public string SuccessUrl { get; set; }
 

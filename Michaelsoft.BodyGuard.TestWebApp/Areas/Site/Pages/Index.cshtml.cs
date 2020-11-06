@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using Michaelsoft.BodyGuard.Client.Interfaces;
 using Michaelsoft.BodyGuard.Client.Models;
+using Michaelsoft.BodyGuard.Client.Models.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
@@ -28,7 +29,7 @@ namespace Michaelsoft.BodyGuard.TestWebApp.Areas.Site.Pages
             _logger = logger;
         }
 
-        public List<UserData> UsersData { get; set; } = new List<UserData>();
+        public List<User> UsersData { get; set; } = new List<User>();
 
         [TempData]
         public string Message { get; set; }
@@ -60,7 +61,7 @@ namespace Michaelsoft.BodyGuard.TestWebApp.Areas.Site.Pages
             var userCreateResponse = await _bodyGuardAuthenticationApiService.Register
                                          (UserCreateForm.EmailAddress,
                                           UserCreateForm.Password,
-                                          new UserData
+                                          new User
                                           {
                                               Name = UserCreateForm.Name,
                                               Surname = UserCreateForm.Surname,

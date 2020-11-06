@@ -1,5 +1,6 @@
 ﻿@using Michaelsoft.BodyGuard.Client.Models
-@model Michaelsoft.BodyGuard.Client.Models.UserList
+@using Michaelsoft.BodyGuard.Client.Models.Forms
+@model Michaelsoft.BodyGuard.Client.Models.Lists.UserList
 
 @foreach (var userData in Model.UsersData)
 {
@@ -7,10 +8,10 @@
     {
         await Html.RenderPartialAsync("_UpdateForm", new UpdateForm
         {
-            SuccessUrl = "/Site/Success",
-            FailureUrl = "/Site/Failure",
-            SubmitLabel = "Aggiorna",
-            UserData = userData
+            SuccessUrl = Model.SuccessUrl,
+            FailureUrl = Model.FailureUrl,
+            SubmitLabel = Model.SubmitLabel,
+            User = userData
         });
     }
 }

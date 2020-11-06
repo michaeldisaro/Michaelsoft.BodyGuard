@@ -1,5 +1,4 @@
 ﻿using Michaelsoft.BodyGuard.Client.Interfaces;
-using Michaelsoft.BodyGuard.Client.Models;
 using Michaelsoft.BodyGuard.Client.Services;
 using Michaelsoft.BodyGuard.Client.Settings;
 using Microsoft.Extensions.Configuration;
@@ -11,7 +10,7 @@ namespace Michaelsoft.BodyGuard.Client.Extensions
     public static class ServiceCollectionExtension
     {
 
-        public static void AddBodyGuardApi(this IServiceCollection services,
+        public static void AddBodyGuard(this IServiceCollection services,
                                               IConfiguration configuration)
         {
             services.Configure<BodyGuardClientSettings>

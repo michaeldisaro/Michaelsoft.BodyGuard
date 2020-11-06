@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Michaelsoft.BodyGuard.Client.Interfaces;
 using Michaelsoft.BodyGuard.Client.Models;
+using Michaelsoft.BodyGuard.Client.Models.Forms;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
@@ -30,7 +31,13 @@ namespace Michaelsoft.BodyGuard.Client.Areas.User.Pages
 
         public async Task<IActionResult> OnPost()
         {
-            var response = await _userApiService.UpdateUser(UpdateForm.UserData);
+            if (!ModelState.IsValid)
+            {
+                TempData["Message"] = "Update failed.";
+                return Page();
+            }
+
+            var response = await _userApiService.UpdateUser(UpdateForm.User);
 
             if (response.Success)
             {

@@ -14,4 +14,8 @@
   <ItemGroup>
     <ProjectReference Include="..\Michaelsoft.BodyGuard.Client\Michaelsoft.BodyGuard.Client.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Views" />
+  </ItemGroup>
 </Project>

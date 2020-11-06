@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Michaelsoft.BodyGuard.Client.Interfaces;
 using Michaelsoft.BodyGuard.Client.Models;
+using Michaelsoft.BodyGuard.Client.Models.Forms;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
@@ -17,11 +18,11 @@ namespace Michaelsoft.BodyGuard.Client.Areas.Authentication.Pages
         }
 
         [BindProperty]
-        public LoginForm LoginForm { get; set; }
+        public AuthenticationForm AuthenticationForm { get; set; }
 
         public void OnGet()
         {
-            LoginForm = new LoginForm
+            AuthenticationForm = new AuthenticationForm
             {
                 SuccessUrl = "/Authentication/Login",
                 FailureUrl = "/Authentication/Login"
@@ -31,16 +32,16 @@ namespace Michaelsoft.BodyGuard.Client.Areas.Authentication.Pages
         public async Task<IActionResult> OnPost()
         {
             var response = await _authenticationApiService.Login
-                               (LoginForm.LoginRequest.EmailAddress, LoginForm.LoginRequest.Password);
+                               (AuthenticationForm.LoginRequest.EmailAddress, AuthenticationForm.LoginRequest.Password);
 
             if (response.Success)
             {
                 TempData["Message"] = "Login succeed!";
-                return Redirect(LoginForm.SuccessUrl ?? "/Authentication/Login");
+                return Redirect(AuthenticationForm.SuccessUrl ?? "/Authentication/Login");
             }
 
             TempData["Message"] = "Login failed.";
-            return Redirect(LoginForm.FailureUrl ?? "/Authentication/Login");
+            return Redirect(AuthenticationForm.FailureUrl ?? "/Authentication/Login");
         }
 
     }

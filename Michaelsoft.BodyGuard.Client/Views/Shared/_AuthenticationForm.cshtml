@@ -1,0 +1,45 @@
+﻿@using Michaelsoft.BodyGuard.Common.Utilities
+@using Microsoft.AspNetCore.Http
+@model Michaelsoft.BodyGuard.Client.Models.Forms.AuthenticationForm
+@inject IHttpContextAccessor Accessor
+@{
+    var nick = JwtUtility.GetSubscriber();
+}
+
+@if (nick == null)
+{
+    <form method="post" asp-area="Authentication" asp-page="/Login">
+        <div class="login-form">
+            <input type="hidden" asp-for="SuccessUrl">
+            <input type="hidden" asp-for="FailureUrl">
+            <input type="hidden" asp-for="LoginLabel">
+            <div class="form-group">
+                <label asp-for="LoginRequest.EmailAddress"></label>
+                <input type="text" asp-for="LoginRequest.EmailAddress"/>
+                <span asp-validation-for="LoginRequest.EmailAddress" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LoginRequest.Password"></label>
+                <input type="password" asp-for="LoginRequest.Password"/>
+                <span asp-validation-for="LoginRequest.Password" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">@Model.LoginLabel</button>
+            </div>
+        </div>
+    </form>
+}
+else
+{
+    <form method="post" asp-area="Authentication" asp-page="/Logout">
+        <div class="login-form">
+            <input type="hidden" asp-for="SuccessUrl">
+            <input type="hidden" asp-for="FailureUrl">
+            <input type="hidden" asp-for="LogoutLabel">
+            <div class="form-group">
+                <label>Utente @nick</label>
+                <button type="submit" class="btn btn-primary">@Model.LogoutLabel</button>
+            </div>
+        </div>
+    </form>
+}

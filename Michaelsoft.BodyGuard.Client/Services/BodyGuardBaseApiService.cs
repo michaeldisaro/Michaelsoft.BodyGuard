@@ -6,6 +6,7 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using Michaelsoft.BodyGuard.Client.Models;
+using Michaelsoft.BodyGuard.Client.Models.Apis;
 using Michaelsoft.BodyGuard.Client.Settings;
 using Michaelsoft.BodyGuard.Common.Extensions;
 using Microsoft.AspNetCore.Http;
@@ -60,7 +61,7 @@ namespace Michaelsoft.BodyGuard.Client.Services
         }
 
         protected async Task<BaseApiResult> PostRequest<T>(string url,
-                                                           dynamic requestObject,
+                                                           dynamic requestObject = null,
                                                            Dictionary<string, string> queryParams = null)
             where T : class
         {
@@ -71,9 +72,11 @@ namespace Michaelsoft.BodyGuard.Client.Services
                 if (queryParams != null)
                     url = QueryHelpers.AddQueryString(url, queryParams);
 
-                var requestContent = new StringContent(JsonConvert.SerializeObject(requestObject),
-                                                       Encoding.UTF8,
-                                                       "application/json");
+                var requestContent = requestObject == null
+                                         ? null
+                                         : new StringContent(JsonConvert.SerializeObject(requestObject),
+                                                             Encoding.UTF8,
+                                                             "application/json");
 
                 var uri = new Uri(url, UriKind.Relative);
 
@@ -182,7 +185,11 @@ namespace Michaelsoft.BodyGuard.Client.Services
                     var bearer = bearers.FirstOrDefault();
                     _httpContextAccessor.HttpContext.Response.Cookies.Append
                         ("bearer", bearer,
-                         new CookieOptions {Expires = DateTime.Now.AddMinutes(60), IsEssential = true});
+                         new CookieOptions {Expires = DateTime.Now.AddDays(1), IsEssential = true});
+                }
+                else
+                {
+                    _httpContextAccessor.HttpContext.Response.Cookies.Delete("bearer");
                 }
 
                 return new BaseApiResult

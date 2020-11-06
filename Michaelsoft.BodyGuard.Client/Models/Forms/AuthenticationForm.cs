@@ -1,17 +1,19 @@
 ﻿using Michaelsoft.BodyGuard.Common.HttpModels.Authentication;
 
-namespace Michaelsoft.BodyGuard.Client.Models
+namespace Michaelsoft.BodyGuard.Client.Models.Forms
 {
-    public class LoginForm
+    public class AuthenticationForm
     {
-
+        
         public UserLoginRequest LoginRequest { get; set; }
 
         public string SuccessUrl { get; set; }
 
         public string FailureUrl { get; set; }
 
-        public string SubmitLabel { get; set; } = "Login";
+        public string LoginLabel { get; set; } = "Login";
+
+        public string LogoutLabel { get; set; } = "Logout";
 
     }
 }

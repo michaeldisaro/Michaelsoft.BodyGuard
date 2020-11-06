@@ -1,25 +1,34 @@
-﻿@model Michaelsoft.BodyGuard.Client.Models.UpdateForm
-
-@{
-    var userDataType = Model.UserData.GetType();
-    var userDataProperties = userDataType.GetProperties();
-}
+﻿@model Michaelsoft.BodyGuard.Client.Models.Forms.UpdateForm
 
 <form method="post" asp-area="User" asp-page="/Update">
     <div class="update-form">
         <input type="hidden" asp-for="SuccessUrl">
         <input type="hidden" asp-for="FailureUrl">
         <input type="hidden" asp-for="SubmitLabel">
-        @foreach (var propertyInfo in userDataProperties)
-        {
-            var formProperty = $"UserData.{propertyInfo.Name}";
-            var propertyValue = userDataType.GetProperty(propertyInfo.Name)!.GetValue(Model.UserData, null);
-            <div class="form-group">
-                @Html.Label(propertyInfo.Name)
-                @Html.TextBox(formProperty, propertyValue)
-                @*@Html.ValidationMessage(formProperty)*@
-            </div>
-        }
+        <div class="form-group">
+            <label asp-for="User.Id"></label>
+            <input type="text" asp-for="User.Id" readonly/>
+        </div>
+        <div class="form-group">
+            <label asp-for="User.EmailAddress"></label>
+            <input type="text" asp-for="User.EmailAddress"/>
+            <span asp-validation-for="User.EmailAddress" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="User.Nickname"></label>
+            <input type="text" asp-for="User.Nickname"/>
+            <span asp-validation-for="User.Nickname" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="User.Name"></label>
+            <input type="text" asp-for="User.Name"/>
+            <span asp-validation-for="User.Name" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="User.Surname"></label>
+            <input type="text" asp-for="User.Surname"/>
+            <span asp-validation-for="User.Surname" class="text-danger"></span>
+        </div>
         <div class="form-group">
             <button type="submit" class="btn btn-primary">@Model.SubmitLabel</button>
         </div>

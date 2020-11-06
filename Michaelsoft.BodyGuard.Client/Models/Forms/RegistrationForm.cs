@@ -1,6 +1,6 @@
 ﻿using Michaelsoft.BodyGuard.Common.HttpModels.Authentication;
 
-namespace Michaelsoft.BodyGuard.Client.Models
+namespace Michaelsoft.BodyGuard.Client.Models.Forms
 {
     public class RegistrationForm
     {

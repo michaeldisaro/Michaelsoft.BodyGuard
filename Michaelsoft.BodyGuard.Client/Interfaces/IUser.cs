@@ -1,6 +1,6 @@
 ﻿namespace Michaelsoft.BodyGuard.Client.Interfaces
 {
-    public interface IUserData
+    public interface IUser
     {
 
         public string Id { get; set; }
