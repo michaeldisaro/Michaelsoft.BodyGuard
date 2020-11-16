@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -38,6 +39,7 @@ namespace Michaelsoft.BodyGuard.Server
             services.AddUserService(Configuration);
             services.AddControllers();
             
+            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
             services.Configure<JwtSettings>(Configuration.GetSection("JwtSettings"));
             var settings = Configuration.GetSection("JwtSettings").Get<JwtSettings>();
             services

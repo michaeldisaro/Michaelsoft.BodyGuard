@@ -1,19 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk.Web">
-
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UserSecretsId>883afc4f-a3fa-44dd-b432-675fab2675f7</UserSecretsId>
   </PropertyGroup>
-
   <ItemGroup>
     <PackageReference Include="BCrypt.Net-Next" Version="4.0.0" />
     <PackageReference Include="MongoDB.Driver" Version="2.11.2" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
     <PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="5.6.3" />
   </ItemGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\Michaelsoft.BodyGuard.Common\Michaelsoft.BodyGuard.Common.csproj" />
   </ItemGroup>
-
-
 </Project>
