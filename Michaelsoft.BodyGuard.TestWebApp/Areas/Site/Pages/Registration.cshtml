@@ -1,0 +1,23 @@
+﻿@page
+@using Michaelsoft.BodyGuard.Client.Models.Forms
+@model Registration
+
+@{
+    ViewData["Title"] = "Registration";
+}
+
+<div class="text-center">
+    <legend class="display-4">BodyGuard Registration Test</legend>
+
+    @{
+        await Html.RenderPartialAsync(
+                                      "~/Views/Shared/_RegistrationForm.cshtml",
+                                      new RegistrationForm
+                                      {
+                                          SuccessUrl = "/Site/Success",
+                                          FailureUrl = "/Site/Failure",
+                                          SubmitLabel = "Registrati"
+                                      });
+    }
+
+</div>

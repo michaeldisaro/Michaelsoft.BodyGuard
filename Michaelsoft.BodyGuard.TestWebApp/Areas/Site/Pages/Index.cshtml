@@ -18,12 +18,16 @@
                                       "~/Views/Shared/_AuthenticationForm.cshtml",
                                       new AuthenticationForm
                                       {
-                                          SuccessUrl = "/Site/Success",
-                                          FailureUrl = "/Site/Failure",
+                                          LoginSuccessUrl = "/Site/Success",
+                                          LoginFailureUrl = "/Site/Failure",
                                           LoginLabel = "Accedi",
+                                          LogoutSuccessUrl = "/Site/Success",
+                                          LogoutFailureUrl = "/Site/Failure",
                                           LogoutLabel = "Esci",
                                           UserClaim = Claims.FullName,
-                                          UserMessage = "Benvenuto:"
+                                          UserMessage = "Benvenuto:",
+                                          RegistrationUrl = "/Site/Registration",
+                                          RegistrationLabel = "... oppure registrati"
                                       });
     }
 

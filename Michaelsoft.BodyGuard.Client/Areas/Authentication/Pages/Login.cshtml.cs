@@ -24,8 +24,8 @@ namespace Michaelsoft.BodyGuard.Client.Areas.Authentication.Pages
         {
             AuthenticationForm = new AuthenticationForm
             {
-                SuccessUrl = "/Authentication/Login",
-                FailureUrl = "/Authentication/Login"
+                LoginSuccessUrl = "/Authentication/Login",
+                LoginFailureUrl = "/Authentication/Login"
             };
         }
 
@@ -37,11 +37,11 @@ namespace Michaelsoft.BodyGuard.Client.Areas.Authentication.Pages
             if (response.Success)
             {
                 TempData["Message"] = "Login succeed!";
-                return Redirect(AuthenticationForm.SuccessUrl ?? "/Authentication/Login");
+                return Redirect(AuthenticationForm.LoginSuccessUrl ?? "/Authentication/Login");
             }
 
             TempData["Message"] = "Login failed.";
-            return Redirect(AuthenticationForm.FailureUrl ?? "/Authentication/Login");
+            return Redirect(AuthenticationForm.LoginFailureUrl ?? "/Authentication/Login");
         }
 
     }

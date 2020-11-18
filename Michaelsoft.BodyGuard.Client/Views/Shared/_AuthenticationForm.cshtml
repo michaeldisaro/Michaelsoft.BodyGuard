@@ -10,8 +10,8 @@
 {
     <form method="post" asp-area="Authentication" asp-page="/Login">
         <div class="login-form">
-            <input type="hidden" asp-for="SuccessUrl">
-            <input type="hidden" asp-for="FailureUrl">
+            <input type="hidden" asp-for="LoginSuccessUrl">
+            <input type="hidden" asp-for="LoginFailureUrl">
             <input type="hidden" asp-for="LoginLabel">
             <div class="form-group">
                 <label asp-for="LoginRequest.EmailAddress"></label>
@@ -28,13 +28,14 @@
             </div>
         </div>
     </form>
+    <span class="registration-link"><a href="@Model.RegistrationUrl">@Model.RegistrationLabel</a></span>
 }
 else
 {
     <form method="post" asp-area="Authentication" asp-page="/Logout">
         <div class="login-form">
-            <input type="hidden" asp-for="SuccessUrl">
-            <input type="hidden" asp-for="FailureUrl">
+            <input type="hidden" asp-for="LogoutSuccessUrl">
+            <input type="hidden" asp-for="LogoutFailureUrl">
             <input type="hidden" asp-for="LogoutLabel">
             <div class="form-group">
                 <label>@Model.UserMessage @nick</label>

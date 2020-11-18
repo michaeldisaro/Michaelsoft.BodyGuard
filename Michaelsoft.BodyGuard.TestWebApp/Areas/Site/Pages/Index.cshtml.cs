@@ -14,19 +14,11 @@ namespace Michaelsoft.BodyGuard.TestWebApp.Areas.Site.Pages
     public class IndexModel : PageModel
     {
 
-        private readonly ILogger<IndexModel> _logger;
-
-        private readonly IBodyGuardAuthenticationApiService _bodyGuardAuthenticationApiService;
-
         private readonly IBodyGuardUserApiService _bodyGuardUserApiService;
 
-        public IndexModel(ILogger<IndexModel> logger,
-                          IBodyGuardAuthenticationApiService bodyGuardAuthenticationApiService,
-                          IBodyGuardUserApiService bodyGuardUserApiService)
+        public IndexModel(IBodyGuardUserApiService bodyGuardUserApiService)
         {
             _bodyGuardUserApiService = bodyGuardUserApiService;
-            _bodyGuardAuthenticationApiService = bodyGuardAuthenticationApiService;
-            _logger = logger;
         }
 
         public List<User> UsersData { get; set; } = new List<User>();
@@ -34,15 +26,11 @@ namespace Michaelsoft.BodyGuard.TestWebApp.Areas.Site.Pages
         [TempData]
         public string Message { get; set; }
 
-        [BindProperty]
-        public UserCreate UserCreateForm { get; set; }
-
         private async Task LoadData()
         {
             try
             {
-                var userDataResponse = await _bodyGuardUserApiService.GetUsers();
-                UsersData = userDataResponse.UsersData;
+                UsersData = (await _bodyGuardUserApiService.GetUsers()).UsersData;
             }
             catch (Exception ex)
             {
@@ -56,39 +44,5 @@ namespace Michaelsoft.BodyGuard.TestWebApp.Areas.Site.Pages
             return Page();
         }
 
-        public async Task<IActionResult> OnPostCreateUser()
-        {
-            var userCreateResponse = await _bodyGuardAuthenticationApiService.Register
-                                         (UserCreateForm.EmailAddress,
-                                          UserCreateForm.Password,
-                                          new User
-                                          {
-                                              Name = UserCreateForm.Name,
-                                              Surname = UserCreateForm.Surname,
-                                              EmailAddress = UserCreateForm.EmailAddress
-                                          });
-
-            if (!userCreateResponse.Success) return Page();
-            await LoadData();
-            return RedirectToPage("Index");
-        }
-
-        public class UserCreate
-        {
-
-            [Required]
-            [EmailAddress]
-            public string EmailAddress { get; set; }
-
-            [Required]
-            public string Password { get; set; }
-
-            [Required]
-            public string Name { get; set; }
-
-            [Required]
-            public string Surname { get; set; }
-
-        }
     }
 }

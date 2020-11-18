@@ -27,11 +27,11 @@ namespace Michaelsoft.BodyGuard.Client.Areas.Authentication.Pages
             if (response.Success)
             {
                 TempData["Message"] = "Logout succeed!";
-                return Redirect(AuthenticationForm.SuccessUrl ?? "/Authentication/Logout");
+                return Redirect(AuthenticationForm.LogoutSuccessUrl ?? "/Authentication/Logout");
             }
 
             TempData["Message"] = "Logout failed.";
-            return Redirect(AuthenticationForm.FailureUrl ?? "/Authentication/Logout");
+            return Redirect(AuthenticationForm.LogoutFailureUrl ?? "/Authentication/Logout");
         }
 
     }

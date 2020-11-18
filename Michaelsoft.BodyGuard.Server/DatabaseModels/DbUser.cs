@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
@@ -20,6 +21,10 @@ namespace Michaelsoft.BodyGuard.Server.DatabaseModels
         public DateTime Created { get; set; }
 
         public DateTime Updated { get; set; }
+
+        public List<string> Roles { get; set; }
+
+        public Dictionary<string, string> Claims { get; set; }
 
     }
 }

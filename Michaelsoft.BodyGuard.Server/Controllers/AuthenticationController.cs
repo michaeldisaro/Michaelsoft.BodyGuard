@@ -74,16 +74,22 @@ namespace Michaelsoft.BodyGuard.Server.Controllers
                     new Claim("sub", user.Id)
                 };
 
-                if (!_jwtSettings.AdditionalClaims.IsNullOrEmpty())
+                do
                 {
+                    if (_jwtSettings.AdditionalClaims.IsNullOrEmpty())
+                        break;
+                    
+                    var decryptedData = _userService.GetData(user.Id);
+                    if (decryptedData == null)
+                        break;
+                    
                     var additionalClaims = new List<string>();
                     if (_jwtSettings.AdditionalClaims.Contains(";"))
                         additionalClaims.AddRange(_jwtSettings.AdditionalClaims.Split(";"));
                     else
                         additionalClaims.Add(_jwtSettings.AdditionalClaims);
 
-                    var userData =
-                        JsonConvert.DeserializeObject<User>(_userService.GetData(user.Id));
+                    var userData = JsonConvert.DeserializeObject<User>(decryptedData);
 
                     foreach (var ac in additionalClaims)
                     {
@@ -92,8 +98,7 @@ namespace Michaelsoft.BodyGuard.Server.Controllers
                         if (!value.IsNullOrEmpty())
                             claims.Add(new Claim(ac, value));
                     }
-                }
-
+                } while (false);
 /*
                 var roles = await _userManager.GetRolesAsync(user);
                 claims.AddRange(roles.Select(r => new Claim("roles", r)));
