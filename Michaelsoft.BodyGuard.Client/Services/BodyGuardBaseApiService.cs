@@ -18,7 +18,9 @@ namespace Michaelsoft.BodyGuard.Client.Services
     public class BodyGuardBaseApiService
     {
 
-        private readonly string _basePath;
+        private readonly string _serverBasePath;
+        
+        protected readonly string _applicationBasePath;
 
         private readonly IHttpClientFactory _httpClientFactory;
 
@@ -30,7 +32,8 @@ namespace Michaelsoft.BodyGuard.Client.Services
         {
             _httpContextAccessor = httpContextAccessor;
             _httpClientFactory = httpClientFactory;
-            _basePath = $"{settings.BasePath}/";
+            _serverBasePath = $"{settings.ServerBasePath}/";
+            _applicationBasePath = $"{settings.ApplicationBasePath}";
         }
 
         protected async Task<BaseApiResult> GetRequest<T>(string url,
@@ -159,7 +162,7 @@ namespace Michaelsoft.BodyGuard.Client.Services
         private HttpClient GetClient()
         {
             var client = _httpClientFactory.CreateClient();
-            client.BaseAddress = new Uri($"{_basePath}");
+            client.BaseAddress = new Uri($"{_serverBasePath}");
 
             _httpContextAccessor.HttpContext.Request.Cookies.TryGetValue("bearer", out var bearer);
 

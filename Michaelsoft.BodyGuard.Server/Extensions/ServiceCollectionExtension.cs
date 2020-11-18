@@ -34,5 +34,17 @@ namespace Michaelsoft.BodyGuard.Server.Extensions
             services.AddSingleton<UserService>();
         }
 
+        public static void AddTokenService(this IServiceCollection services,
+                                           IConfiguration configuration)
+        {
+            services.Configure<TokenStoreDatabaseSettings>
+                (configuration.GetSection(nameof(TokenStoreDatabaseSettings)));
+
+            services.AddSingleton<ITokenStoreDatabaseSettings>
+                (sp => sp.GetRequiredService<IOptions<TokenStoreDatabaseSettings>>().Value);
+
+            services.AddSingleton<TokenService>();
+        }
+
     }
 }

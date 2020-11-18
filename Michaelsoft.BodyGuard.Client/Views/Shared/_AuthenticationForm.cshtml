@@ -28,7 +28,16 @@
             </div>
         </div>
     </form>
-    <span class="registration-link"><a href="@Model.RegistrationUrl">@Model.RegistrationLabel</a></span>
+    <div>
+        <span class="registration-link">
+            <a href="@Model.RegistrationUrl">@Model.RegistrationLabel</a>
+        </span>
+    </div>
+    <div>
+        <span class="password-recovery-link">
+            <a href="@Model.PasswordRecoveryUrl">@Model.PasswordRecoveryLabel</a>
+        </span>
+    </div>
 }
 else
 {

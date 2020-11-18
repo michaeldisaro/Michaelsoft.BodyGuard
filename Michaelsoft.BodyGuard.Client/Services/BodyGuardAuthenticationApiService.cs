@@ -56,10 +56,52 @@ namespace Michaelsoft.BodyGuard.Client.Services
 
             return baseApiResult.Response;
         }
-        
+
         public async Task<UserLogoutResponse> Logout()
         {
             var baseApiResult = await PostRequest<UserLogoutResponse>("Logout");
+
+            if (!baseApiResult.Success)
+                throw new Exception(baseApiResult.Message);
+
+            return baseApiResult.Response;
+        }
+
+        public async Task<ValidateRecoveryResponse> ValidateRecovery(string emailAddress,
+                                                                     string token,
+                                                                     string newPassword,
+                                                                     string newPasswordConfirm)
+        {
+            var validateRecoveryRequest = new ValidateRecoveryRequest
+            {
+                EmailAddress = emailAddress,
+                Token = token,
+                NewPassword = newPassword,
+                NewPasswordConfirm = newPasswordConfirm
+            };
+
+            var baseApiResult =
+                await PostRequest<ValidateRecoveryResponse>("ValidateRecovery", validateRecoveryRequest);
+
+            if (!baseApiResult.Success)
+                throw new Exception(baseApiResult.Message);
+
+            return baseApiResult.Response;
+        }
+
+        public async Task<PasswordRecoveryResponse> PasswordRecovery(string emailAddress,
+                                                                     int ttlSeconds,
+                                                                     string validateRecoveryUrl)
+        {
+            var passwordRecoveryRequest = new PasswordRecoveryRequest
+            {
+                EmailAddress = emailAddress,
+                TtlSeconds = ttlSeconds,
+                ValidateRecoveryUrl = _applicationBasePath + validateRecoveryUrl
+            };
+
+            var baseApiResult =
+                await PostRequest<PasswordRecoveryResponse>("PasswordRecovery", passwordRecoveryRequest);
 
             if (!baseApiResult.Success)
                 throw new Exception(baseApiResult.Message);

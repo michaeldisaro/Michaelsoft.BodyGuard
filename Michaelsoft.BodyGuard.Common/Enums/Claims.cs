@@ -5,7 +5,7 @@ namespace Michaelsoft.BodyGuard.Common.Enums
     public class Claims
     {
 
-        public const string Email = "email";
+        public const string EmailAddress = "emailaddress";
 
         public const string Nickname = "nickname";
 
@@ -19,7 +19,7 @@ namespace Michaelsoft.BodyGuard.Common.Enums
 
         public static Dictionary<string, string> ClaimToUserProperty { get; } = new Dictionary<string, string>
         {
-            {Email, "EmailAddress"},
+            {EmailAddress, "EmailAddress"},
             {Nickname, "Nickname"},
             {Name, "Name"},
             {Surname, "Surname"},

@@ -31,6 +31,8 @@ namespace Michaelsoft.BodyGuard.Server.Services
 
         private DbUser GetById(string id) => _users.Find<DbUser>(user => user.Id == id).FirstOrDefault();
 
+        public DbUser GetByEmail(string email) => GetByHashedEmail(email.Sha1());
+
         private DbUser GetByHashedEmail(string hashedEmail) =>
             _users.Find<DbUser>(user => user.HashedEmail == hashedEmail).FirstOrDefault();
 
@@ -47,8 +49,8 @@ namespace Michaelsoft.BodyGuard.Server.Services
         }
 
         public DbUser Create(string emailAddress,
-                           string password,
-                           JsonElement? userData = null)
+                             string password,
+                             JsonElement? userData = null)
         {
             var user = new DbUser
             {
@@ -66,8 +68,19 @@ namespace Michaelsoft.BodyGuard.Server.Services
             return user;
         }
 
+        public void UpdatePassword(string userId,
+                                   string newPassword,
+                                   string newPasswordConfirm)
+        {
+            if (newPassword != newPasswordConfirm) throw new PasswordsNotMatchingException();
+            var user = GetById(userId);
+            if (user == null) throw new UserNotFoundException();
+            user.HashedPassword = HashPassword(newPassword);
+            _users.ReplaceOne(u => u.Id == user.Id, user);
+        }
+
         public DbUser Access(string emailAddress,
-                           string password)
+                             string password)
         {
             var hashedEmail = emailAddress.Sha1();
             var user = GetByHashedEmail(hashedEmail);

@@ -3,14 +3,18 @@
     public class BodyGuardClientSettings : IBodyGuardClientSettings
     {
 
-        public string BasePath { get; set; }
+        public string ServerBasePath { get; set; }
+        
+        public string ApplicationBasePath { get; set; }
 
     }
 
     public interface IBodyGuardClientSettings
     {
 
-        public string BasePath { get; set; }
+        public string ServerBasePath { get; set; }
+        
+        public string ApplicationBasePath { get; set; }
 
     }
 }
