@@ -1,5 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Michaelsoft.BodyGuard.Common.HttpModels.Authentication;
+using Michaelsoft.BodyGuard.Common.Interfaces;
+using Michaelsoft.BodyGuard.Common.Models;
 
 namespace Michaelsoft.BodyGuard.Client.Interfaces
 {
@@ -8,7 +10,7 @@ namespace Michaelsoft.BodyGuard.Client.Interfaces
 
         public Task<UserCreateResponse> Register(string email,
                                                  string password,
-                                                 dynamic userData = null);
+                                                 User userData = null);
 
         public Task<UserLoginResponse> Login(string email,
                                              string password);

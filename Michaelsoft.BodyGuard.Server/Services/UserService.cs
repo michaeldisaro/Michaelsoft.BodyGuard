@@ -6,6 +6,7 @@ using Michaelsoft.BodyGuard.Server.Settings;
 using MongoDB.Driver;
 using BCrypt.Net;
 using Michaelsoft.BodyGuard.Common.Extensions;
+using Michaelsoft.BodyGuard.Common.Interfaces;
 using Michaelsoft.BodyGuard.Server.Exceptions;
 using Newtonsoft.Json;
 
@@ -50,13 +51,13 @@ namespace Michaelsoft.BodyGuard.Server.Services
 
         public DbUser Create(string emailAddress,
                              string password,
-                             JsonElement? userData = null)
+                             IUser userData = null)
         {
             var user = new DbUser
             {
                 HashedEmail = emailAddress.Sha1(),
                 HashedPassword = HashPassword(password),
-                EncryptedData = userData == null || userData.Value.ValueEquals("")
+                EncryptedData = userData == null
                                     ? null
                                     : _encryptionService.Encrypt(userData.ToString()),
                 Created = DateTime.Now,
@@ -108,6 +109,7 @@ namespace Michaelsoft.BodyGuard.Server.Services
             var user = GetById(id);
             if (user == null) throw new UserNotFoundException();
             var serializedData = userData.ToString();
+            user.Updated = DateTime.Now;
             user.EncryptedData = _encryptionService.Encrypt(serializedData);
             _users.ReplaceOne(u => u.Id == user.Id, user);
         }

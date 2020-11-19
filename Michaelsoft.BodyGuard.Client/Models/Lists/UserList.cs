@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Michaelsoft.BodyGuard.Common.Interfaces;
 using Michaelsoft.BodyGuard.Common.Models;
 
 namespace Michaelsoft.BodyGuard.Client.Models.Lists

@@ -1,4 +1,11 @@
-﻿@model Michaelsoft.BodyGuard.Client.Models.Forms.RegistrationForm
+﻿@using Michaelsoft.BodyGuard.Client.Models.Forms
+@using Michaelsoft.BodyGuard.Common.Extensions
+@model Michaelsoft.BodyGuard.Client.Models.Forms.RegistrationForm
+
+@{
+    var formStatus = TempData.Get<FormStatus>("FormStatus");
+    var userDataProperties = Model.CreateRequest.UserData.GetType().GetNonExcludedProperty();
+}
 
 <form method="post" asp-area="Authentication" asp-page="/Registration">
     <div class="registration-form">
@@ -6,15 +13,41 @@
         <input type="hidden" asp-for="FailureUrl">
         <input type="hidden" asp-for="SubmitLabel">
         <div class="form-group">
-            <label asp-for="CreateRequest.EmailAddress"></label>
-            <input type="text" asp-for="CreateRequest.EmailAddress"/>
-            <span asp-validation-for="CreateRequest.EmailAddress" class="text-danger"></span>
+            <div class="registration-label">
+                <label asp-for="CreateRequest.EmailAddress"></label>
+            </div>
+            <div class="registration-input">
+                <input type="text" asp-for="CreateRequest.EmailAddress" value="@formStatus.GetAttemptedValue("CreateRequest.EmailAddress")"/>
+            </div>
+            <div class="registration-error">
+                <span asp-validation-for="CreateRequest.EmailAddress" class="text-danger">@formStatus.GetError("CreateRequest.EmailAddress")</span>
+            </div>
         </div>
         <div class="form-group">
-            <label asp-for="CreateRequest.Password"></label>
-            <input type="password" asp-for="CreateRequest.Password"/>
-            <span asp-validation-for="CreateRequest.Password" class="text-danger"></span>
+            <div class="registration-label">
+                <label asp-for="CreateRequest.Password"></label>
+            </div>
+            <div class="registration-input">
+                <input type="password" asp-for="CreateRequest.Password" value="@formStatus.GetAttemptedValue("CreateRequest.Password")"/>
+            </div>
+            <div class="registration-error">
+                <span asp-validation-for="CreateRequest.Password" class="text-danger">@formStatus.GetError("CreateRequest.Password")</span>
+            </div>
         </div>
+        @foreach (var propertyInfo in userDataProperties)
+        {
+            <div class="form-group">
+                <div class="registration-label">
+                    @Html.Label(propertyInfo.Name)
+                </div>
+                <div class="registration-input">
+                    @Html.TextBox($"CreateRequest.UserData.{propertyInfo.Name}", formStatus.GetAttemptedValue($"CreateRequest.UserData.{propertyInfo.Name}"))
+                </div>
+                <div class="registration-error">
+                    @Html.ValidationMessage(propertyInfo.Name, formStatus.GetError($"CreateRequest.UserData.{propertyInfo.Name}"))
+                </div>
+            </div>
+        }
         <div class="form-group">
             <button type="submit" class="btn btn-primary">@Model.SubmitLabel</button>
         </div>

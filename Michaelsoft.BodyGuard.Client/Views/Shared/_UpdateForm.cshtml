@@ -1,34 +1,32 @@
-﻿@model Michaelsoft.BodyGuard.Client.Models.Forms.UpdateForm
+﻿@using Michaelsoft.BodyGuard.Client.Models.Forms
+@using Michaelsoft.BodyGuard.Common.Extensions
+@model Michaelsoft.BodyGuard.Client.Models.Forms.UpdateForm
+
+@{
+    var formStatus = TempData.Get<FormStatus>("FormStatus");
+    var userDataProperties = Model.User.GetType().GetNonExcludedProperty();
+}
 
 <form method="post" asp-area="User" asp-page="/Update">
     <div class="update-form">
-        <input type="hidden" asp-for="SuccessUrl">
-        <input type="hidden" asp-for="FailureUrl">
-        <input type="hidden" asp-for="SubmitLabel">
-        <div class="form-group">
-            <label asp-for="User.Id"></label>
-            <input type="text" asp-for="User.Id" readonly/>
-        </div>
-        <div class="form-group">
-            <label asp-for="User.EmailAddress"></label>
-            <input type="text" asp-for="User.EmailAddress"/>
-            <span asp-validation-for="User.EmailAddress" class="text-danger"></span>
-        </div>
-        <div class="form-group">
-            <label asp-for="User.Nickname"></label>
-            <input type="text" asp-for="User.Nickname"/>
-            <span asp-validation-for="User.Nickname" class="text-danger"></span>
-        </div>
-        <div class="form-group">
-            <label asp-for="User.Name"></label>
-            <input type="text" asp-for="User.Name"/>
-            <span asp-validation-for="User.Name" class="text-danger"></span>
-        </div>
-        <div class="form-group">
-            <label asp-for="User.Surname"></label>
-            <input type="text" asp-for="User.Surname"/>
-            <span asp-validation-for="User.Surname" class="text-danger"></span>
-        </div>
+        <input type="hidden" name="UpdateForm.SuccessUrl" value="@Model.SuccessUrl">
+        <input type="hidden" name="UpdateForm.FailureUrl" value="@Model.FailureUrl">
+        <input type="hidden" name="UpdateForm.SubmitLabel" value="@Model.SubmitLabel">
+        <input type="hidden" name="UpdateForm.User.Id" value="@Model.User.Id">
+        @foreach (var propertyInfo in userDataProperties)
+        {
+            <div class="form-group">
+                <div class="update-label">
+                    @Html.Label(propertyInfo.Name)
+                </div>
+                <div class="update-input">
+                    @Html.TextBox($"UpdateForm.User.{propertyInfo.Name}", formStatus.GetAttemptedValue($"UpdateForm.User.{propertyInfo.Name}") ?? propertyInfo.GetValue(Model.User, null))
+                </div>
+                <div class="update-error">
+                    @Html.ValidationMessage(propertyInfo.Name, formStatus.GetError($"UpdateForm.User.{propertyInfo.Name}"))
+                </div>
+            </div>
+        }
         <div class="form-group">
             <button type="submit" class="btn btn-primary">@Model.SubmitLabel</button>
         </div>

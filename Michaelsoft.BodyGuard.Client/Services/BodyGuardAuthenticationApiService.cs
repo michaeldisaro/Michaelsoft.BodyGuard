@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using Michaelsoft.BodyGuard.Client.Interfaces;
 using Michaelsoft.BodyGuard.Client.Settings;
 using Michaelsoft.BodyGuard.Common.HttpModels.Authentication;
+using Michaelsoft.BodyGuard.Common.Interfaces;
+using Michaelsoft.BodyGuard.Common.Models;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 
@@ -23,7 +25,7 @@ namespace Michaelsoft.BodyGuard.Client.Services
 
         public async Task<UserCreateResponse> Register(string email,
                                                        string password,
-                                                       dynamic userData = null)
+                                                       User userData = null)
         {
             var userCreateRequest = new UserCreateRequest
             {

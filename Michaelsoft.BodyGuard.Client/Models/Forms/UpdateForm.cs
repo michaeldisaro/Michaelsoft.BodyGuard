@@ -1,4 +1,5 @@
-﻿using Michaelsoft.BodyGuard.Common.Models;
+﻿using Michaelsoft.BodyGuard.Common.Interfaces;
+using Michaelsoft.BodyGuard.Common.Models;
 
 namespace Michaelsoft.BodyGuard.Client.Models.Forms
 {

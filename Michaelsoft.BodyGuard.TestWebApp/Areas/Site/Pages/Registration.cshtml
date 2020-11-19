@@ -1,5 +1,7 @@
 ﻿@page
 @using Michaelsoft.BodyGuard.Client.Models.Forms
+@using Michaelsoft.BodyGuard.Common.HttpModels.Authentication
+@using Michaelsoft.BodyGuard.Common.Models
 @model Registration
 
 @{
@@ -15,8 +17,9 @@
                                       new RegistrationForm
                                       {
                                           SuccessUrl = "/Site/Success",
-                                          FailureUrl = "/Site/Failure",
-                                          SubmitLabel = "Registrati"
+                                          FailureUrl = "/Site/Registration",
+                                          SubmitLabel = "Registrati",
+                                          CreateRequest = new UserCreateRequest {UserData = new User()}
                                       });
     }
 
