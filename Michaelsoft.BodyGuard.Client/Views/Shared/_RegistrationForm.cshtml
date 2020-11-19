@@ -4,7 +4,7 @@
 
 @{
     var formStatus = TempData.Get<FormStatus>("FormStatus");
-    var userDataProperties = Model.CreateRequest.UserData.GetType().GetNonExcludedProperty();
+    var userDataProperties = Model.CreateRequest.UserData.GetType().GetInsertableProperties();
 }
 
 <form method="post" asp-area="Authentication" asp-page="/Registration">

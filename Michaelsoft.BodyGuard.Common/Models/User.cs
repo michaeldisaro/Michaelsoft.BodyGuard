@@ -7,7 +7,8 @@ namespace Michaelsoft.BodyGuard.Common.Models
 {
     public class User : IUser
     {
-        [ExcludeFromForm]
+        [ExcludeFromInsert]
+        [ExcludeFromUpdate]
         public string Id { get; set; }
 
         [MaxLength(32)]
@@ -21,14 +22,15 @@ namespace Michaelsoft.BodyGuard.Common.Models
 
         [MaxLength(256)]
         [EmailAddress]
-        [ExcludeFromForm]
+        [ExcludeFromInsert]
         public string EmailAddress { get; set; }
 
         [MaxLength(32)]
         public string PhoneNumber { get; set; }
 
         [JsonIgnore]
-        [ExcludeFromForm]
+        [ExcludeFromInsert]
+        [ExcludeFromUpdate]
         public string FullName => $"{Surname} {Name}";
 
     }

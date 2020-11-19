@@ -4,7 +4,7 @@
 
 @{
     var formStatus = TempData.Get<FormStatus>("FormStatus");
-    var userDataProperties = Model.User.GetType().GetNonExcludedProperty();
+    var userDataProperties = Model.User.GetType().GetUpdatableProperties();
 }
 
 <form method="post" asp-area="User" asp-page="/Update">

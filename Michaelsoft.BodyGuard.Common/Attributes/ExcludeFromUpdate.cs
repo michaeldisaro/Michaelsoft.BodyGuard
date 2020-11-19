@@ -3,7 +3,7 @@
 namespace Michaelsoft.BodyGuard.Common.Attributes
 {
     [AttributeUsage(AttributeTargets.Property)]
-    public class ExcludeFromForm : Attribute
+    public class ExcludeFromUpdate : Attribute
     {
 
     }

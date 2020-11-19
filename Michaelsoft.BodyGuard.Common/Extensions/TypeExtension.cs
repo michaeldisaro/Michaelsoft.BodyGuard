@@ -8,12 +8,21 @@ namespace Michaelsoft.BodyGuard.Common.Extensions
     public static class TypeExtension
     {
 
-        public static PropertyInfo[] GetNonExcludedProperty(this Type objectType)
+        public static PropertyInfo[] GetInsertableProperties(this Type objectType)
         {
             return objectType.GetProperties()
                              .Where(p =>
                                         p.CustomAttributes
-                                         .All(a => a.AttributeType != typeof(ExcludeFromForm)))
+                                         .All(a => a.AttributeType != typeof(ExcludeFromInsert)))
+                             .ToArray();
+        }
+        
+        public static PropertyInfo[] GetUpdatableProperties(this Type objectType)
+        {
+            return objectType.GetProperties()
+                             .Where(p =>
+                                        p.CustomAttributes
+                                         .All(a => a.AttributeType != typeof(ExcludeFromUpdate)))
                              .ToArray();
         }
 
