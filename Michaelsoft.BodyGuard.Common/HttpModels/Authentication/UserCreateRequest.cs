@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using Michaelsoft.BodyGuard.Common.Interfaces;
 using Michaelsoft.BodyGuard.Common.Models;
 using Newtonsoft.Json;
 

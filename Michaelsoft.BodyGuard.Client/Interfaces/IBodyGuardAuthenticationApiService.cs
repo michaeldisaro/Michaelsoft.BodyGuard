@@ -1,6 +1,5 @@
 ﻿using System.Threading.Tasks;
 using Michaelsoft.BodyGuard.Common.HttpModels.Authentication;
-using Michaelsoft.BodyGuard.Common.Interfaces;
 using Michaelsoft.BodyGuard.Common.Models;
 
 namespace Michaelsoft.BodyGuard.Client.Interfaces

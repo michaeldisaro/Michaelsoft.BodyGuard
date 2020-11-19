@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Michaelsoft.BodyGuard.Client.Interfaces;
-using Michaelsoft.BodyGuard.Common.Interfaces;
 using Michaelsoft.BodyGuard.Common.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;

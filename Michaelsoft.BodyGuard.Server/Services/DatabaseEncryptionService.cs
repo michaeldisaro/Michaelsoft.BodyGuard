@@ -1,6 +1,5 @@
 ﻿using Michaelsoft.BodyGuard.Common.Encryption;
 using Michaelsoft.BodyGuard.Server.Settings;
-using Newtonsoft.Json;
 
 namespace Michaelsoft.BodyGuard.Server.Services
 {

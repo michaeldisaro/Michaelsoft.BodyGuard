@@ -1,6 +1,4 @@
 using System;
-using System.Security.Cryptography;
-using System.Text;
 
 namespace Michaelsoft.BodyGuard.Common.Encryption
 {

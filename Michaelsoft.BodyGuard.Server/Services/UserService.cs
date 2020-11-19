@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text.Json;
+using Michaelsoft.BodyGuard.Common.Enums;
+using Michaelsoft.BodyGuard.Common.Extensions;
+using Michaelsoft.BodyGuard.Common.Models;
 using Michaelsoft.BodyGuard.Server.DatabaseModels;
+using Michaelsoft.BodyGuard.Server.Exceptions;
 using Michaelsoft.BodyGuard.Server.Settings;
 using MongoDB.Driver;
-using BCrypt.Net;
-using Michaelsoft.BodyGuard.Common.Extensions;
-using Michaelsoft.BodyGuard.Common.Interfaces;
-using Michaelsoft.BodyGuard.Server.Exceptions;
 using Newtonsoft.Json;
 
 namespace Michaelsoft.BodyGuard.Server.Services
@@ -51,20 +50,27 @@ namespace Michaelsoft.BodyGuard.Server.Services
 
         public DbUser Create(string emailAddress,
                              string password,
-                             IUser userData = null)
+                             User userData = null)
         {
+            string encryptedData = null;
+            if (userData != null)
+            {
+                userData.EmailAddress = emailAddress;
+                encryptedData = _encryptionService.Encrypt(JsonConvert.SerializeObject(userData));
+            }
+
             var user = new DbUser
             {
                 HashedEmail = emailAddress.Sha1(),
                 HashedPassword = HashPassword(password),
-                EncryptedData = userData == null
-                                    ? null
-                                    : _encryptionService.Encrypt(userData.ToString()),
+                EncryptedData = encryptedData,
                 Created = DateTime.Now,
                 Updated = DateTime.Now
             };
             var existing = GetByHashedEmail(user.HashedEmail);
             if (existing != null) return existing;
+            if (_users.EstimatedDocumentCount() == 0)
+                user.Roles = new List<string> {Roles.Root};
             _users.InsertOne(user);
             return user;
         }
@@ -104,13 +110,36 @@ namespace Michaelsoft.BodyGuard.Server.Services
         }
 
         public void UpdateData(string id,
-                               object userData)
+                               User userData)
         {
             var user = GetById(id);
             if (user == null) throw new UserNotFoundException();
-            var serializedData = userData.ToString();
+            var serializedData = JsonConvert.SerializeObject(userData);
             user.Updated = DateTime.Now;
             user.EncryptedData = _encryptionService.Encrypt(serializedData);
+            _users.ReplaceOne(u => u.Id == user.Id, user);
+        }
+
+        public void AssignRole(string id,
+                               string role)
+        {
+            var user = GetById(id);
+            if (user == null) throw new UserNotFoundException();
+            user.Roles ??= new List<string>();
+            user.Roles.Add(role);
+            user.Updated = DateTime.Now;
+            _users.ReplaceOne(u => u.Id == user.Id, user);
+        }
+
+        public void RevokeRole(string id,
+                               string role)
+        {
+            var user = GetById(id);
+            if (user == null) throw new UserNotFoundException();
+            if (user.Roles == null) return;
+            user.Roles.Remove(role);
+            if (user.Roles.Count == 0) user.Roles = null;
+            user.Updated = DateTime.Now;
             _users.ReplaceOne(u => u.Id == user.Id, user);
         }
 

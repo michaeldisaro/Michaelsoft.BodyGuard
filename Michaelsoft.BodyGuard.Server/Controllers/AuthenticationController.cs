@@ -2,12 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
-using System.Threading.Tasks;
 using Michaelsoft.BodyGuard.Common.Enums;
 using Michaelsoft.BodyGuard.Common.Extensions;
 using Michaelsoft.BodyGuard.Common.HttpModels.Authentication;
 using Michaelsoft.BodyGuard.Common.Models;
-using Michaelsoft.BodyGuard.Server.Exceptions;
 using Michaelsoft.BodyGuard.Server.Services;
 using Michaelsoft.BodyGuard.Server.Settings;
 using Michaelsoft.Mailer.Interfaces;
@@ -104,18 +102,18 @@ namespace Michaelsoft.BodyGuard.Server.Controllers
 
                     foreach (var ac in additionalClaims)
                     {
-                        if (!Claims.ClaimToUserProperty.ContainsKey(ac)) continue;
-                        var property = Claims.ClaimToUserProperty[ac];
+                        if (!AdditionalClaims.ToUserProperty.ContainsKey(ac)) continue;
+                        var property = AdditionalClaims.ToUserProperty[ac];
                         var value = userData.GetType().GetProperty(property)?.GetValue(userData, null)?.ToString();
                         if (!value.IsNullOrEmpty())
                             claims.Add(new Claim(ac, value));
                     }
                 } while (false);
 
-/*
-                var roles = await _userManager.GetRolesAsync(user);
-                claims.AddRange(roles.Select(r => new Claim("roles", r)));
-*/
+                var roles = user.Roles;
+                if (roles != null)
+                    claims.AddRange(roles.Select(r => new Claim("roles", r)));
+
                 var identity = new ClaimsIdentity(JwtBearerDefaults.AuthenticationScheme);
                 identity.AddClaims(claims);
 

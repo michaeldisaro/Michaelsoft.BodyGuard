@@ -39,6 +39,8 @@ namespace Michaelsoft.BodyGuard.Server
             services.AddControllers();
 
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
+            JwtSecurityTokenHandler.DefaultOutboundClaimTypeMap.Clear();
+            
             services.Configure<JwtSettings>(Configuration.GetSection("JwtSettings"));
             var settings = Configuration.GetSection("JwtSettings").Get<JwtSettings>();
             services
@@ -58,7 +60,9 @@ namespace Michaelsoft.BodyGuard.Server
                         ValidAudience = settings.Audience,
                         ValidateIssuerSigningKey = true,
                         ValidateIssuer = true,
-                        ValidateAudience = true
+                        ValidateAudience = true,
+                        RoleClaimType = "roles",
+                        NameClaimType = "sub"
                     };
                 });
 
@@ -90,7 +94,6 @@ namespace Michaelsoft.BodyGuard.Server
                             Scheme = "oauth2",
                             Name = "Bearer",
                             In = ParameterLocation.Header,
-
                         },
                         new List<string>()
                     }

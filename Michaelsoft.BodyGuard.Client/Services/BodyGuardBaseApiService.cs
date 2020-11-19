@@ -5,7 +5,6 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
-using Michaelsoft.BodyGuard.Client.Models;
 using Michaelsoft.BodyGuard.Client.Models.Apis;
 using Michaelsoft.BodyGuard.Client.Settings;
 using Michaelsoft.BodyGuard.Common.Extensions;

@@ -10,7 +10,6 @@ namespace Michaelsoft.BodyGuard.Server.Controllers
 {
     [ApiController]
     [Route("/")]
-    [Authorize]
     public class UserController
     {
 
@@ -20,12 +19,12 @@ namespace Michaelsoft.BodyGuard.Server.Controllers
         {
             _userService = userService;
         }
-        
+
         [HttpGet("Users")]
         [Produces("application/json")]
+        [Authorize(Roles = "root,admin")]
         public UsersDataResponse List()
         {
-            // TODO: check if logged user is admin
             try
             {
                 var usersData = new Dictionary<string, string>();
@@ -103,9 +102,9 @@ namespace Michaelsoft.BodyGuard.Server.Controllers
 
         [HttpDelete("User/{id}")]
         [Produces("application/json")]
+        [Authorize(Roles = "root,admin")]
         public UserDeleteResponse Delete(string id)
         {
-            // TODO: check if logged user is admin
             try
             {
                 _userService.Delete(id);

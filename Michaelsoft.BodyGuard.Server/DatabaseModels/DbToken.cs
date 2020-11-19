@@ -5,7 +5,7 @@ using Newtonsoft.Json;
 
 namespace Michaelsoft.BodyGuard.Server.DatabaseModels
 {
-    public class Token
+    public class DbToken
     {
 
         [BsonId]

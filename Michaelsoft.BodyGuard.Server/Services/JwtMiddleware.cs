@@ -23,7 +23,7 @@ namespace Michaelsoft.BodyGuard.Server.Services
         private readonly JwtSettings _jwtSettings;
 
         public JwtMiddleware(RequestDelegate next,
-                                  IOptions<JwtSettings> jwtSettings)
+                             IOptions<JwtSettings> jwtSettings)
         {
             _next = next;
             _jwtSettings = jwtSettings.Value;
@@ -57,16 +57,13 @@ namespace Michaelsoft.BodyGuard.Server.Services
             var roles = new List<string>();
             foreach (var claim in identity.Claims)
             {
-                if (claim.Type.Equals(ClaimTypes.NameIdentifier))
+                if (new[] {"sub", ClaimTypes.NameIdentifier}.Contains(claim.Type))
                     payload.TryAdd("sub", claim.Value);
 
-                if (new[] {"sub"}.Contains(claim.Type))
-                    payload.TryAdd(claim.Type, claim.Value);
-                
-                if (Claims.ClaimToUserProperty.Keys.Contains(claim.Type))
+                if (AdditionalClaims.ToUserProperty.Keys.Contains(claim.Type))
                     payload.TryAdd(claim.Type, claim.Value);
 
-                if (new[] {"roles", ClaimTypes.Role}.Contains(claim.Type))
+                if (new[] {"roles"}.Contains(claim.Type))
                     roles.Add(claim.Value);
             }
 

@@ -1,41 +1,41 @@
 ﻿using System;
 using Michaelsoft.BodyGuard.Server.DatabaseModels;
+using Michaelsoft.BodyGuard.Server.Exceptions;
 using Michaelsoft.BodyGuard.Server.Settings;
 using MongoDB.Driver;
-using Michaelsoft.BodyGuard.Server.Exceptions;
 
 namespace Michaelsoft.BodyGuard.Server.Services
 {
     public class TokenService
     {
 
-        private readonly IMongoCollection<Token> _tokens;
+        private readonly IMongoCollection<DbToken> _tokens;
 
         public TokenService(ITokenStoreDatabaseSettings settings,
                             DatabaseEncryptionService encryptionService)
         {
             var client = new MongoClient(settings.ConnectionString);
             var database = client.GetDatabase(settings.DatabaseName);
-            _tokens = database.GetCollection<Token>(settings.TokensCollectionName);
-            var indexKeysDefinition = Builders<Token>.IndexKeys.Ascending(t => t.ExpireAt);
+            _tokens = database.GetCollection<DbToken>(settings.TokensCollectionName);
+            var indexKeysDefinition = Builders<DbToken>.IndexKeys.Ascending(t => t.ExpireAt);
             _tokens.Indexes.CreateOne
                 (
-                 new CreateIndexModel<Token>(indexKeysDefinition, new CreateIndexOptions {ExpireAfter = TimeSpan.Zero})
+                 new CreateIndexModel<DbToken>(indexKeysDefinition, new CreateIndexOptions {ExpireAfter = TimeSpan.Zero})
                 );
         }
 
-        private Token GetById(string id) => _tokens.Find<Token>(token => token.Id == id).FirstOrDefault();
+        private DbToken GetById(string id) => _tokens.Find<DbToken>(token => token.Id == id).FirstOrDefault();
 
-        private Token GetByTypeAndUserId(string type,
+        private DbToken GetByTypeAndUserId(string type,
                                          string userId) =>
-            _tokens.Find<Token>(t => t.Type == type && t.UserId == userId).FirstOrDefault();
+            _tokens.Find<DbToken>(t => t.Type == type && t.UserId == userId).FirstOrDefault();
 
-        public Token Create(string type,
+        public DbToken Create(string type,
                             string value,
                             string userId,
                             int ttlSeconds)
         {
-            var token = new Token
+            var token = new DbToken
             {
                 UserId = userId,
                 Type = type,
@@ -49,7 +49,7 @@ namespace Michaelsoft.BodyGuard.Server.Services
             return token;
         }
 
-        public Token Validate(string type,
+        public DbToken Validate(string type,
                               string userId,
                               string value)
         {
