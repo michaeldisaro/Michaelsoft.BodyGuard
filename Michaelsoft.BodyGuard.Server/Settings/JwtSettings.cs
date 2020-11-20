@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Newtonsoft.Json;
 
 namespace Michaelsoft.BodyGuard.Server.Settings
@@ -20,9 +21,6 @@ namespace Michaelsoft.BodyGuard.Server.Settings
 
         [JsonProperty("RefreshExpiration")]
         public int RefreshExpiration { get; set; }
-
-        [JsonProperty("AdditionalClaims")]
-        public string AdditionalClaims { get; set; }
 
     }
 }

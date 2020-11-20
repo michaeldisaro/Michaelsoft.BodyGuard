@@ -1,10 +1,18 @@
-﻿@using Michaelsoft.BodyGuard.Client.Models.Forms
+﻿@using System.Reflection
+@using Michaelsoft.BodyGuard.Client.Models.Forms
 @using Michaelsoft.BodyGuard.Common.Extensions
+@using Michaelsoft.BodyGuard.Common.Settings
+@using Microsoft.Extensions.Options
 @model Michaelsoft.BodyGuard.Client.Models.Forms.UpdateForm
+@inject IOptions<IdentitySettings> IdentitySettings
 
 @{
     var formStatus = TempData.Get<FormStatus>("FormStatus");
     var userDataProperties = Model.User.GetType().GetUpdatableProperties();
+    var enabledUserDataProperties = IdentitySettings.Value.EnabledUserDataProperties ?? new List<string>();
+    userDataProperties = enabledUserDataProperties.Any() ?
+                             userDataProperties.Where(udp => enabledUserDataProperties.Contains(udp.Name)).ToArray() :
+                             new PropertyInfo[0];
 }
 
 <form method="post" asp-area="User" asp-page="/Update">
@@ -17,7 +25,7 @@
         {
             <div class="form-group">
                 <div class="bodyguard_form-label">
-                    @Html.Label(propertyInfo.Name)
+                    @Html.DisplayName(propertyInfo.GetDisplayName())
                 </div>
                 <div class="bodyguard_form-input">
                     @Html.TextBox($"UpdateForm.User.{propertyInfo.Name}", formStatus.GetAttemptedValue($"UpdateForm.User.{propertyInfo.Name}") ?? propertyInfo.GetValue(Model.User, null))

@@ -17,7 +17,7 @@ namespace Michaelsoft.BodyGuard.Common.Encryption
                 rsa.FromXmlString(xmlParams);
                 return rsa.Encrypt(data, doOaepPadding);
             }
-            catch (CryptographicException e)
+            catch (CryptographicException)
             {
                 return null;
             }
@@ -34,7 +34,7 @@ namespace Michaelsoft.BodyGuard.Common.Encryption
                 var decrypted = rsa.Decrypt(data, doOaepPadding);
                 return Encoding.Unicode.GetString(decrypted);
             }
-            catch (CryptographicException e)
+            catch (CryptographicException)
             {
                 return null;
             }

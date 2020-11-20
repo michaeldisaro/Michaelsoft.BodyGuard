@@ -1,9 +1,12 @@
 ﻿using System;
+using System.Linq;
 using Michaelsoft.BodyGuard.Common.HttpModels.Authentication;
 using Michaelsoft.BodyGuard.Common.HttpModels.Authorization;
+using Michaelsoft.BodyGuard.Server.Interfaces;
 using Michaelsoft.BodyGuard.Server.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Michaelsoft.BodyGuard.Server.Controllers
 {
@@ -15,9 +18,36 @@ namespace Michaelsoft.BodyGuard.Server.Controllers
 
         private readonly UserService _userService;
 
-        public AuthorizationController(UserService userService)
+        private readonly IRoleService _roleService;
+
+        public AuthorizationController(UserService userService,
+                                       IRoleService roleService)
         {
+            _roleService = roleService;
             _userService = userService;
+        }
+
+        [HttpGet("[action]")]
+        [Produces("application/json")]
+        [Authorize(Roles = "root,admin")]
+        public GetRolesResponse GetRoles()
+        {
+            try
+            {
+                var roles = _roleService.Roles;
+                return new GetRolesResponse
+                {
+                    Roles = roles.Select(kvp => new SelectListItem(kvp.Key, kvp.Value)).ToList()
+                };
+            }
+            catch (Exception ex)
+            {
+                return new GetRolesResponse
+                {
+                    Success = false,
+                    Message = ex.Message
+                };
+            }
         }
 
         [HttpPost("[action]")]

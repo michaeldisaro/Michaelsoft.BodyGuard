@@ -1,7 +1,9 @@
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
+using Michaelsoft.BodyGuard.Common.Settings;
 using Michaelsoft.BodyGuard.Server.Extensions;
+using Michaelsoft.BodyGuard.Server.Interfaces;
 using Michaelsoft.BodyGuard.Server.Services;
 using Michaelsoft.BodyGuard.Server.Settings;
 using Michaelsoft.Mailer.Interfaces;
@@ -32,17 +34,21 @@ namespace Michaelsoft.BodyGuard.Server
             services.AddEncryptionService(Configuration);
             services.AddUserService(Configuration);
             services.AddTokenService(Configuration);
-            
+
             services.Configure<EmailSettings>(Configuration.GetSection("EmailSettings"));
+            services.Configure<JwtSettings>(Configuration.GetSection("JwtSettings"));
+            services.Configure<IdentitySettings>(Configuration.GetSection("IdentitySettings"));
+
             services.AddSingleton<IMailer, Mailer.Services.Mailer>();
-            
+
+            services.AddSingleton<IRoleService, RoleService>();
+
             services.AddControllers();
 
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
             JwtSecurityTokenHandler.DefaultOutboundClaimTypeMap.Clear();
-            
-            services.Configure<JwtSettings>(Configuration.GetSection("JwtSettings"));
-            var settings = Configuration.GetSection("JwtSettings").Get<JwtSettings>();
+
+            var jwtSettings = Configuration.GetSection("JwtSettings").Get<JwtSettings>();
             services
                 .AddAuthentication(options =>
                 {
@@ -55,9 +61,9 @@ namespace Michaelsoft.BodyGuard.Server
                     options.SaveToken = true;
                     options.TokenValidationParameters = new TokenValidationParameters
                     {
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(settings.Secret)),
-                        ValidIssuer = settings.Issuer,
-                        ValidAudience = settings.Audience,
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(jwtSettings.Secret)),
+                        ValidIssuer = jwtSettings.Issuer,
+                        ValidAudience = jwtSettings.Audience,
                         ValidateIssuerSigningKey = true,
                         ValidateIssuer = true,
                         ValidateAudience = true,

@@ -5,9 +5,11 @@ using System.Security.AccessControl;
 using Michaelsoft.BodyGuard.Common.Enums;
 using Michaelsoft.BodyGuard.Common.Extensions;
 using Michaelsoft.BodyGuard.Common.Models;
+using Michaelsoft.BodyGuard.Common.Settings;
 using Michaelsoft.BodyGuard.Server.DatabaseModels;
 using Michaelsoft.BodyGuard.Server.Exceptions;
 using Michaelsoft.BodyGuard.Server.Settings;
+using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 using Newtonsoft.Json;
 
@@ -20,9 +22,13 @@ namespace Michaelsoft.BodyGuard.Server.Services
 
         private readonly DatabaseEncryptionService _encryptionService;
 
+        private readonly IdentitySettings _identitySettings;
+
         public UserService(IUserStoreDatabaseSettings settings,
+                           IOptions<IdentitySettings> identitySettings,
                            DatabaseEncryptionService encryptionService)
         {
+            _identitySettings = identitySettings.Value;
             _encryptionService = encryptionService;
             var client = new MongoClient(settings.ConnectionString);
             var database = client.GetDatabase(settings.DatabaseName);
@@ -50,17 +56,31 @@ namespace Michaelsoft.BodyGuard.Server.Services
             return BCrypt.Net.BCrypt.Verify(password, dbUser.HashedPassword);
         }
 
+        private string EncryptUserData(User userData,
+                                       string emailAddress = null)
+        {
+            if (userData == null) return null;
+            if (emailAddress != null)
+                userData.EmailAddress = emailAddress;
+            var properties = typeof(User).GetProperties();
+            foreach (var propertyInfo in properties)
+                if (!_identitySettings.EnabledUserDataProperties.Contains(propertyInfo.Name))
+                    typeof(User).GetProperty(propertyInfo.Name)?.SetMethod?.Invoke(userData, new object[] {null});
+
+            var serializedData =
+                JsonConvert.SerializeObject(userData,
+                                            new JsonSerializerSettings
+                                            {
+                                                NullValueHandling = NullValueHandling.Ignore
+                                            });
+            return serializedData.IsNullOrEmpty() ? null : _encryptionService.Encrypt(serializedData);
+        }
+
         public DbUser Create(string emailAddress,
                              string password,
                              User userData = null)
         {
-            string encryptedData = null;
-            if (userData != null)
-            {
-                userData.EmailAddress = emailAddress;
-                encryptedData = _encryptionService.Encrypt(JsonConvert.SerializeObject(userData));
-            }
-
+            var encryptedData = EncryptUserData(userData, emailAddress);
             var user = new DbUser
             {
                 HashedEmail = emailAddress.Sha1(),
@@ -117,9 +137,8 @@ namespace Michaelsoft.BodyGuard.Server.Services
         {
             var user = GetById(id);
             if (user == null) throw new UserNotFoundException();
-            var serializedData = JsonConvert.SerializeObject(userData);
             user.Updated = DateTime.Now;
-            user.EncryptedData = _encryptionService.Encrypt(serializedData);
+            user.EncryptedData = EncryptUserData(userData);
             _users.ReplaceOne(u => u.Id == user.Id, user);
         }
 

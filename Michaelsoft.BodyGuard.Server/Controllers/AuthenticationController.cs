@@ -6,6 +6,7 @@ using Michaelsoft.BodyGuard.Common.Enums;
 using Michaelsoft.BodyGuard.Common.Extensions;
 using Michaelsoft.BodyGuard.Common.HttpModels.Authentication;
 using Michaelsoft.BodyGuard.Common.Models;
+using Michaelsoft.BodyGuard.Common.Settings;
 using Michaelsoft.BodyGuard.Server.Services;
 using Michaelsoft.BodyGuard.Server.Settings;
 using Michaelsoft.Mailer.Interfaces;
@@ -24,7 +25,7 @@ namespace Michaelsoft.BodyGuard.Server.Controllers
 
         private readonly UserService _userService;
 
-        private readonly JwtSettings _jwtSettings;
+        private readonly IdentitySettings _identitySettings;
 
         private readonly TokenService _tokenService;
 
@@ -33,11 +34,11 @@ namespace Michaelsoft.BodyGuard.Server.Controllers
         public AuthenticationController(UserService userService,
                                         TokenService tokenService,
                                         IMailer mailer,
-                                        IOptions<JwtSettings> jwtSettings)
+                                        IOptions<IdentitySettings> identitySettings)
         {
             _mailer = mailer;
             _tokenService = tokenService;
-            _jwtSettings = jwtSettings.Value;
+            _identitySettings = identitySettings.Value;
             _userService = userService;
         }
 
@@ -85,19 +86,14 @@ namespace Michaelsoft.BodyGuard.Server.Controllers
 
                 do
                 {
-                    if (_jwtSettings.AdditionalClaims.IsNullOrEmpty())
+                    if (!_identitySettings.AdditionalClaims.Any())
                         break;
 
                     var decryptedData = _userService.GetData(user.Id);
                     if (decryptedData == null)
                         break;
 
-                    var additionalClaims = new List<string>();
-                    if (_jwtSettings.AdditionalClaims.Contains(";"))
-                        additionalClaims.AddRange(_jwtSettings.AdditionalClaims.Split(";"));
-                    else
-                        additionalClaims.Add(_jwtSettings.AdditionalClaims);
-
+                    var additionalClaims = _identitySettings.AdditionalClaims;
                     var userData = JsonConvert.DeserializeObject<User>(decryptedData);
 
                     foreach (var ac in additionalClaims)

@@ -1,4 +1,6 @@
-﻿using Michaelsoft.BodyGuard.Common.HttpModels.Authorization;
+﻿using System.Collections.Generic;
+using Michaelsoft.BodyGuard.Common.HttpModels.Authorization;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Michaelsoft.BodyGuard.Client.Models.Forms
 {
@@ -6,6 +8,8 @@ namespace Michaelsoft.BodyGuard.Client.Models.Forms
     {
 
         public ManageRoleRequest ManageRoleRequest { get; set; }
+
+        public IEnumerable<SelectListItem> Roles { get; set; }
 
         public string SuccessUrl { get; set; }
 

@@ -25,7 +25,7 @@ namespace Michaelsoft.BodyGuard.Client.Areas.Authorization.Pages
             ManageRolesForm = new ManageRolesForm
             {
                 SuccessUrl = "/Authorization/ManageRoles",
-                FailureUrl = "/Authorization/ManageRoles"
+                FailureUrl = "/Authorization/ManageRoles",
             };
         }
 

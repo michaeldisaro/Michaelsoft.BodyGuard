@@ -1,11 +1,14 @@
-﻿@using Michaelsoft.BodyGuard.Client.Models.Forms
+﻿@using Michaelsoft.BodyGuard.Client.Interfaces
+@using Michaelsoft.BodyGuard.Client.Models.Forms
 @using Michaelsoft.BodyGuard.Common.Extensions
 @using Microsoft.AspNetCore.Http
 @model Michaelsoft.BodyGuard.Client.Models.Forms.ManageRolesForm
 @inject IHttpContextAccessor Accessor
+@inject IBodyGuardAuthorizationApiService AuthorizationApiService
 
 @{
     var formStatus = TempData.Get<FormStatus>("FormStatus");
+    Model.Roles = (await AuthorizationApiService.GetRoles()).Roles;
 }
 
 <form method="post" asp-area="Authorization" asp-page="/ManageRoles">
@@ -30,7 +33,7 @@
                 <label asp-for="ManageRoleRequest.Role"></label>
             </div>
             <div class="bodyguard_form-input">
-                <input type="text" asp-for="ManageRoleRequest.Role" value="@formStatus.GetAttemptedValue("ManageRoleRequest.Role")"/>
+                <select asp-for="ManageRoleRequest.Role" asp-items="Model.Roles" value="@formStatus.GetAttemptedValue("ManageRoleRequest.Role")"></select>
             </div>
             <div class="bodyguard_form-error">
                 <span asp-validation-for="ManageRoleRequest.Role" class="text-danger">@formStatus.GetError("ManageRoleRequest.Role")</span>

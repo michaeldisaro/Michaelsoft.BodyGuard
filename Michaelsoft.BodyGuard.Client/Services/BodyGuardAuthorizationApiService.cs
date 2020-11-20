@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Michaelsoft.BodyGuard.Client.Interfaces;
@@ -19,6 +20,37 @@ namespace Michaelsoft.BodyGuard.Client.Services
         {
         }
 
+        public async Task<GetRolesResponse> GetRoles()
+        {
+            var baseApiResult =
+                await GetRequest<GetRolesResponse>("GetRoles");
+
+            if (!baseApiResult.Success)
+                throw new Exception(baseApiResult.Message);
+
+            return baseApiResult.Response;
+        }
+
+        public async Task<CanResponse> Can(string id,
+                                           List<string> roles,
+                                           Dictionary<string, string> claims,
+                                           bool canAll)
+        {
+            var baseApiResult =
+                await PostRequest<CanResponse>("Can", new CanRequest
+                {
+                    Id = id,
+                    Roles = roles,
+                    Claims = claims,
+                    CanAll = canAll
+                });
+
+            if (!baseApiResult.Success)
+                throw new Exception(baseApiResult.Message);
+
+            return baseApiResult.Response;
+        }
+
         public async Task<ManageRoleResponse> AssignRole(string emailAddress,
                                                          string role)
         {
@@ -36,7 +68,7 @@ namespace Michaelsoft.BodyGuard.Client.Services
 
             return baseApiResult.Response;
         }
-        
+
         public async Task<ManageRoleResponse> RevokeRole(string emailAddress,
                                                          string role)
         {

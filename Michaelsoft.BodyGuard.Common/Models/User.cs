@@ -27,6 +27,7 @@ namespace Michaelsoft.BodyGuard.Common.Models
         [EmailAddress]
         [ExcludeFromInsert]
         [Display(Name = "Email Address")]
+        
         public string EmailAddress { get; set; }
 
         [MaxLength(32)]
