@@ -22,12 +22,12 @@ namespace Michaelsoft.BodyGuard.Server.Services
 
         public RoleService(IOptions<IdentitySettings> identitySettings)
         {
-            Roles["Root"] = Root;
-            Roles["Admin"] = Admin;
-            Roles["Dpo"] = Dpo;
-            Roles["User"] = User;
+            Roles[Root] = Root;
+            Roles[Admin] = Admin;
+            Roles[Dpo] = Dpo;
+            Roles[User] = User;
             foreach (var customRole in identitySettings.Value.CustomRoles)
-                Roles[customRole.Capitalize()] = customRole;
+                Roles[customRole] = customRole;
         }
 
         public string this[string role]
