@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using Michaelsoft.BodyGuard.Common.Extensions;
 using Michaelsoft.BodyGuard.Common.HttpModels.Authentication;
 using Michaelsoft.BodyGuard.Common.HttpModels.Authorization;
 using Michaelsoft.BodyGuard.Server.Interfaces;
@@ -37,7 +38,7 @@ namespace Michaelsoft.BodyGuard.Server.Controllers
                 var roles = _roleService.Roles;
                 return new GetRolesResponse
                 {
-                    Roles = roles.Select(kvp => new SelectListItem(kvp.Key, kvp.Value)).ToList()
+                    Roles = roles.Select(role => new SelectListItem(role.Capitalize(), role)).ToList()
                 };
             }
             catch (Exception ex)

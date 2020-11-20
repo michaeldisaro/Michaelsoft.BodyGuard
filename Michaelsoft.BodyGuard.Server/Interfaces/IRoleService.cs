@@ -7,6 +7,6 @@ namespace Michaelsoft.BodyGuard.Server.Interfaces
 
         string this[string index] { get; set; }
 
-        Dictionary<string,string> Roles { get; set; }
+        List<string> Roles { get; set; }
     }
 }

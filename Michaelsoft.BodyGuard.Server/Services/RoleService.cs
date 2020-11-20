@@ -1,8 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Michaelsoft.BodyGuard.Common.Settings;
 using Michaelsoft.BodyGuard.Server.Interfaces;
-using Michaelsoft.BodyGuard.Server.Settings;
-using Michaelsoft.Mailer.Extensions;
 using Microsoft.Extensions.Options;
 
 namespace Michaelsoft.BodyGuard.Server.Services
@@ -18,22 +17,22 @@ namespace Michaelsoft.BodyGuard.Server.Services
 
         public const string User = "user";
 
-        public Dictionary<string, string> Roles { get; set; } = new Dictionary<string, string>();
+        public List<string> Roles { get; set; } = new List<string>();
 
         public RoleService(IOptions<IdentitySettings> identitySettings)
         {
-            Roles[Root] = Root;
-            Roles[Admin] = Admin;
-            Roles[Dpo] = Dpo;
-            Roles[User] = User;
+            Roles.Add(Root);
+            Roles.Add(Dpo);
+            Roles.Add(Admin);
+            Roles.Add(User);
             foreach (var customRole in identitySettings.Value.CustomRoles)
-                Roles[customRole] = customRole;
+                Roles.Add(customRole);
         }
 
         public string this[string role]
         {
-            get => Roles.ContainsKey(role) ? Roles[role] : null;
-            set => Roles[role] = value;
+            get => Roles.Contains(role) ? role : null;
+            set => throw new InvalidOperationException();
         }
 
     }
