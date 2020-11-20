@@ -27,6 +27,7 @@ namespace Michaelsoft.BodyGuard.Client.Services
             {
                 EmailAddress = email,
                 Password = password,
+                PasswordConfirm = password,
                 UserData = userData
             };
 

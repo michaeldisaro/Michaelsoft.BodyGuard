@@ -8,10 +8,12 @@ namespace Michaelsoft.BodyGuard.Common.HttpModels.Authentication
 
         [Required]
         [JsonRequired]
+        [Display(Name = "Email Address")]
         public string EmailAddress { get; set; }
 
         [Required]
         [JsonRequired]
+        [Display(Name = "Password")]
         public string Password { get; set; }
 
     }

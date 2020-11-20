@@ -52,6 +52,7 @@ namespace Michaelsoft.BodyGuard.Server.Controllers
 
         [HttpGet("User/{id}")]
         [Produces("application/json")]
+        [Authorize]
         public UserDataResponse Get(string id)
         {
             // TODO: check if logged user is admin or this user

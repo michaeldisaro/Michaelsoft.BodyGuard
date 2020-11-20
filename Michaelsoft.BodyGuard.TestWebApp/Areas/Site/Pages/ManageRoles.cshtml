@@ -1,0 +1,24 @@
+﻿@page
+@using Michaelsoft.BodyGuard.Client.Models.Forms
+@model ManageRoles
+
+@{
+    ViewData["Title"] = "Manage Roles";
+}
+
+<div class="text-center">
+    <legend class="display-4">BodyGuard Manage Roles Test</legend>
+
+    @{
+        await Html.RenderPartialAsync(
+                                      "~/Views/Shared/_ManageRolesForm.cshtml",
+                                      new ManageRolesForm()
+                                      {
+                                          SuccessUrl = "/Site/Success",
+                                          FailureUrl = "/Site/ManageRoles",
+                                          AssignRoleLabel = "Assegna ruolo",
+                                          RevokeRoleLabel = "Revoca ruolo"
+                                      });
+    }
+
+</div>

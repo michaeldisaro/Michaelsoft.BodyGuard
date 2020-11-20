@@ -13,8 +13,4 @@
     <ProjectReference Include="..\Michaelsoft.BodyGuard.Common\Michaelsoft.BodyGuard.Common.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Areas\Authorization\Pages" />
-  </ItemGroup>
-
 </Project>

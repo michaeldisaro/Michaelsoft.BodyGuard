@@ -1,5 +1,6 @@
 ﻿using System;
 using Michaelsoft.BodyGuard.Common.HttpModels.Authentication;
+using Michaelsoft.BodyGuard.Common.HttpModels.Authorization;
 using Michaelsoft.BodyGuard.Server.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -17,7 +18,27 @@ namespace Michaelsoft.BodyGuard.Server.Controllers
         public AuthorizationController(UserService userService)
         {
             _userService = userService;
+        }
 
+        [HttpPost("[action]")]
+        [Produces("application/json")]
+        [Authorize]
+        public CanResponse Can([FromBody]
+                               CanRequest canRequest)
+        {
+            try
+            {
+                _userService.Can(canRequest.Id, canRequest.Roles, canRequest.Claims, canRequest.CanAll);
+                return new CanResponse();
+            }
+            catch (Exception ex)
+            {
+                return new CanResponse
+                {
+                    Success = false,
+                    Message = ex.Message
+                };
+            }
         }
 
         [HttpPut("[action]")]
@@ -28,7 +49,7 @@ namespace Michaelsoft.BodyGuard.Server.Controllers
         {
             try
             {
-                _userService.AssignRole(manageRoleRequest.UserId, manageRoleRequest.Role);
+                _userService.AssignRole(manageRoleRequest.EmailAddress, manageRoleRequest.Role);
                 return new ManageRoleResponse();
             }
             catch (Exception ex)
@@ -49,7 +70,7 @@ namespace Michaelsoft.BodyGuard.Server.Controllers
         {
             try
             {
-                _userService.RevokeRole(manageRoleRequest.UserId, manageRoleRequest.Role);
+                _userService.RevokeRole(manageRoleRequest.EmailAddress, manageRoleRequest.Role);
                 return new ManageRoleResponse();
             }
             catch (Exception ex)

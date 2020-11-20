@@ -16,13 +16,13 @@
         @foreach (var propertyInfo in userDataProperties)
         {
             <div class="form-group">
-                <div class="update-label">
+                <div class="bodyguard_form-label">
                     @Html.Label(propertyInfo.Name)
                 </div>
-                <div class="update-input">
+                <div class="bodyguard_form-input">
                     @Html.TextBox($"UpdateForm.User.{propertyInfo.Name}", formStatus.GetAttemptedValue($"UpdateForm.User.{propertyInfo.Name}") ?? propertyInfo.GetValue(Model.User, null))
                 </div>
-                <div class="update-error">
+                <div class="bodyguard_form-error">
                     @Html.ValidationMessage(propertyInfo.Name, formStatus.GetError($"UpdateForm.User.{propertyInfo.Name}"))
                 </div>
             </div>

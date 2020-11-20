@@ -7,19 +7,37 @@
         <input type="hidden" asp-for="SubmitLabel">
         <input type="hidden" asp-for="ValidateRecoveryRequest.Token">
         <div class="form-group">
-            <label asp-for="ValidateRecoveryRequest.EmailAddress"></label>
-            <input type="text" asp-for="ValidateRecoveryRequest.EmailAddress"/>
-            <span asp-validation-for="ValidateRecoveryRequest.EmailAddress" class="text-danger"></span>
+            <div class="bodyguard_form-label">
+                <label asp-for="ValidateRecoveryRequest.EmailAddress"></label>
+            </div>
+            <div class="bodyguard_form-input">
+                <input type="text" asp-for="ValidateRecoveryRequest.EmailAddress"/>
+            </div>
+            <div class="bodyguard_form-error">
+                <span asp-validation-for="ValidateRecoveryRequest.EmailAddress" class="text-danger"></span>
+            </div>
         </div>
         <div class="form-group">
-            <label asp-for="ValidateRecoveryRequest.NewPassword"></label>
-            <input type="password" asp-for="ValidateRecoveryRequest.NewPassword"/>
-            <span asp-validation-for="ValidateRecoveryRequest.NewPassword" class="text-danger"></span>
+            <div class="bodyguard_form-label">
+                <label asp-for="ValidateRecoveryRequest.NewPassword"></label>
+            </div>
+            <div class="bodyguard_form-input">
+                <input type="password" asp-for="ValidateRecoveryRequest.NewPassword"/>
+            </div>
+            <div class="bodyguard_form-error">
+                <span asp-validation-for="ValidateRecoveryRequest.NewPassword" class="text-danger"></span>
+            </div>
         </div>
         <div class="form-group">
-            <label asp-for="ValidateRecoveryRequest.NewPasswordConfirm"></label>
-            <input type="password" asp-for="ValidateRecoveryRequest.NewPasswordConfirm"/>
-            <span asp-validation-for="ValidateRecoveryRequest.NewPasswordConfirm" class="text-danger"></span>
+            <div class="bodyguard_form-label">
+                <label asp-for="ValidateRecoveryRequest.NewPasswordConfirm"></label>
+            </div>
+            <div class="bodyguard_form-input">
+                <input type="password" asp-for="ValidateRecoveryRequest.NewPasswordConfirm"/>
+            </div>
+            <div class="bodyguard_form-error">
+                <span asp-validation-for="ValidateRecoveryRequest.NewPasswordConfirm" class="text-danger"></span>
+            </div>
         </div>
         <div class="form-group">
             <button type="submit" class="btn btn-primary">@Model.SubmitLabel</button>

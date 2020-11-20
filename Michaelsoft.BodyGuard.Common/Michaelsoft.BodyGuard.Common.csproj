@@ -15,7 +15,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="HttpModels\Authorization" />
     <Folder Include="HttpModels\Gdpr" />
   </ItemGroup>
 

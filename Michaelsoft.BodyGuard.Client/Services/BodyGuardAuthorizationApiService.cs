@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Michaelsoft.BodyGuard.Client.Interfaces;
 using Michaelsoft.BodyGuard.Client.Settings;
 using Michaelsoft.BodyGuard.Common.HttpModels.Authentication;
+using Michaelsoft.BodyGuard.Common.HttpModels.Authorization;
 using Microsoft.AspNetCore.Http;
 
 namespace Michaelsoft.BodyGuard.Client.Services
@@ -18,17 +19,17 @@ namespace Michaelsoft.BodyGuard.Client.Services
         {
         }
 
-        public async Task<ManageRoleResponse> AssignRole(string userId,
+        public async Task<ManageRoleResponse> AssignRole(string emailAddress,
                                                          string role)
         {
             var manageRoleRequest = new ManageRoleRequest
             {
-                UserId = userId,
+                EmailAddress = emailAddress,
                 Role = role
             };
 
             var baseApiResult =
-                await PostRequest<ValidateRecoveryResponse>("AssignRole", manageRoleRequest);
+                await PutRequest<ManageRoleResponse>("AssignRole", manageRoleRequest);
 
             if (!baseApiResult.Success)
                 throw new Exception(baseApiResult.Message);
@@ -36,17 +37,17 @@ namespace Michaelsoft.BodyGuard.Client.Services
             return baseApiResult.Response;
         }
         
-        public async Task<ManageRoleResponse> RevokeRole(string userId,
+        public async Task<ManageRoleResponse> RevokeRole(string emailAddress,
                                                          string role)
         {
             var manageRoleRequest = new ManageRoleRequest
             {
-                UserId = userId,
+                EmailAddress = emailAddress,
                 Role = role
             };
 
             var baseApiResult =
-                await PostRequest<ValidateRecoveryResponse>("RevokeRole", manageRoleRequest);
+                await PutRequest<ManageRoleResponse>("RevokeRole", manageRoleRequest);
 
             if (!baseApiResult.Success)
                 throw new Exception(baseApiResult.Message);

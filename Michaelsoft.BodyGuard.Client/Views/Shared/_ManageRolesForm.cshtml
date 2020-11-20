@@ -1,0 +1,46 @@
+﻿@using Michaelsoft.BodyGuard.Client.Models.Forms
+@using Michaelsoft.BodyGuard.Common.Extensions
+@using Microsoft.AspNetCore.Http
+@model Michaelsoft.BodyGuard.Client.Models.Forms.ManageRolesForm
+@inject IHttpContextAccessor Accessor
+
+@{
+    var formStatus = TempData.Get<FormStatus>("FormStatus");
+}
+
+<form method="post" asp-area="Authorization" asp-page="/ManageRoles">
+    <div class="role-form">
+        <input type="hidden" asp-for="SuccessUrl">
+        <input type="hidden" asp-for="FailureUrl">
+        <input type="hidden" asp-for="AssignRoleLabel">
+        <input type="hidden" asp-for="RevokeRoleLabel">
+        <div class="form-group">
+            <div class="bodyguard_form-label">
+                <label asp-for="ManageRoleRequest.EmailAddress"></label>
+            </div>
+            <div class="bodyguard_form-input">
+                <input type="text" asp-for="ManageRoleRequest.EmailAddress" value="@formStatus.GetAttemptedValue("ManageRoleRequest.EmailAddress")"/>
+            </div>
+            <div class="bodyguard_form-error">
+                <span asp-validation-for="ManageRoleRequest.EmailAddress" class="text-danger">@formStatus.GetError("ManageRoleRequest.EmailAddress")</span>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="bodyguard_form-label">
+                <label asp-for="ManageRoleRequest.Role"></label>
+            </div>
+            <div class="bodyguard_form-input">
+                <input type="text" asp-for="ManageRoleRequest.Role" value="@formStatus.GetAttemptedValue("ManageRoleRequest.Role")"/>
+            </div>
+            <div class="bodyguard_form-error">
+                <span asp-validation-for="ManageRoleRequest.Role" class="text-danger">@formStatus.GetError("ManageRoleRequest.Role")</span>
+            </div>
+        </div>
+        <div class="form-group">
+            <button type="submit" asp-area="Authorization" asp-page="/ManageRoles" asp-page-handler="Assign" class="btn btn-primary">@Model.AssignRoleLabel</button>
+        </div>
+        <div class="form-group">
+            <button type="submit" asp-area="Authorization" asp-page="/ManageRoles" asp-page-handler="Revoke" class="btn btn-primary">@Model.RevokeRoleLabel</button>
+        </div>
+    </div>
+</form>

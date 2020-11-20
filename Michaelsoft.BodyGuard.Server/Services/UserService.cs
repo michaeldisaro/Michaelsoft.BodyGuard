@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Security.AccessControl;
 using Michaelsoft.BodyGuard.Common.Enums;
 using Michaelsoft.BodyGuard.Common.Extensions;
 using Michaelsoft.BodyGuard.Common.Models;
@@ -69,8 +71,9 @@ namespace Michaelsoft.BodyGuard.Server.Services
             };
             var existing = GetByHashedEmail(user.HashedEmail);
             if (existing != null) return existing;
-            if (_users.EstimatedDocumentCount() == 0)
-                user.Roles = new List<string> {Roles.Root};
+            user.Roles = _users.EstimatedDocumentCount() == 0
+                             ? new List<string> {Roles.Root}
+                             : new List<string> {Roles.User};
             _users.InsertOne(user);
             return user;
         }
@@ -120,27 +123,43 @@ namespace Michaelsoft.BodyGuard.Server.Services
             _users.ReplaceOne(u => u.Id == user.Id, user);
         }
 
-        public void AssignRole(string id,
+        public void AssignRole(string emailAddress,
                                string role)
         {
-            var user = GetById(id);
+            var user = GetByEmail(emailAddress);
             if (user == null) throw new UserNotFoundException();
             user.Roles ??= new List<string>();
+            if (user.Roles.Contains(role)) return;
             user.Roles.Add(role);
             user.Updated = DateTime.Now;
             _users.ReplaceOne(u => u.Id == user.Id, user);
         }
 
-        public void RevokeRole(string id,
+        public void RevokeRole(string emailAddress,
                                string role)
         {
-            var user = GetById(id);
+            var user = GetByEmail(emailAddress);
             if (user == null) throw new UserNotFoundException();
             if (user.Roles == null) return;
             user.Roles.Remove(role);
             if (user.Roles.Count == 0) user.Roles = null;
             user.Updated = DateTime.Now;
             _users.ReplaceOne(u => u.Id == user.Id, user);
+        }
+
+        public void Can(string id,
+                        List<string> roles,
+                        Dictionary<string, string> claims,
+                        bool canAll)
+        {
+            var user = GetById(id);
+            if (user == null) throw new UserNotFoundException();
+            if (canAll &&
+                (!roles.SequenceEqual(user.Roles) || !claims.SequenceEqual(user.Claims)))
+                throw new ForbiddenException();
+            if (!roles.Any(r => user.Roles.Contains(r)) &&
+                !claims.Any(kvp => user.Claims.ContainsKey(kvp.Key) && user.Claims[kvp.Key] == kvp.Value))
+                throw new ForbiddenException();
         }
 
     }
