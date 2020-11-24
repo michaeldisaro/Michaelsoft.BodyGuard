@@ -23,7 +23,7 @@ namespace Michaelsoft.BodyGuard.Client.Services
         {
         }
 
-        public async Task<UserList> GetUsers()
+        public async Task<List<User>> GetUsers()
         {
             var baseApiResult = await GetRequest<UsersDataResponse>($"Users");
 
@@ -39,7 +39,7 @@ namespace Michaelsoft.BodyGuard.Client.Services
             foreach (var (id, data) in usersDataResponse.UsersData)
             {
                 var userData = new User();
-                
+
                 try
                 {
                     userData = JsonConvert.DeserializeObject<User>(data) ?? new User();
@@ -53,7 +53,7 @@ namespace Michaelsoft.BodyGuard.Client.Services
                 usersData.Add(userData);
             }
 
-            return new UserList {UsersData = usersData};
+            return usersData;
         }
 
         public async Task<User> GetUser(string id)

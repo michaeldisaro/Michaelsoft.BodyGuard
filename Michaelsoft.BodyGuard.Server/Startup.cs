@@ -37,7 +37,7 @@ namespace Michaelsoft.BodyGuard.Server
 
             services.Configure<EmailSettings>(Configuration.GetSection("EmailSettings"));
             services.Configure<JwtSettings>(Configuration.GetSection("JwtSettings"));
-            services.Configure<IdentitySettings>(Configuration.GetSection("IdentitySettings"));
+            services.Configure<CommonSettings>(Configuration.GetSection("CommonSettings"));
 
             services.AddSingleton<IMailer, Mailer.Services.Mailer>();
 

@@ -22,11 +22,7 @@ namespace Michaelsoft.BodyGuard.Client.Areas.Authorization.Pages
 
         public void OnGet()
         {
-            ManageRolesForm = new ManageRolesForm
-            {
-                SuccessUrl = "/Authorization/ManageRoles",
-                FailureUrl = "/Authorization/ManageRoles",
-            };
+            
         }
 
         public async Task<IActionResult> OnPostAssign()
@@ -34,7 +30,8 @@ namespace Michaelsoft.BodyGuard.Client.Areas.Authorization.Pages
             if (!ModelState.IsValid)
             {
                 TempData.Set("FormStatus", new FormStatus(ModelState));
-                return Redirect(ManageRolesForm.FailureUrl ?? "/Authorization/ManageRoles");
+                return RedirectToPage(ManageRolesForm.FailurePage,
+                                      new {Area = ManageRolesForm.FailureArea});
             }
 
             var response = await _authorizationApiService.AssignRole(ManageRolesForm.ManageRoleRequest.EmailAddress,
@@ -43,11 +40,13 @@ namespace Michaelsoft.BodyGuard.Client.Areas.Authorization.Pages
             if (response.Success)
             {
                 TempData["Message"] = "Assign role succeed!";
-                return Redirect(ManageRolesForm.SuccessUrl ?? "/Authorization/ManageRoles");
+                return RedirectToPage(ManageRolesForm.SuccessPage,
+                                      new {Area = ManageRolesForm.SuccessArea});
             }
 
             TempData["Message"] = "Assign role failed.";
-            return Redirect(ManageRolesForm.FailureUrl ?? "/Authorization/ManageRoles");
+            return RedirectToPage(ManageRolesForm.FailurePage,
+                                  new {Area = ManageRolesForm.FailureArea});
         }
 
         public async Task<IActionResult> OnPostRevoke()
@@ -55,7 +54,8 @@ namespace Michaelsoft.BodyGuard.Client.Areas.Authorization.Pages
             if (!ModelState.IsValid)
             {
                 TempData.Set("FormStatus", new FormStatus(ModelState));
-                return Redirect(ManageRolesForm.FailureUrl ?? "/Authorization/ManageRoles");
+                return RedirectToPage(ManageRolesForm.FailurePage,
+                                      new {Area = ManageRolesForm.FailureArea});
             }
 
             var response = await _authorizationApiService.RevokeRole(ManageRolesForm.ManageRoleRequest.EmailAddress,
@@ -64,11 +64,13 @@ namespace Michaelsoft.BodyGuard.Client.Areas.Authorization.Pages
             if (response.Success)
             {
                 TempData["Message"] = "Revoke role succeed!";
-                return Redirect(ManageRolesForm.SuccessUrl ?? "/Authorization/ManageRoles");
+                return RedirectToPage(ManageRolesForm.SuccessPage,
+                                      new {Area = ManageRolesForm.SuccessArea});
             }
 
             TempData["Message"] = "Revoke role failed.";
-            return Redirect(ManageRolesForm.FailureUrl ?? "/Authorization/ManageRoles");
+            return RedirectToPage(ManageRolesForm.FailurePage,
+                                  new {Area = ManageRolesForm.FailureArea});
         }
 
     }

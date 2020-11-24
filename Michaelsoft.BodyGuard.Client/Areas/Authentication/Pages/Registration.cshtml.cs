@@ -23,24 +23,16 @@ namespace Michaelsoft.BodyGuard.Client.Areas.Authentication.Pages
 
         public void OnGet()
         {
-            RegistrationForm = new RegistrationForm
-            {
-                SuccessUrl = "/Authentication/Registration",
-                FailureUrl = "/Authentication/Registration",
-                CreateRequest = new UserCreateRequest
-                {
-                    UserData = new Common.Models.User()
-                }
-            };
+
         }
 
         public async Task<IActionResult> OnPost()
         {
-
             if (!ModelState.IsValid)
             {
                 TempData.Set("FormStatus", new FormStatus(ModelState));
-                return Redirect(RegistrationForm.FailureUrl ?? "/Authentication/Registration");
+                return RedirectToPage(RegistrationForm.FailurePage,
+                                      new {Area = RegistrationForm.FailureArea});
             }
 
             var response = await _authenticationApiService.Register
@@ -51,11 +43,13 @@ namespace Michaelsoft.BodyGuard.Client.Areas.Authentication.Pages
             if (response.Success)
             {
                 TempData["Message"] = "Registration succeed!";
-                return Redirect(RegistrationForm.SuccessUrl ?? "/Authentication/Registration");
+                return RedirectToPage(RegistrationForm.SuccessPage,
+                                      new {Area = RegistrationForm.SuccessArea});
             }
 
             TempData["Message"] = "Registration failed.";
-            return Redirect(RegistrationForm.FailureUrl ?? "/Authentication/Registration");
+            return RedirectToPage(RegistrationForm.FailurePage,
+                                  new {Area = RegistrationForm.FailureArea});
         }
 
     }

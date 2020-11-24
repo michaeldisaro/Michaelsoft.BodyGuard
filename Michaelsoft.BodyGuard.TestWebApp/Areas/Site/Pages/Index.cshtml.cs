@@ -11,34 +11,11 @@ namespace Michaelsoft.BodyGuard.TestWebApp.Areas.Site.Pages
     public class IndexModel : PageModel
     {
 
-        private readonly IBodyGuardUserApiService _bodyGuardUserApiService;
-
-        public IndexModel(IBodyGuardUserApiService bodyGuardUserApiService)
-        {
-            _bodyGuardUserApiService = bodyGuardUserApiService;
-        }
-
-        public List<User> UsersData { get; set; } = new List<User>();
-
         [TempData]
         public string Message { get; set; }
 
-        private async Task LoadData()
+        public void OnGet()
         {
-            try
-            {
-                UsersData = (await _bodyGuardUserApiService.GetUsers()).UsersData;
-            }
-            catch (Exception ex)
-            {
-                TempData["Message"] = ex.Message;
-            }
-        }
-
-        public async Task<IActionResult> OnGet()
-        {
-            await LoadData();
-            return Page();
         }
 
     }

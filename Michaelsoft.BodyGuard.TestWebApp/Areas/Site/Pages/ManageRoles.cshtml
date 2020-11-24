@@ -14,8 +14,10 @@
                                       "~/Views/Shared/_ManageRolesForm.cshtml",
                                       new ManageRolesForm()
                                       {
-                                          SuccessUrl = "/Site/Success",
-                                          FailureUrl = "/Site/ManageRoles",
+                                          SuccessArea = "Site",
+                                          SuccessPage = "/Success",
+                                          FailureArea = "Site",
+                                          FailurePage = "/ManageRoles",
                                           AssignRoleLabel = "Assegna ruolo",
                                           RevokeRoleLabel = "Revoca ruolo"
                                       });

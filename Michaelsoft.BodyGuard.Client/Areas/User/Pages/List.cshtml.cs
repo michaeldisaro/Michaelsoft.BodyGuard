@@ -7,23 +7,10 @@ namespace Michaelsoft.BodyGuard.Client.Areas.User.Pages
 {
     public class List : PageModel
     {
-
-        private readonly IBodyGuardUserApiService _userApiService;
-
-        public List(IBodyGuardUserApiService userApiService)
+        
+        public void OnGet()
         {
-            _userApiService = userApiService;
-        }
 
-        public UserList UserList { get; set; }
-
-        public async Task OnGet()
-        {
-            var userDataResponse = await _userApiService.GetUsers();
-            UserList = new UserList
-            {
-                UsersData = userDataResponse.UsersData
-            };
         }
 
     }

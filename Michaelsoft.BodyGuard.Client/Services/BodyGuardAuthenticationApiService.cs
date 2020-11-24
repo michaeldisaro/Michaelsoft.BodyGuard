@@ -96,7 +96,7 @@ namespace Michaelsoft.BodyGuard.Client.Services
             {
                 EmailAddress = emailAddress,
                 TtlSeconds = ttlSeconds,
-                ValidateRecoveryUrl = _applicationBasePath + validateRecoveryUrl
+                ValidateRecoveryUrl = ApplicationBasePath + validateRecoveryUrl
             };
 
             var baseApiResult =

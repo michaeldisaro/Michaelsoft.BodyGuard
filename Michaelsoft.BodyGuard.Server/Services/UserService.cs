@@ -28,12 +28,12 @@ namespace Michaelsoft.BodyGuard.Server.Services
         private readonly IRoleService _roleService;
 
         public UserService(IUserStoreDatabaseSettings settings,
-                           IOptions<IdentitySettings> identitySettings,
+                           IOptions<CommonSettings> commonSettings,
                            DatabaseEncryptionService encryptionService,
                            IRoleService roleService)
         {
             _roleService = roleService;
-            _identitySettings = identitySettings.Value;
+            _identitySettings = commonSettings.Value.IdentitySettings;
             _encryptionService = encryptionService;
             var client = new MongoClient(settings.ConnectionString);
             var database = client.GetDatabase(settings.DatabaseName);
@@ -150,7 +150,7 @@ namespace Michaelsoft.BodyGuard.Server.Services
         public void AssignRole(string emailAddress,
                                string role)
         {
-            if(_roleService[role] == null) throw new RoleNotFoundException();
+            if (_roleService[role] == null) throw new RoleNotFoundException();
             var user = GetByEmail(emailAddress);
             if (user == null) throw new UserNotFoundException();
             user.Roles ??= new List<string>();
@@ -163,7 +163,7 @@ namespace Michaelsoft.BodyGuard.Server.Services
         public void RevokeRole(string emailAddress,
                                string role)
         {
-            if(_roleService[role] == null) throw new RoleNotFoundException();
+            if (_roleService[role] == null) throw new RoleNotFoundException();
             var user = GetByEmail(emailAddress);
             if (user == null) throw new UserNotFoundException();
             if (user.Roles == null) return;

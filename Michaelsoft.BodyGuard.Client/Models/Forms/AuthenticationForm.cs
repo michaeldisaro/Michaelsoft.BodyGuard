@@ -7,15 +7,23 @@ namespace Michaelsoft.BodyGuard.Client.Models.Forms
 
         public UserLoginRequest LoginRequest { get; set; }
 
-        public string LoginSuccessUrl { get; set; }
+        public string LoginSuccessArea { get; set; } = "Result";
 
-        public string LoginFailureUrl { get; set; }
+        public string LoginSuccessPage { get; set; } = "/Success";
+
+        public string LoginFailureArea { get; set; } = "Result";
+
+        public string LoginFailurePage { get; set; } = "/Failure";
 
         public string LoginLabel { get; set; } = "Login";
 
-        public string LogoutSuccessUrl { get; set; }
+        public string LogoutSuccessArea { get; set; }
 
-        public string LogoutFailureUrl { get; set; }
+        public string LogoutSuccessPage { get; set; }
+
+        public string LogoutFailureArea { get; set; }
+
+        public string LogoutFailurePage { get; set; }
 
         public string LogoutLabel { get; set; } = "Logout";
 
@@ -23,11 +31,15 @@ namespace Michaelsoft.BodyGuard.Client.Models.Forms
 
         public string UserMessage { get; set; } = "Welcome:";
 
-        public string RegistrationUrl { get; set; } = "/Authentication/Registration";
+        public string RegistrationArea { get; set; } = "Authentication";
+
+        public string RegistrationPage { get; set; } = "/Registration";
 
         public string RegistrationLabel { get; set; } = "Register";
 
-        public string PasswordRecoveryUrl { get; set; } = "/Authentication/PasswordRecovery";
+        public string PasswordRecoveryArea { get; set; } = "Authentication";
+
+        public string PasswordRecoveryPage { get; set; } = "/PasswordRecovery";
 
         public string PasswordRecoveryLabel { get; set; } = "Recover password";
 

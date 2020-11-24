@@ -1,4 +1,5 @@
-﻿using Michaelsoft.BodyGuard.Client.Interfaces;
+﻿using System.Linq;
+using Michaelsoft.BodyGuard.Client.Interfaces;
 using Michaelsoft.BodyGuard.Client.Services;
 using Michaelsoft.BodyGuard.Client.Settings;
 using Michaelsoft.BodyGuard.Common.Settings;
@@ -14,6 +15,8 @@ namespace Michaelsoft.BodyGuard.Client.Extensions
         public static void AddBodyGuard(this IServiceCollection services,
                                         IConfiguration configuration)
         {
+            services.Configure<CommonSettings>(configuration.GetSection("CommonSettings"));
+
             services.Configure<BodyGuardClientSettings>
                 (configuration.GetSection(nameof(BodyGuardClientSettings)));
 
@@ -26,9 +29,6 @@ namespace Michaelsoft.BodyGuard.Client.Extensions
             services.AddSingleton<IBodyGuardAuthenticationApiService, BodyGuardAuthenticationApiService>();
             services.AddSingleton<IBodyGuardUserApiService, BodyGuardUserApiService>();
             services.AddSingleton<IBodyGuardAuthorizationApiService, BodyGuardAuthorizationApiService>();
-
-            services.Configure<IdentitySettings>(configuration.GetSection("IdentitySettings"));
-
         }
 
     }

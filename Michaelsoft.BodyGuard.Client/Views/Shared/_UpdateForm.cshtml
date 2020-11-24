@@ -1,15 +1,28 @@
 ﻿@using System.Reflection
+@using Michaelsoft.BodyGuard.Client.Interfaces
 @using Michaelsoft.BodyGuard.Client.Models.Forms
 @using Michaelsoft.BodyGuard.Common.Extensions
 @using Michaelsoft.BodyGuard.Common.Settings
+@using Microsoft.AspNetCore.Http
+@using Microsoft.AspNetCore.Mvc.Rendering
 @using Microsoft.Extensions.Options
 @model Michaelsoft.BodyGuard.Client.Models.Forms.UpdateForm
-@inject IOptions<IdentitySettings> IdentitySettings
+@inject IHttpContextAccessor HttpContextAccessor
+@inject IBodyGuardUserApiService BodyGuardUserApiService
+@inject IOptions<CommonSettings> CommonSettings
 
 @{
+    var userId = HttpContextAccessor.HttpContext.Request.Query["id"].ToString();
+    var user = BodyGuardUserApiService.GetUser(userId).Result;
+    if (user == null)
+    {
+        return;
+    }
+    Model.User = user;
+    var identitySettings = CommonSettings.Value.IdentitySettings;
     var formStatus = TempData.Get<FormStatus>("FormStatus");
     var userDataProperties = Model.User.GetType().GetUpdatableProperties();
-    var enabledUserDataProperties = IdentitySettings.Value.EnabledUserDataProperties ?? new List<string>();
+    var enabledUserDataProperties = identitySettings.EnabledUserDataProperties ?? new List<string>();
     userDataProperties = enabledUserDataProperties.Any() ?
                              userDataProperties.Where(udp => enabledUserDataProperties.Contains(udp.Name)).ToArray() :
                              new PropertyInfo[0];
@@ -17,10 +30,12 @@
 
 <form method="post" asp-area="User" asp-page="/Update">
     <div class="update-form">
-        <input type="hidden" name="UpdateForm.SuccessUrl" value="@Model.SuccessUrl">
-        <input type="hidden" name="UpdateForm.FailureUrl" value="@Model.FailureUrl">
-        <input type="hidden" name="UpdateForm.SubmitLabel" value="@Model.SubmitLabel">
-        <input type="hidden" name="UpdateForm.User.Id" value="@Model.User.Id">
+        <input type="hidden" asp-for="SuccessArea">
+        <input type="hidden" asp-for="SuccessPage">
+        <input type="hidden" asp-for="FailureArea">
+        <input type="hidden" asp-for="FailurePage">
+        <input type="hidden" asp-for="SubmitLabel">
+        <input type="hidden" asp-for="User.Id">
         @foreach (var propertyInfo in userDataProperties)
         {
             <div class="form-group">
@@ -28,10 +43,10 @@
                     @Html.DisplayName(propertyInfo.GetDisplayName())
                 </div>
                 <div class="bodyguard_form-input">
-                    @Html.TextBox($"UpdateForm.User.{propertyInfo.Name}", formStatus.GetAttemptedValue($"UpdateForm.User.{propertyInfo.Name}") ?? propertyInfo.GetValue(Model.User, null))
+                    @Html.TextBox($"User.{propertyInfo.Name}", formStatus.GetAttemptedValue($"User.{propertyInfo.Name}") ?? propertyInfo.GetValue(Model.User, null))
                 </div>
                 <div class="bodyguard_form-error">
-                    @Html.ValidationMessage(propertyInfo.Name, formStatus.GetError($"UpdateForm.User.{propertyInfo.Name}"))
+                    @Html.ValidationMessage(propertyInfo.Name, formStatus.GetError($"User.{propertyInfo.Name}"), new {@class = "text-danger"})
                 </div>
             </div>
         }

@@ -7,31 +7,41 @@ namespace Michaelsoft.BodyGuard.Common.Models
 {
     public class User : IUser
     {
+
         [ExcludeFromInsert]
         [ExcludeFromUpdate]
         public string Id { get; set; }
 
-        [MaxLength(32)]
-        [Display(Name = "Name")]
-        public string Name { get; set; }
-
-        [MaxLength(32)]
-        [Display(Name = "Surname")]
-        public string Surname { get; set; }
-
-        [MaxLength(32)]
-        [Display(Name = "Nickname")]
-        public string Nickname { get; set; }
-
-        [MaxLength(256)]
+        [MinLength(5)]
+        [MaxLength(320)]
         [EmailAddress]
         [ExcludeFromInsert]
         [Display(Name = "Email Address")]
-        
+        [ValidateEnabledUserDataProperty]
         public string EmailAddress { get; set; }
 
-        [MaxLength(32)]
+        [MinLength(2)]
+        [MaxLength(64)]
+        [Display(Name = "Name")]
+        [ValidateEnabledUserDataProperty]
+        public string Name { get; set; }
+
+        [MinLength(2)]
+        [MaxLength(64)]
+        [Display(Name = "Surname")]
+        [ValidateEnabledUserDataProperty]
+        public string Surname { get; set; }
+
+        [MinLength(5)]
+        [MaxLength(64)]
+        [Display(Name = "Nickname")]
+        [ValidateEnabledUserDataProperty]
+        public string Nickname { get; set; }
+
+        [MinLength(5)]
+        [MaxLength(16)]
         [Display(Name = "Phone Number")]
+        [ValidateEnabledUserDataProperty]
         public string PhoneNumber { get; set; }
 
         [JsonIgnore]

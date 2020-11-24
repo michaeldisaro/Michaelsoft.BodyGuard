@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Michaelsoft.BodyGuard.Client.Interfaces;
 using Michaelsoft.BodyGuard.Client.Models.Forms;
+using Michaelsoft.BodyGuard.Common.Extensions;
 using Michaelsoft.BodyGuard.Common.HttpModels.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -24,8 +25,6 @@ namespace Michaelsoft.BodyGuard.Client.Areas.Authentication.Pages
         {
             ValidateRecoveryForm = new ValidateRecoveryForm
             {
-                SuccessUrl = "/Authentication/Login",
-                FailureUrl = "/Authentication/RecoveryRequest",
                 ValidateRecoveryRequest = new ValidateRecoveryRequest
                 {
                     Token = token
@@ -35,6 +34,13 @@ namespace Michaelsoft.BodyGuard.Client.Areas.Authentication.Pages
 
         public async Task<IActionResult> OnPost()
         {
+            if (!ModelState.IsValid)
+            {
+                TempData.Set("FormStatus", new FormStatus(ModelState));
+                return RedirectToPage(ValidateRecoveryForm.FailurePage,
+                                      new {Area = ValidateRecoveryForm.FailureArea});
+            }
+
             var response = await _authenticationApiService.ValidateRecovery
                                (ValidateRecoveryForm.ValidateRecoveryRequest.EmailAddress,
                                 ValidateRecoveryForm.ValidateRecoveryRequest.Token,
@@ -44,11 +50,13 @@ namespace Michaelsoft.BodyGuard.Client.Areas.Authentication.Pages
             if (response.Success)
             {
                 TempData["Message"] = "Recovery validation succeed!";
-                return Redirect(ValidateRecoveryForm.SuccessUrl ?? "/Authentication/Login");
+                return RedirectToPage(ValidateRecoveryForm.SuccessPage,
+                                      new {Area = ValidateRecoveryForm.SuccessArea});
             }
 
             TempData["Message"] = "Recovery validation failed.";
-            return Redirect(ValidateRecoveryForm.FailureUrl ?? "/Authentication/RecoveryRequest");
+            return RedirectToPage(ValidateRecoveryForm.FailurePage,
+                                  new {Area = ValidateRecoveryForm.FailureArea});
         }
 
     }

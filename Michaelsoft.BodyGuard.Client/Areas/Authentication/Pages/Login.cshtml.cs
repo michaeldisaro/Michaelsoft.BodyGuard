@@ -21,26 +21,31 @@ namespace Michaelsoft.BodyGuard.Client.Areas.Authentication.Pages
 
         public void OnGet()
         {
-            AuthenticationForm = new AuthenticationForm
-            {
-                LoginSuccessUrl = "/Authentication/Login",
-                LoginFailureUrl = "/Authentication/Login"
-            };
+
         }
 
         public async Task<IActionResult> OnPost()
         {
+            if (!ModelState.IsValid)
+            {
+                TempData["Message"] = "Login failed.";
+                return RedirectToPage(AuthenticationForm.LoginFailurePage,
+                                      new {Area = AuthenticationForm.LoginFailureArea});
+            }
+            
             var response = await _authenticationApiService.Login
                                (AuthenticationForm.LoginRequest.EmailAddress, AuthenticationForm.LoginRequest.Password);
 
             if (response.Success)
             {
                 TempData["Message"] = "Login succeed!";
-                return Redirect(AuthenticationForm.LoginSuccessUrl ?? "/Authentication/Login");
+                return RedirectToPage(AuthenticationForm.LoginSuccessPage,
+                                      new {Area = AuthenticationForm.LoginSuccessArea});
             }
 
             TempData["Message"] = "Login failed.";
-            return Redirect(AuthenticationForm.LoginFailureUrl ?? "/Authentication/Login");
+            return RedirectToPage(AuthenticationForm.LoginFailurePage,
+                                  new {Area = AuthenticationForm.LoginFailureArea});
         }
 
     }

@@ -1,9 +1,17 @@
-﻿@model Michaelsoft.BodyGuard.Client.Models.Forms.ValidateRecoveryForm
+﻿@using Michaelsoft.BodyGuard.Client.Models.Forms
+@using Michaelsoft.BodyGuard.Common.Extensions
+@model Michaelsoft.BodyGuard.Client.Models.Forms.ValidateRecoveryForm
+
+@{
+    var formStatus = TempData.Get<FormStatus>("FormStatus");
+}
 
 <form method="post" asp-area="Authentication" asp-page="/ValidateRecovery">
     <div class="validate-recovery-form">
-        <input type="hidden" asp-for="SuccessUrl">
-        <input type="hidden" asp-for="FailureUrl">
+        <input type="hidden" asp-for="SuccessArea">
+        <input type="hidden" asp-for="SuccessPage">
+        <input type="hidden" asp-for="FailureArea">
+        <input type="hidden" asp-for="FailurePage">
         <input type="hidden" asp-for="SubmitLabel">
         <input type="hidden" asp-for="ValidateRecoveryRequest.Token">
         <div class="form-group">
@@ -11,10 +19,10 @@
                 <label asp-for="ValidateRecoveryRequest.EmailAddress"></label>
             </div>
             <div class="bodyguard_form-input">
-                <input type="text" asp-for="ValidateRecoveryRequest.EmailAddress"/>
+                <input type="text" asp-for="ValidateRecoveryRequest.EmailAddress" value="@formStatus.GetAttemptedValue("ValidateRecoveryRequest.EmailAddress")"/>
             </div>
             <div class="bodyguard_form-error">
-                <span asp-validation-for="ValidateRecoveryRequest.EmailAddress" class="text-danger"></span>
+                <span asp-validation-for="ValidateRecoveryRequest.EmailAddress" class="text-danger">@Html.Raw(formStatus.GetError("ValidateRecoveryRequest.EmailAddress"))</span>
             </div>
         </div>
         <div class="form-group">
@@ -22,10 +30,10 @@
                 <label asp-for="ValidateRecoveryRequest.NewPassword"></label>
             </div>
             <div class="bodyguard_form-input">
-                <input type="password" asp-for="ValidateRecoveryRequest.NewPassword"/>
+                <input type="password" asp-for="ValidateRecoveryRequest.NewPassword" value="@formStatus.GetAttemptedValue("ValidateRecoveryRequest.NewPassword")"/>
             </div>
             <div class="bodyguard_form-error">
-                <span asp-validation-for="ValidateRecoveryRequest.NewPassword" class="text-danger"></span>
+                <span asp-validation-for="ValidateRecoveryRequest.NewPassword" class="text-danger">@Html.Raw(formStatus.GetError("ValidateRecoveryRequest.NewPassword"))</span>
             </div>
         </div>
         <div class="form-group">
@@ -33,10 +41,10 @@
                 <label asp-for="ValidateRecoveryRequest.NewPasswordConfirm"></label>
             </div>
             <div class="bodyguard_form-input">
-                <input type="password" asp-for="ValidateRecoveryRequest.NewPasswordConfirm"/>
+                <input type="password" asp-for="ValidateRecoveryRequest.NewPasswordConfirm" value="@formStatus.GetAttemptedValue("ValidateRecoveryRequest.NewPasswordConfirm")"/>
             </div>
             <div class="bodyguard_form-error">
-                <span asp-validation-for="ValidateRecoveryRequest.NewPasswordConfirm" class="text-danger"></span>
+                <span asp-validation-for="ValidateRecoveryRequest.NewPasswordConfirm" class="text-danger">@Html.Raw(formStatus.GetError("ValidateRecoveryRequest.NewPasswordConfirm"))</span>
             </div>
         </div>
         <div class="form-group">

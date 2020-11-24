@@ -1,4 +1,4 @@
-﻿using System.Threading.Tasks;
+using System.Threading.Tasks;
 using Michaelsoft.BodyGuard.Client.Interfaces;
 using Michaelsoft.BodyGuard.Client.Models.Forms;
 using Michaelsoft.BodyGuard.Common.Extensions;
@@ -20,25 +20,18 @@ namespace Michaelsoft.BodyGuard.Client.Areas.User.Pages
         [BindProperty]
         public UpdateForm UpdateForm { get; set; }
 
-        public async Task OnGet(string userId)
+        public void OnGet(string id)
         {
-            var user = await _userApiService.GetUser(userId);
-            UpdateForm = new UpdateForm
-            {
-                SuccessUrl = "/User/Update",
-                FailureUrl = "/User/Update",
-                User = user
-            };
+            
         }
 
         public async Task<IActionResult> OnPost()
         {
-
             if (!ModelState.IsValid)
             {
-                TempData["Message"] = "Update failed.";
                 TempData.Set("FormStatus", new FormStatus(ModelState));
-                return Redirect(UpdateForm.FailureUrl ?? $"/User/Update?userId={UpdateForm.User.Id}");
+                return RedirectToPage(UpdateForm.FailurePage,
+                                      new {Area = UpdateForm.FailureArea, Id = UpdateForm.User.Id});
             }
 
             var response = await _userApiService.UpdateUser(UpdateForm.User);
@@ -46,11 +39,13 @@ namespace Michaelsoft.BodyGuard.Client.Areas.User.Pages
             if (response.Success)
             {
                 TempData["Message"] = "Update succeed!";
-                return Redirect(UpdateForm.SuccessUrl ?? $"/User/Update?userId={UpdateForm.User.Id}");
+                return RedirectToPage(UpdateForm.SuccessPage,
+                                      new {Area = UpdateForm.SuccessArea, Id = UpdateForm.User.Id});
             }
 
             TempData["Message"] = "Update failed.";
-            return Redirect(UpdateForm.FailureUrl ?? $"/User/Update?userId={UpdateForm.User.Id}");
+            return RedirectToPage(UpdateForm.FailurePage,
+                                  new {Area = UpdateForm.FailureArea, Id = UpdateForm.User.Id});
         }
 
     }

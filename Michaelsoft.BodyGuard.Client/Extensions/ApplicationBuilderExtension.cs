@@ -1,4 +1,5 @@
-﻿using Michaelsoft.BodyGuard.Common.BaseClasses;
+﻿using Michaelsoft.BodyGuard.Client.Utilities;
+using Michaelsoft.BodyGuard.Common.BaseClasses;
 using Microsoft.AspNetCore.Builder;
 
 namespace Michaelsoft.BodyGuard.Client.Extensions
@@ -9,6 +10,7 @@ namespace Michaelsoft.BodyGuard.Client.Extensions
         public static void AddBodyGuard(this IApplicationBuilder app)
         {
             InjectableServicesBaseStaticClass.Services = app.ApplicationServices;
+            BodyGuardConfigurationUtility.ConfigureCommonSettings();
         }
 
     }

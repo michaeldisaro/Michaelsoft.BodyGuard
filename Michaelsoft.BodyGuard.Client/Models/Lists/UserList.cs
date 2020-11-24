@@ -6,12 +6,19 @@ namespace Michaelsoft.BodyGuard.Client.Models.Lists
     public class UserList
     {
 
-        public string SuccessUrl { get; set; }
+        public string UpdatePage { get; set; } = "/Update";
 
-        public string FailureUrl { get; set; }
+        public string UpdateArea { get; set; } = "User";
 
-        public List<User> UsersData { get; set; }
+        public string UpdateLabel { get; set; } = "Update";
+        
+        public string SuccessArea { get; set; } = "Result";
 
-        public string SubmitLabel { get; set; } // usefull for inline update
+        public string SuccessPage { get; set; } = "/Success";
+
+        public string FailureArea { get; set; } = "Result";
+
+        public string FailurePage { get; set; } = "/Failure";
+
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Michaelsoft.BodyGuard.Client.Interfaces;
 using Michaelsoft.BodyGuard.Client.Models.Forms;
+using Michaelsoft.BodyGuard.Common.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
@@ -21,15 +22,18 @@ namespace Michaelsoft.BodyGuard.Client.Areas.Authentication.Pages
 
         public void OnGet()
         {
-            PasswordRecoveryForm = new PasswordRecoveryForm
-            {
-                SuccessUrl = "/Authentication/RecoveryRequest",
-                FailureUrl = "/Authentication/RecoveryRequest"
-            };
+
         }
 
         public async Task<IActionResult> OnPost()
         {
+            if (!ModelState.IsValid)
+            {
+                TempData.Set("FormStatus", new FormStatus(ModelState));
+                return RedirectToPage(PasswordRecoveryForm.FailurePage,
+                                      new {Area = PasswordRecoveryForm.FailureArea});
+            }
+            
             var response = await _authenticationApiService.PasswordRecovery
                                (PasswordRecoveryForm.PasswordRecoveryRequest.EmailAddress,
                                 PasswordRecoveryForm.PasswordRecoveryRequest.TtlSeconds,
@@ -38,11 +42,13 @@ namespace Michaelsoft.BodyGuard.Client.Areas.Authentication.Pages
             if (response.Success)
             {
                 TempData["Message"] = "Password recovery succeed!";
-                return Redirect(PasswordRecoveryForm.SuccessUrl ?? "/Authentication/RecoveryRequest");
+                return RedirectToPage(PasswordRecoveryForm.SuccessPage,
+                                      new {Area = PasswordRecoveryForm.SuccessArea});
             }
 
             TempData["Message"] = "Password recovery failed.";
-            return Redirect(PasswordRecoveryForm.FailureUrl ?? "/Authentication/RecoveryRequest");
+            return RedirectToPage(PasswordRecoveryForm.FailurePage,
+                                  new {Area = PasswordRecoveryForm.FailureArea});
         }
 
     }

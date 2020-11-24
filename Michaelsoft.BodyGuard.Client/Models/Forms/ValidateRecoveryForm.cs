@@ -7,9 +7,13 @@ namespace Michaelsoft.BodyGuard.Client.Models.Forms
 
         public ValidateRecoveryRequest ValidateRecoveryRequest { get; set; }
 
-        public string SuccessUrl { get; set; }
+        public string SuccessArea { get; set; } = "Result";
 
-        public string FailureUrl { get; set; }
+        public string SuccessPage { get; set; } = "/Success";
+
+        public string FailureArea { get; set; } = "Authentication";
+
+        public string FailurePage { get; set; } = "/ValidateRecovery";
 
         public string SubmitLabel { get; set; } = "Change your password";
 

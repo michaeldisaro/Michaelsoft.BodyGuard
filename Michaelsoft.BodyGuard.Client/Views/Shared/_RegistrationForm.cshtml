@@ -4,12 +4,13 @@
 @using Michaelsoft.BodyGuard.Common.Settings
 @using Microsoft.Extensions.Options
 @model Michaelsoft.BodyGuard.Client.Models.Forms.RegistrationForm
-@inject IOptions<IdentitySettings> IdentitySettings
+@inject IOptions<CommonSettings> CommonSettings
 
 @{
+    var identitySettings = CommonSettings.Value.IdentitySettings;
     var formStatus = TempData.Get<FormStatus>("FormStatus");
     var userDataProperties = Model.CreateRequest.UserData.GetType().GetInsertableProperties();
-    var enabledUserDataProperties = IdentitySettings.Value.EnabledUserDataProperties ?? new List<string>();
+    var enabledUserDataProperties = identitySettings.EnabledUserDataProperties ?? new List<string>();
     userDataProperties = enabledUserDataProperties.Any() ?
                              userDataProperties.Where(udp => enabledUserDataProperties.Contains(udp.Name)).ToArray() :
                              new PropertyInfo[0];
@@ -17,8 +18,10 @@
 
 <form method="post" asp-area="Authentication" asp-page="/Registration">
     <div class="registration-form">
-        <input type="hidden" asp-for="SuccessUrl">
-        <input type="hidden" asp-for="FailureUrl">
+        <input type="hidden" asp-for="SuccessArea">
+        <input type="hidden" asp-for="SuccessPage">
+        <input type="hidden" asp-for="FailureArea">
+        <input type="hidden" asp-for="FailurePage">
         <input type="hidden" asp-for="SubmitLabel">
         <div class="form-group">
             <div class="bodyguard_form-label">
@@ -28,7 +31,7 @@
                 <input type="text" asp-for="CreateRequest.EmailAddress" value="@formStatus.GetAttemptedValue("CreateRequest.EmailAddress")"/>
             </div>
             <div class="bodyguard_form-error">
-                <span asp-validation-for="CreateRequest.EmailAddress" class="text-danger">@formStatus.GetError("CreateRequest.EmailAddress")</span>
+                <span asp-validation-for="CreateRequest.EmailAddress" class="text-danger">@Html.Raw(formStatus.GetError("CreateRequest.EmailAddress"))</span>
             </div>
         </div>
         <div class="form-group">
@@ -39,7 +42,7 @@
                 <input type="password" asp-for="CreateRequest.Password" value="@formStatus.GetAttemptedValue("CreateRequest.Password")"/>
             </div>
             <div class="bodyguard_form-error">
-                <span asp-validation-for="CreateRequest.Password" class="text-danger">@formStatus.GetError("CreateRequest.Password")</span>
+                <span asp-validation-for="CreateRequest.Password" class="text-danger">@Html.Raw(formStatus.GetError("CreateRequest.Password"))</span>
             </div>
         </div>
         <div class="form-group">
@@ -50,7 +53,7 @@
                 <input type="password" asp-for="CreateRequest.PasswordConfirm" value="@formStatus.GetAttemptedValue("CreateRequest.PasswordConfirm")"/>
             </div>
             <div class="bodyguard_form-error">
-                <span asp-validation-for="CreateRequest.PasswordConfirm" class="text-danger">@formStatus.GetError("CreateRequest.PasswordConfirm")</span>
+                <span asp-validation-for="CreateRequest.PasswordConfirm" class="text-danger">@Html.Raw(formStatus.GetError("CreateRequest.PasswordConfirm"))</span>
             </div>
         </div>
         @foreach (var propertyInfo in userDataProperties)
@@ -63,7 +66,7 @@
                     @Html.TextBox($"CreateRequest.UserData.{propertyInfo.Name}", formStatus.GetAttemptedValue($"CreateRequest.UserData.{propertyInfo.Name}"))
                 </div>
                 <div class="bodyguard_form-error">
-                    @Html.ValidationMessage(propertyInfo.Name, formStatus.GetError($"CreateRequest.UserData.{propertyInfo.Name}"))
+                    @Html.ValidationMessage(propertyInfo.Name, formStatus.GetError($"CreateRequest.UserData.{propertyInfo.Name}"), new {@class = "text-danger"})
                 </div>
             </div>
         }

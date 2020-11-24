@@ -11,9 +11,13 @@ namespace Michaelsoft.BodyGuard.Client.Models.Forms
 
         public IEnumerable<SelectListItem> Roles { get; set; }
 
-        public string SuccessUrl { get; set; }
+        public string SuccessArea { get; set; } = "Result";
 
-        public string FailureUrl { get; set; }
+        public string SuccessPage { get; set; } = "/Success";
+
+        public string FailureArea { get; set; } = "Result";
+
+        public string FailurePage { get; set; } = "/Failure";
 
         public string AssignRoleLabel { get; set; } = "Assign role";
 

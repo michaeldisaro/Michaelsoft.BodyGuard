@@ -19,13 +19,13 @@ namespace Michaelsoft.BodyGuard.Server.Services
 
         public List<string> Roles { get; set; } = new List<string>();
 
-        public RoleService(IOptions<IdentitySettings> identitySettings)
+        public RoleService(IOptions<CommonSettings> commonSettings)
         {
             Roles.Add(Root);
             Roles.Add(Dpo);
             Roles.Add(Admin);
             Roles.Add(User);
-            foreach (var customRole in identitySettings.Value.CustomRoles)
+            foreach (var customRole in commonSettings.Value.IdentitySettings.CustomRoles)
                 Roles.Add(customRole);
         }
 

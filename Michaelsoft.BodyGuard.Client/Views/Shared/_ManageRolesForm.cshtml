@@ -13,8 +13,10 @@
 
 <form method="post" asp-area="Authorization" asp-page="/ManageRoles">
     <div class="role-form">
-        <input type="hidden" asp-for="SuccessUrl">
-        <input type="hidden" asp-for="FailureUrl">
+        <input type="hidden" asp-for="SuccessArea">
+        <input type="hidden" asp-for="SuccessPage">
+        <input type="hidden" asp-for="FailureArea">
+        <input type="hidden" asp-for="FailurePage">
         <input type="hidden" asp-for="AssignRoleLabel">
         <input type="hidden" asp-for="RevokeRoleLabel">
         <div class="form-group">

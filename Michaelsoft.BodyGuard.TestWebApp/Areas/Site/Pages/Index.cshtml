@@ -18,32 +18,41 @@
                                       "~/Views/Shared/_AuthenticationForm.cshtml",
                                       new AuthenticationForm
                                       {
-                                          LoginSuccessUrl = "/Site/Success",
-                                          LoginFailureUrl = "/Site/Failure",
+                                          LoginSuccessArea = "Site",
+                                          LoginSuccessPage = "/Success",
+                                          LoginFailureArea = "Site",
+                                          LoginFailurePage = "/Failure",
                                           LoginLabel = "Accedi",
-                                          LogoutSuccessUrl = "/Site/Success",
-                                          LogoutFailureUrl = "/Site/Failure",
+                                          LogoutSuccessArea = "Site",
+                                          LogoutSuccessPage = "/Success",
+                                          LogoutFailureArea = "Site",
+                                          LogoutFailurePage = "/Failure",
                                           LogoutLabel = "Esci",
                                           UserClaim = AdditionalClaims.FullName,
                                           UserMessage = "Benvenuto:",
-                                          RegistrationUrl = "/Site/Registration",
+                                          RegistrationArea = "Site",
+                                          RegistrationPage = "/Registration",
                                           RegistrationLabel = "... oppure registrati",
-                                          PasswordRecoveryUrl = "/Site/PasswordRecovery",
+                                          PasswordRecoveryArea = "Site",
+                                          PasswordRecoveryPage = "/PasswordRecovery",
                                           PasswordRecoveryLabel = "Hai dimenticato la password?"
                                       });
     }
-
-    <a asp-area="Site" asp-page="/ManageRoles">Assegna ruoli agli utenti</a>
 
     @{
         await Html.RenderPartialAsync(
                                       "~/Views/Shared/_UserList.cshtml",
                                       new UserList
                                       {
-                                          SuccessUrl = "/Site/Success",
-                                          FailureUrl = "/Site/Index",
-                                          SubmitLabel = "Aggiorna",
-                                          UsersData = Model.UsersData
+                                          UpdateArea = "Site",
+                                          UpdatePage = "/Update",
+                                          UpdateLabel = "Aggiorna",
+                                          SuccessArea = "Site",
+                                          SuccessPage = "/Index",
+                                          FailureArea = "Site",
+                                          FailurePage = "/Index"
                                       });
     }
+    
+    <a asp-area="Site" asp-page="/ManageRoles">Gestione ruoli</a>
 </div>

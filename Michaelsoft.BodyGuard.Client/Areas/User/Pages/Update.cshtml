@@ -2,9 +2,5 @@
 @model Michaelsoft.BodyGuard.Client.Areas.User.Pages.Update
 
 @{
-    Layout = "_Layout";
-}
-
-@{
     await Html.RenderPartialAsync("_UpdateForm", Model.UpdateForm);
 }

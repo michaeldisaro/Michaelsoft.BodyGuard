@@ -1,0 +1,25 @@
+﻿@page
+@using Michaelsoft.BodyGuard.Client.Models.Forms
+@model Update
+
+@{
+    ViewData["Title"] = "Update";
+}
+
+<div class="text-center">
+    <legend class="display-4">BodyGuard Update Test</legend>
+
+    @{
+        await Html.RenderPartialAsync(
+                                      "~/Views/Shared/_UpdateForm.cshtml",
+                                      new UpdateForm
+                                      {
+                                          SuccessArea = "Site",
+                                          SuccessPage = "/Success",
+                                          FailureArea = "Site",
+                                          FailurePage = "/Update",
+                                          SubmitLabel = "Aggiorna"
+                                      });
+    }
+
+</div>

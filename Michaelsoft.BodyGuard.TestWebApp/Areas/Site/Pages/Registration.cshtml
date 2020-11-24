@@ -16,8 +16,10 @@
                                       "~/Views/Shared/_RegistrationForm.cshtml",
                                       new RegistrationForm
                                       {
-                                          SuccessUrl = "/Site/Success",
-                                          FailureUrl = "/Site/Registration",
+                                          SuccessArea = "Site",
+                                          SuccessPage = "/Success",
+                                          FailureArea = "Site",
+                                          FailurePage = "/Registration",
                                           SubmitLabel = "Registrati",
                                           CreateRequest = new UserCreateRequest {UserData = new User()}
                                       });

@@ -10,8 +10,10 @@
 {
     <form method="post" asp-area="Authentication" asp-page="/Login">
         <div class="login-form">
-            <input type="hidden" asp-for="LoginSuccessUrl">
-            <input type="hidden" asp-for="LoginFailureUrl">
+            <input type="hidden" asp-for="LoginSuccessArea">
+            <input type="hidden" asp-for="LoginSuccessPage">
+            <input type="hidden" asp-for="LoginFailureArea">
+            <input type="hidden" asp-for="LoginFailurePage">
             <input type="hidden" asp-for="LoginLabel">
             <div class="form-group">
                 <div class="bodyguard_form-label">
@@ -42,12 +44,12 @@
     </form>
     <div>
         <span class="registration-link">
-            <a href="@Model.RegistrationUrl">@Model.RegistrationLabel</a>
+            <a asp-area="@Model.RegistrationArea" asp-page="@Model.RegistrationPage">@Model.RegistrationLabel</a>
         </span>
     </div>
     <div>
         <span class="password-recovery-link">
-            <a href="@Model.PasswordRecoveryUrl">@Model.PasswordRecoveryLabel</a>
+            <a asp-area="@Model.PasswordRecoveryArea" asp-page="@Model.PasswordRecoveryPage">@Model.PasswordRecoveryLabel</a>
         </span>
     </div>
 }
@@ -55,8 +57,10 @@ else
 {
     <form method="post" asp-area="Authentication" asp-page="/Logout">
         <div class="login-form">
-            <input type="hidden" asp-for="LogoutSuccessUrl">
-            <input type="hidden" asp-for="LogoutFailureUrl">
+            <input type="hidden" asp-for="LogoutSuccessArea">
+            <input type="hidden" asp-for="LogoutSuccessPage">
+            <input type="hidden" asp-for="LogoutFailureArea">
+            <input type="hidden" asp-for="LogoutFailurePage">
             <input type="hidden" asp-for="LogoutLabel">
             <div class="form-group">
                 <label>@Model.UserMessage @nick</label>

@@ -34,11 +34,11 @@ namespace Michaelsoft.BodyGuard.Server.Controllers
         public AuthenticationController(UserService userService,
                                         TokenService tokenService,
                                         IMailer mailer,
-                                        IOptions<IdentitySettings> identitySettings)
+                                        IOptions<CommonSettings> commonSettings)
         {
             _mailer = mailer;
             _tokenService = tokenService;
-            _identitySettings = identitySettings.Value;
+            _identitySettings = commonSettings.Value.IdentitySettings;
             _userService = userService;
         }
 
