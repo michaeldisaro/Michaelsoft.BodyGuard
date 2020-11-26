@@ -1,42 +1,41 @@
-# BodyGuard 
+# BodyGuard Identity Management
+**DISCLAIMER: I build software for myself. This is an early stage work in progress built upon my specific needs. Use it at your own risk. Read the code to understand if it could cause you issues.**  
 
-**Work in progress at very early stage.**
+## What is it
+This project contains a .NET Core 3.1 IAM server and its client that provides a direct and simple integration for  manage your application's users with as little configuration as possible.  
+  
+This is not intended to be another WSO2/Gluu/Keycloak/OpenID identity server, but a modularized solution to the classic ".NET Identity Scaffolding" for projects where the above solutions are definitely an overkill.
 
-**DO NOT USE IT NOW! OR...**  
+## How it works
 
-**USE IT, BUT HELP ME WITH CONTRIBUTIONS!**
+ - You prepare a MongoDB installation ready to accept your users.
+ - You install and configure the BodyGuard Server on a machine (I will provide install scripts and configurations for CentOS asap).
+ - You import the BodyGuard Client inside your project (I will release a nuget package asap).
 
-A .NETCore 3.1 IAM server and client that provide direct integration for 
-user registration, login, password recovery, etc. and other GDPR compliant 
-features with as little configuration as possible.
+Basically you're done: client should provide your application with it's razor pages for registration, login, logout, password recovery, role management, user list, update and delete (in their early stage version).
 
-The objective is not making another WSO2/Gluu/Keycloak with all of their flows.
+If you need to integrate the user management into your pages and site navigation, you can import the forms and configure them very easily.
 
-The objectives are:
-* Avoiding use of .net identity scaffolding to any developer
-* Providing a separate IAM service with everything crypted by default and that helps 
-with gdpr features like policies tracking.
-* Providing a client that is as simple to use as *"import nuget package and call
-user management APIs to register, login, etc."* with little to no configuration.
-* Providing a service that gives to the web application only the right amount of data 
-only at the right time to build a valid JWT or a valid user session.
+Both of this scenarios are present in the TestWebApp project, I'll provide a very basic wiki to show how easy it's to add this identity server to your project.
 
-If these objectives will be achieved we will never have to loose time again configuring 
-a WSO2/Gluu/Keycloak or scaffolding any identity schema for small to medium projects where
-OAUTH/SAML/SSOetc. are not required.
+## How to model your users
+Just model your users as string identifiers, when you need your user's data you'll find some inside the JWT token or you can call the API to get it. 
 
-We will just model our schema with user IDs, start a container/machine for BodyGuardServer and
-add the BodyGuardClient to our application.
+**NOTE: Be carefull with what you configure to put inside the JWT token, avoid putting sensitive data there!**
 
-Things to improve:
-* Cryptography configuration outside of json settings.
-* Improve hashing algorithms (Sha1 is there just as a proof of concept).
+## This project needs support, how can you support it?
+ - Open issues and ask to solve them.
+ - Do some code review.
+ - Check for security issues.
+ - Contact me to become my sponsor, I'll be happy to have some financial support.
 
-Things to check:
-* Missing APIs.
-* Performance.
+## TODO list
+Things to check:  
+* Missing APIs.  
+* Performance.  
+* Check if better security is possible.
 
-Things I'd like to integrate:
-* Cookie consent message and acceptance for each user.
-* Policy messages and acceptance for each user.
+Things I'd like to integrate:  
+* Cookie consent message and acceptance for each user.  
+* Policies messages and acceptance for each user.  
 * OAUTH for social networks.
