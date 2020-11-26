@@ -6,6 +6,8 @@ This project contains a .NET Core 3.1 IAM server and its client that provides a 
   
 This is not intended to be another WSO2/Gluu/Keycloak/OpenID identity server, but a modularized solution to the classic ".NET Identity Scaffolding" for projects where the above solutions are definitely an overkill.
 
+**This identity server is for who is really committed to preserve his users' privacy by keeping as less data as possible and encrypting it.**
+
 ## How it works
 
  - You prepare a MongoDB installation ready to accept your users.
