@@ -8,7 +8,15 @@
 
 @{
     var formStatus = TempData.Get<FormStatus>("FormStatus");
-    Model.Roles = (await AuthorizationApiService.GetRoles()).Roles;
+    try
+    {
+        Model.Roles = (await AuthorizationApiService.GetRoles()).Roles;
+    }
+    catch (Exception)
+    {
+        <p class="text-danger">Unauthorized.</p>
+        return;
+    }
 }
 
 <form method="post" asp-area="Authorization" asp-page="/ManageRoles">

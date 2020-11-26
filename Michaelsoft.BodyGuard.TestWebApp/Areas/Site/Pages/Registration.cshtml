@@ -10,19 +10,19 @@
 
 <div class="text-center">
     <legend class="display-4">BodyGuard Registration Test</legend>
-
-    @{
-        await Html.RenderPartialAsync(
-                                      "~/Views/Shared/_RegistrationForm.cshtml",
-                                      new RegistrationForm
-                                      {
-                                          SuccessArea = "Site",
-                                          SuccessPage = "/Success",
-                                          FailureArea = "Site",
-                                          FailurePage = "/Registration",
-                                          SubmitLabel = "Registrati",
-                                          CreateRequest = new UserCreateRequest {UserData = new User()}
-                                      });
-    }
-
+    <div class="site-form-container">
+        @{
+            await Html.RenderPartialAsync(
+                                          "~/Views/Shared/_RegistrationForm.cshtml",
+                                          new RegistrationForm
+                                          {
+                                              SuccessArea = "Site",
+                                              SuccessPage = "/Success",
+                                              FailureArea = "Site",
+                                              FailurePage = "/Registration",
+                                              SubmitLabel = "Registrati",
+                                              CreateRequest = new UserCreateRequest {UserData = new User()}
+                                          });
+        }
+    </div>
 </div>

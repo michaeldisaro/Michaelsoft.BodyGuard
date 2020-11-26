@@ -173,6 +173,12 @@ namespace Michaelsoft.BodyGuard.Server.Services
             _users.ReplaceOne(u => u.Id == user.Id, user);
         }
 
+        public void HasRole(string id,
+                        List<string> roles)
+        {
+            Can(id, roles, new Dictionary<string, string>(), false);
+        }
+
         public void Can(string id,
                         List<string> roles,
                         Dictionary<string, string> claims,

@@ -1,6 +1,7 @@
 ﻿@page
 @using Michaelsoft.BodyGuard.Client.Models.Forms
 @using Michaelsoft.BodyGuard.Client.Models.Lists
+@using Michaelsoft.BodyGuard.Client.Utilities
 @using Michaelsoft.BodyGuard.Common.Enums
 @model IndexModel
 
@@ -13,33 +14,36 @@
 
     <partial name="_Message" for="Message"/>
 
-    @{
-        await Html.RenderPartialAsync(
-                                      "~/Views/Shared/_AuthenticationForm.cshtml",
-                                      new AuthenticationForm
-                                      {
-                                          LoginSuccessArea = "Site",
-                                          LoginSuccessPage = "/Success",
-                                          LoginFailureArea = "Site",
-                                          LoginFailurePage = "/Failure",
-                                          LoginLabel = "Accedi",
-                                          LogoutSuccessArea = "Site",
-                                          LogoutSuccessPage = "/Success",
-                                          LogoutFailureArea = "Site",
-                                          LogoutFailurePage = "/Failure",
-                                          LogoutLabel = "Esci",
-                                          UserClaim = AdditionalClaims.FullName,
-                                          UserMessage = "Benvenuto:",
-                                          RegistrationArea = "Site",
-                                          RegistrationPage = "/Registration",
-                                          RegistrationLabel = "... oppure registrati",
-                                          PasswordRecoveryArea = "Site",
-                                          PasswordRecoveryPage = "/PasswordRecovery",
-                                          PasswordRecoveryLabel = "Hai dimenticato la password?"
-                                      });
-    }
+    <div class="site-form-container">
+        @{
+            await Html.RenderPartialAsync(
+                                          "~/Views/Shared/_AuthenticationForm.cshtml",
+                                          new AuthenticationForm
+                                          {
+                                              LoginSuccessArea = "Site",
+                                              LoginSuccessPage = "/Success",
+                                              LoginFailureArea = "Site",
+                                              LoginFailurePage = "/Failure",
+                                              LoginLabel = "Accedi",
+                                              LogoutSuccessArea = "Site",
+                                              LogoutSuccessPage = "/Success",
+                                              LogoutFailureArea = "Site",
+                                              LogoutFailurePage = "/Failure",
+                                              LogoutLabel = "Esci",
+                                              UserClaim = AdditionalClaims.FullName,
+                                              UserMessage = "Benvenuto:",
+                                              RegistrationArea = "Site",
+                                              RegistrationPage = "/Registration",
+                                              RegistrationLabel = "... oppure registrati",
+                                              PasswordRecoveryArea = "Site",
+                                              PasswordRecoveryPage = "/PasswordRecovery",
+                                              PasswordRecoveryLabel = "Hai dimenticato la password?"
+                                          });
+        }
+    </div>
 
-    @{
+    @if (BodyGuardAuthorizationUtility.AllowRoles("root,admin"))
+    {
         await Html.RenderPartialAsync(
                                       "~/Views/Shared/_UserList.cshtml",
                                       new UserList
@@ -52,7 +56,9 @@
                                           FailureArea = "Site",
                                           FailurePage = "/Index"
                                       });
+
+        <a asp-area="Site" asp-page="/ManageRoles">Gestione ruoli</a>
     }
-    
-    <a asp-area="Site" asp-page="/ManageRoles">Gestione ruoli</a>
+
+
 </div>

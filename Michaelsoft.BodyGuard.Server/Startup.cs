@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
+using Michaelsoft.BodyGuard.Common.BaseClasses;
 using Michaelsoft.BodyGuard.Common.Settings;
 using Michaelsoft.BodyGuard.Server.Extensions;
 using Michaelsoft.BodyGuard.Server.Interfaces;
@@ -31,6 +32,7 @@ namespace Michaelsoft.BodyGuard.Server
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddHttpContextAccessor();
             services.AddEncryptionService(Configuration);
             services.AddUserService(Configuration);
             services.AddTokenService(Configuration);
@@ -110,6 +112,8 @@ namespace Michaelsoft.BodyGuard.Server
         public void Configure(IApplicationBuilder app,
                               IWebHostEnvironment env)
         {
+            InjectableServicesBaseStaticClass.Services = app.ApplicationServices;
+
             if (env.IsProduction())
             {
                 app.UseHsts();

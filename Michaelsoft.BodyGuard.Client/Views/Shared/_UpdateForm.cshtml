@@ -2,6 +2,7 @@
 @using Michaelsoft.BodyGuard.Client.Interfaces
 @using Michaelsoft.BodyGuard.Client.Models.Forms
 @using Michaelsoft.BodyGuard.Common.Extensions
+@using Michaelsoft.BodyGuard.Common.Models
 @using Michaelsoft.BodyGuard.Common.Settings
 @using Microsoft.AspNetCore.Http
 @using Microsoft.AspNetCore.Mvc.Rendering
@@ -13,9 +14,14 @@
 
 @{
     var userId = HttpContextAccessor.HttpContext.Request.Query["id"].ToString();
-    var user = BodyGuardUserApiService.GetUser(userId).Result;
-    if (user == null)
+    User user;
+    try
     {
+        user = BodyGuardUserApiService.GetUser(userId).Result;
+    }
+    catch (Exception)
+    {
+        <p class="text-danger">Unauthorized.</p>
         return;
     }
     Model.User = user;

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Net.Http;
 using Michaelsoft.BodyGuard.Common.HttpModels.Authentication;
 using Michaelsoft.BodyGuard.Server.Services;
+using Michaelsoft.BodyGuard.Server.Utilities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -55,9 +56,9 @@ namespace Michaelsoft.BodyGuard.Server.Controllers
         [Authorize]
         public UserDataResponse Get(string id)
         {
-            // TODO: check if logged user is admin or this user
             try
             {
+                CheckForUserPermission(id);
                 var data = _userService.GetData(id);
                 return new UserDataResponse
                 {
@@ -81,9 +82,9 @@ namespace Michaelsoft.BodyGuard.Server.Controllers
                                          [FromBody]
                                          UserUpdateRequest userUpdateRequest)
         {
-            // TODO: check if logged user is admin or this user
             try
             {
+                CheckForUserPermission(id);
                 if (!id.Equals(userUpdateRequest.Id))
                     throw new HttpRequestException("User id in path is not equal to user id in body.");
                 _userService.UpdateData(
@@ -119,6 +120,13 @@ namespace Michaelsoft.BodyGuard.Server.Controllers
                     Message = ex.Message
                 };
             }
+        }
+
+        private void CheckForUserPermission(string id)
+        {
+            var loggedUserId = HttpContextUtility.LoggedUserIdentityId();
+            if (loggedUserId != id)
+                _userService.HasRole(loggedUserId, new List<string> {RoleService.Root, RoleService.Admin});
         }
 
     }

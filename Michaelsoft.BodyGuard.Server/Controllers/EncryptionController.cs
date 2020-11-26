@@ -1,5 +1,6 @@
 ﻿using System.Security.Cryptography;
 using Michaelsoft.BodyGuard.Common.Encryption;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Michaelsoft.BodyGuard.Server.Controllers
@@ -9,6 +10,7 @@ namespace Michaelsoft.BodyGuard.Server.Controllers
     public class EncryptionController
     {
 
+        [AllowAnonymous]
         [HttpGet("[action]")]
         public string GenerateAesParameters()
         {

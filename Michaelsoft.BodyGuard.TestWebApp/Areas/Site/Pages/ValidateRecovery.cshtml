@@ -9,22 +9,22 @@
 
 <div class="text-center">
     <legend class="display-4">BodyGuard Validate Recovery Test</legend>
-
-    @{
-        await Html.RenderPartialAsync(
-                                      "~/Views/Shared/_ValidateRecoveryForm.cshtml",
-                                      new ValidateRecoveryForm
-                                      {
-                                          SuccessArea = "Site",
-                                          SuccessPage = "/Success",
-                                          FailureArea = "Site",
-                                          FailurePage = "/ValidateRecovery",
-                                          SubmitLabel = "Cambia la password",
-                                          ValidateRecoveryRequest = new ValidateRecoveryRequest
+    <div class="site-form-container">
+        @{
+            await Html.RenderPartialAsync(
+                                          "~/Views/Shared/_ValidateRecoveryForm.cshtml",
+                                          new ValidateRecoveryForm
                                           {
-                                              Token = Model.Token
-                                          }
-                                      });
-    }
-
+                                              SuccessArea = "Site",
+                                              SuccessPage = "/Success",
+                                              FailureArea = "Site",
+                                              FailurePage = "/ValidateRecovery",
+                                              SubmitLabel = "Cambia la password",
+                                              ValidateRecoveryRequest = new ValidateRecoveryRequest
+                                              {
+                                                  Token = Model.Token
+                                              }
+                                          });
+        }
+    </div>
 </div>

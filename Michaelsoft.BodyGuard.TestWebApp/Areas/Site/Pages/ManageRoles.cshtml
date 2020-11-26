@@ -8,19 +8,19 @@
 
 <div class="text-center">
     <legend class="display-4">BodyGuard Manage Roles Test</legend>
-
-    @{
-        await Html.RenderPartialAsync(
-                                      "~/Views/Shared/_ManageRolesForm.cshtml",
-                                      new ManageRolesForm()
-                                      {
-                                          SuccessArea = "Site",
-                                          SuccessPage = "/Success",
-                                          FailureArea = "Site",
-                                          FailurePage = "/ManageRoles",
-                                          AssignRoleLabel = "Assegna ruolo",
-                                          RevokeRoleLabel = "Revoca ruolo"
-                                      });
-    }
-
+    <div class="site-form-container">
+        @{
+            await Html.RenderPartialAsync(
+                                          "~/Views/Shared/_ManageRolesForm.cshtml",
+                                          new ManageRolesForm()
+                                          {
+                                              SuccessArea = "Site",
+                                              SuccessPage = "/Success",
+                                              FailureArea = "Site",
+                                              FailurePage = "/ManageRoles",
+                                              AssignRoleLabel = "Assegna ruolo",
+                                              RevokeRoleLabel = "Revoca ruolo"
+                                          });
+        }
+    </div>
 </div>
