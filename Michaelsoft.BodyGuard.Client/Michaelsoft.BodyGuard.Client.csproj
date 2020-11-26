@@ -13,4 +13,8 @@
     <ProjectReference Include="..\Michaelsoft.BodyGuard.Common\Michaelsoft.BodyGuard.Common.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <EmbeddedResource Include="wwwroot\**\*" />
+  </ItemGroup>
+
 </Project>

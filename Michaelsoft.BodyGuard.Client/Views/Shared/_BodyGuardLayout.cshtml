@@ -1,0 +1,30 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>@ViewData["Title"] - BodyGuard</title>
+    <link rel="stylesheet" href="~/_content/Michaelsoft.BodyGuard.Client/lib/bootstrap/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="~/_content/Michaelsoft.BodyGuard.Client/css/bodyguard.css"/>
+</head>
+<body>
+<div class="container">
+    <main role="main" class="pb-3">
+        @RenderBody()
+    </main>
+</div>
+<hr>
+<footer>
+    <div class="body-guard_logo">
+        <img src="/_content/Michaelsoft.BodyGuard.Client/images/body-guard-logo.png" alt="bodyguard" height="100px">
+    </div>
+    <div class="body-guard_copyright">
+        <div class="title">BodyGuard Identity Management</div>
+        <div class="link">Open Source by <a href="https://github.com/michaeldisaro">Michael Disarò</a></div>
+    </div>
+</footer>
+<script src="~/_content/Michaelsoft.BodyGuard.Client/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/_content/Michaelsoft.BodyGuard.Client/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+@RenderSection("Scripts", required: false)
+</body>
+</html>

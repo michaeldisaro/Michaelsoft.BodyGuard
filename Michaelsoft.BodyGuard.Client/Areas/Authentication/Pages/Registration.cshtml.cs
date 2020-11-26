@@ -23,7 +23,15 @@ namespace Michaelsoft.BodyGuard.Client.Areas.Authentication.Pages
 
         public void OnGet()
         {
-
+            RegistrationForm = new RegistrationForm
+            {
+                SuccessArea = "Authentication",
+                SuccessPage = "/Success",
+                FailureArea = "Authentication",
+                FailurePage = "/Registration",
+                SubmitLabel = "Registrati",
+                CreateRequest = new UserCreateRequest {UserData = new Common.Models.User()}
+            };
         }
 
         public async Task<IActionResult> OnPost()

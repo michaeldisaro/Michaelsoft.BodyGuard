@@ -22,7 +22,7 @@ namespace Michaelsoft.BodyGuard.Client.Areas.User.Pages
 
         public void OnGet(string id)
         {
-            
+            UpdateForm = new UpdateForm();
         }
 
         public async Task<IActionResult> OnPost()

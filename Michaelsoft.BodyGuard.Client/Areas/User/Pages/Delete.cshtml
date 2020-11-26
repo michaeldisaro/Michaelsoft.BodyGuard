@@ -1,6 +1,18 @@
 ﻿@page
 @model Michaelsoft.BodyGuard.Client.Areas.User.Pages.Delete
-
 @{
-    await Html.RenderPartialAsync("_DeleteForm", Model.DeleteForm);
+    Layout = "_BodyGuardLayout";
 }
+
+<div class="body-guard_client-form_outer">
+    <div class="body-guard_client-form_middle">
+        <div class="body-guard_client-form_inner">
+            <h1>Delete User</h1>
+            <div class="body-guard_client-form_container">
+                @{
+                    await Html.RenderPartialAsync("_DeleteForm", Model.DeleteForm);
+                }
+            </div>
+        </div>
+    </div>
+</div>

@@ -22,7 +22,7 @@ namespace Michaelsoft.BodyGuard.Client.Areas.Authentication.Pages
 
         public void OnGet()
         {
-
+            PasswordRecoveryForm = new PasswordRecoveryForm();
         }
 
         public async Task<IActionResult> OnPost()
@@ -33,7 +33,7 @@ namespace Michaelsoft.BodyGuard.Client.Areas.Authentication.Pages
                 return RedirectToPage(PasswordRecoveryForm.FailurePage,
                                       new {Area = PasswordRecoveryForm.FailureArea});
             }
-            
+
             var response = await _authenticationApiService.PasswordRecovery
                                (PasswordRecoveryForm.PasswordRecoveryRequest.EmailAddress,
                                 PasswordRecoveryForm.PasswordRecoveryRequest.TtlSeconds,

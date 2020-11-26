@@ -28,7 +28,7 @@
                 <label asp-for="CreateRequest.EmailAddress"></label>
             </div>
             <div class="bodyguard_form-input">
-                <input type="text" asp-for="CreateRequest.EmailAddress" value="@formStatus.GetAttemptedValue("CreateRequest.EmailAddress")"/>
+                <input type="text" class="form-control" asp-for="CreateRequest.EmailAddress" value="@formStatus.GetAttemptedValue("CreateRequest.EmailAddress")"/>
             </div>
             <div class="bodyguard_form-error">
                 <span asp-validation-for="CreateRequest.EmailAddress" class="text-danger">@Html.Raw(formStatus.GetError("CreateRequest.EmailAddress"))</span>
@@ -39,7 +39,7 @@
                 <label asp-for="CreateRequest.Password"></label>
             </div>
             <div class="bodyguard_form-input">
-                <input type="password" asp-for="CreateRequest.Password" value="@formStatus.GetAttemptedValue("CreateRequest.Password")"/>
+                <input type="password" class="form-control" asp-for="CreateRequest.Password" value="@formStatus.GetAttemptedValue("CreateRequest.Password")"/>
             </div>
             <div class="bodyguard_form-error">
                 <span asp-validation-for="CreateRequest.Password" class="text-danger">@Html.Raw(formStatus.GetError("CreateRequest.Password"))</span>
@@ -50,7 +50,7 @@
                 <label asp-for="CreateRequest.PasswordConfirm"></label>
             </div>
             <div class="bodyguard_form-input">
-                <input type="password" asp-for="CreateRequest.PasswordConfirm" value="@formStatus.GetAttemptedValue("CreateRequest.PasswordConfirm")"/>
+                <input type="password" class="form-control" asp-for="CreateRequest.PasswordConfirm" value="@formStatus.GetAttemptedValue("CreateRequest.PasswordConfirm")"/>
             </div>
             <div class="bodyguard_form-error">
                 <span asp-validation-for="CreateRequest.PasswordConfirm" class="text-danger">@Html.Raw(formStatus.GetError("CreateRequest.PasswordConfirm"))</span>
@@ -63,7 +63,7 @@
                     @Html.DisplayName(propertyInfo.GetDisplayName())
                 </div>
                 <div class="bodyguard_form-input">
-                    @Html.TextBox($"CreateRequest.UserData.{propertyInfo.Name}", formStatus.GetAttemptedValue($"CreateRequest.UserData.{propertyInfo.Name}"))
+                    @Html.TextBox($"CreateRequest.UserData.{propertyInfo.Name}", formStatus.GetAttemptedValue($"CreateRequest.UserData.{propertyInfo.Name}"), new {@class = "form-control"})
                 </div>
                 <div class="bodyguard_form-error">
                     @Html.ValidationMessage(propertyInfo.Name, formStatus.GetError($"CreateRequest.UserData.{propertyInfo.Name}"), new {@class = "text-danger"})
@@ -71,7 +71,7 @@
             </div>
         }
         <div class="form-group">
-            <button type="submit" class="btn btn-primary">@Model.SubmitLabel</button>
+            <button type="submit" class="btn btn-primary btn-sm btn-block">@Model.SubmitLabel</button>
         </div>
     </div>
 </form>

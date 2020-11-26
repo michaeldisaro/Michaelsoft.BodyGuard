@@ -24,7 +24,7 @@
                 <label asp-for="ManageRoleRequest.EmailAddress"></label>
             </div>
             <div class="bodyguard_form-input">
-                <input type="text" asp-for="ManageRoleRequest.EmailAddress" value="@formStatus.GetAttemptedValue("ManageRoleRequest.EmailAddress")"/>
+                <input type="text" class="form-control" asp-for="ManageRoleRequest.EmailAddress" value="@formStatus.GetAttemptedValue("ManageRoleRequest.EmailAddress")"/>
             </div>
             <div class="bodyguard_form-error">
                 <span asp-validation-for="ManageRoleRequest.EmailAddress" class="text-danger">@formStatus.GetError("ManageRoleRequest.EmailAddress")</span>
@@ -35,17 +35,24 @@
                 <label asp-for="ManageRoleRequest.Role"></label>
             </div>
             <div class="bodyguard_form-input">
-                <select asp-for="ManageRoleRequest.Role" asp-items="Model.Roles" value="@formStatus.GetAttemptedValue("ManageRoleRequest.Role")"></select>
+                <select class="form-control" asp-for="ManageRoleRequest.Role" asp-items="Model.Roles" value="@formStatus.GetAttemptedValue("ManageRoleRequest.Role")"></select>
             </div>
             <div class="bodyguard_form-error">
                 <span asp-validation-for="ManageRoleRequest.Role" class="text-danger">@formStatus.GetError("ManageRoleRequest.Role")</span>
             </div>
         </div>
-        <div class="form-group">
-            <button type="submit" asp-area="Authorization" asp-page="/ManageRoles" asp-page-handler="Assign" class="btn btn-primary">@Model.AssignRoleLabel</button>
-        </div>
-        <div class="form-group">
-            <button type="submit" asp-area="Authorization" asp-page="/ManageRoles" asp-page-handler="Revoke" class="btn btn-primary">@Model.RevokeRoleLabel</button>
+        <div class="row">
+            <div class="col-6">
+                <div class="form-group">
+                    <button type="submit" asp-area="Authorization" asp-page="/ManageRoles" asp-page-handler="Assign" class="btn btn-primary btn-sm btn-block">@Model.AssignRoleLabel</button>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="form-group">
+                    <button type="submit" asp-area="Authorization" asp-page="/ManageRoles" asp-page-handler="Revoke" class="btn btn-danger btn-sm btn-block">@Model.RevokeRoleLabel</button>
+                </div>
+
+            </div>
         </div>
     </div>
 </form>

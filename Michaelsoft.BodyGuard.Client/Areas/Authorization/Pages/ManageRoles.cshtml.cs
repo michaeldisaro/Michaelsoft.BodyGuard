@@ -22,7 +22,7 @@ namespace Michaelsoft.BodyGuard.Client.Areas.Authorization.Pages
 
         public void OnGet()
         {
-            
+            ManageRolesForm = new ManageRolesForm();
         }
 
         public async Task<IActionResult> OnPostAssign()

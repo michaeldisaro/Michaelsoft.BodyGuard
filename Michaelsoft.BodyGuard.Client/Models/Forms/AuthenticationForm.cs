@@ -17,13 +17,13 @@ namespace Michaelsoft.BodyGuard.Client.Models.Forms
 
         public string LoginLabel { get; set; } = "Login";
 
-        public string LogoutSuccessArea { get; set; }
+        public string LogoutSuccessArea { get; set; } = "Authentication";
 
-        public string LogoutSuccessPage { get; set; }
+        public string LogoutSuccessPage { get; set; } = "/Login";
 
-        public string LogoutFailureArea { get; set; }
+        public string LogoutFailureArea { get; set; } = "Authentication";
 
-        public string LogoutFailurePage { get; set; }
+        public string LogoutFailurePage { get; set; } = "/Logout";
 
         public string LogoutLabel { get; set; } = "Logout";
 

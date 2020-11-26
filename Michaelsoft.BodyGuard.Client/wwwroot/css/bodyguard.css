@@ -1,0 +1,64 @@
+﻿body {
+    background-color: #306684;
+    color: white;
+    font-family: verdana, sans-serif;
+    font-variant: petite-caps;
+}
+
+a {
+    color: lightgray;
+}
+
+a:visited {
+    color: lightgray;
+}
+
+a:hover {
+    color: cornflowerblue;
+}
+
+div.body-guard_client-form_outer {
+    display: table;
+    width: 100%;
+    height: 100vh;
+}
+
+div.body-guard_client-form_middle {
+    display: table-cell;
+    vertical-align: middle;
+}
+
+div.body-guard_client-form_inner {
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
+
+div.body-guard_client-form_container {
+    width: 250px;
+    margin: auto;
+}
+
+div.body-guard_client-form_container .text-danger {
+    color: lightcoral !important;
+}
+
+footer {
+    position: fixed;
+    bottom: 0;
+    padding: 10px;
+}
+
+footer div.body-guard_logo {
+    display: inline-block;
+    vertical-align: bottom;
+}
+
+footer div.body-guard_copyright {
+    display: inline-block;
+    vertical-align: bottom;
+}
+
+footer div.body-guard_copyright div.title {
+    color: cornflowerblue;
+}

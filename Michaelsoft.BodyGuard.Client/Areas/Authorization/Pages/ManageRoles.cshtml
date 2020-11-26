@@ -1,5 +1,18 @@
 ﻿@page
 @model Michaelsoft.BodyGuard.Client.Areas.Authorization.Pages.ManageRoles
 @{
-    await Html.RenderPartialAsync("_ManageRolesForm", Model.ManageRolesForm);
+    Layout = "_BodyGuardLayout";
 }
+
+<div class="body-guard_client-form_outer">
+    <div class="body-guard_client-form_middle">
+        <div class="body-guard_client-form_inner">
+            <h1>Manage Roles</h1>
+            <div class="body-guard_client-form_container">
+                @{
+                    await Html.RenderPartialAsync("_ManageRolesForm", Model.ManageRolesForm);
+                }
+            </div>
+        </div>
+    </div>
+</div>

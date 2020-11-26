@@ -19,9 +19,9 @@ namespace Michaelsoft.BodyGuard.Client.Areas.Authentication.Pages
         [BindProperty]
         public AuthenticationForm AuthenticationForm { get; set; }
 
-        public void OnGet()
+        public void OnGet(string returnUrl)
         {
-
+            AuthenticationForm = new AuthenticationForm();
         }
 
         public async Task<IActionResult> OnPost()
@@ -32,7 +32,7 @@ namespace Michaelsoft.BodyGuard.Client.Areas.Authentication.Pages
                 return RedirectToPage(AuthenticationForm.LoginFailurePage,
                                       new {Area = AuthenticationForm.LoginFailureArea});
             }
-            
+
             var response = await _authenticationApiService.Login
                                (AuthenticationForm.LoginRequest.EmailAddress, AuthenticationForm.LoginRequest.Password);
 

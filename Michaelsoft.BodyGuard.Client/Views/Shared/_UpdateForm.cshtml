@@ -43,7 +43,7 @@
                     @Html.DisplayName(propertyInfo.GetDisplayName())
                 </div>
                 <div class="bodyguard_form-input">
-                    @Html.TextBox($"User.{propertyInfo.Name}", formStatus.GetAttemptedValue($"User.{propertyInfo.Name}") ?? propertyInfo.GetValue(Model.User, null))
+                    @Html.TextBox($"User.{propertyInfo.Name}", formStatus.GetAttemptedValue($"User.{propertyInfo.Name}") ?? propertyInfo.GetValue(Model.User, null), new {@class = "form-control"})
                 </div>
                 <div class="bodyguard_form-error">
                     @Html.ValidationMessage(propertyInfo.Name, formStatus.GetError($"User.{propertyInfo.Name}"), new {@class = "text-danger"})
@@ -51,7 +51,7 @@
             </div>
         }
         <div class="form-group">
-            <button type="submit" class="btn btn-primary">@Model.SubmitLabel</button>
+            <button type="submit" class="btn btn-primary btn-sm btn-block">@Model.SubmitLabel</button>
         </div>
     </div>
 </form>
