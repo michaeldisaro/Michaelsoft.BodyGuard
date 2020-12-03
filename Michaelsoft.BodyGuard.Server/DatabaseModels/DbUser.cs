@@ -28,6 +28,9 @@ namespace Michaelsoft.BodyGuard.Server.DatabaseModels
         [BsonRepresentation(BsonType.DateTime)]
         public DateTime Updated { get; set; }
 
+        [BsonRepresentation(BsonType.DateTime)]
+        public DateTime? Confirmed { get; set; }
+
         public List<string> Roles { get; set; } = new List<string>();
 
         public Dictionary<string, string> Claims { get; set; } = new Dictionary<string, string>();

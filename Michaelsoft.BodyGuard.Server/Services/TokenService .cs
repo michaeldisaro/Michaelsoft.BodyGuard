@@ -29,6 +29,10 @@ namespace Michaelsoft.BodyGuard.Server.Services
         private DbToken GetByTypeAndUserId(string type,
                                          string userId) =>
             _tokens.Find<DbToken>(t => t.Type == type && t.UserId == userId).FirstOrDefault();
+        
+        private DbToken GetByTypeAndValue(string type,
+                                           string value) =>
+            _tokens.Find<DbToken>(t => t.Type == type && t.Value == value).FirstOrDefault();
 
         public DbToken Create(string type,
                             string value,
@@ -49,13 +53,21 @@ namespace Michaelsoft.BodyGuard.Server.Services
             return token;
         }
 
-        public DbToken Validate(string type,
+        public DbToken GetTokenByTypeUserAndValue(string type,
                               string userId,
                               string value)
         {
             var token = GetByTypeAndUserId(type, userId);
             if (token == null) throw new TokenNotFoundException();
             if (!value.Equals(token.Value)) throw new InvalidTokenException();
+            return token;
+        }
+        
+        public DbToken GetTokenByTypeAndValue(string type,
+                                                string value)
+        {
+            var token = GetByTypeAndValue(type, value);
+            if (token == null) throw new TokenNotFoundException();
             return token;
         }
 

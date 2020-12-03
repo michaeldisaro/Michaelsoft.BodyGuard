@@ -34,6 +34,15 @@ div.body-guard_client-form_inner {
     text-align: center;
 }
 
+div.body-guard_client-form_inner .card{
+    background-color: #ffffff1a;
+}
+
+div.body-guard_client-form_inner .card .card-header,
+div.body-guard_client-form_inner .card .card-footer{
+    background-color: #0000004d;
+}
+
 div.body-guard_client-form_container {
     width: 250px;
     margin: auto;

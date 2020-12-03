@@ -1,0 +1,18 @@
+﻿@page
+@model Michaelsoft.BodyGuard.Client.Areas.Authentication.Pages.RegistrationEmail
+@{
+    Layout = "_BodyGuardLayout";
+}
+
+<div class="body-guard_client-form_outer">
+    <div class="body-guard_client-form_middle">
+        <div class="body-guard_client-form_inner">
+            <h1>Registration Email</h1>
+            <div class="body-guard_client-form_container">
+                @{
+                    await Html.RenderPartialAsync("_RegistrationEmailForm", Model.RegistrationEmailForm);
+                }
+            </div>
+        </div>
+    </div>
+</div>

@@ -5,5 +5,7 @@
 
         public const string PasswordRecovery = "passwordrecovery";
 
+        public const string ConfirmRegistration = "confirmregistration";
+
     }
 }

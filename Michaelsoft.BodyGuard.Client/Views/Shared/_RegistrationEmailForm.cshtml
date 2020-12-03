@@ -1,0 +1,31 @@
+﻿@using Michaelsoft.BodyGuard.Client.Models.Forms
+@using Michaelsoft.BodyGuard.Common.Extensions
+@model Michaelsoft.BodyGuard.Client.Models.Forms.RegistrationEmailForm
+@{
+    var formStatus = TempData.Get<FormStatus>("FormStatus");
+}
+
+<form method="post" asp-area="Authentication" asp-page="/RegistrationEmail">
+    <div class="validate-recovery-form">
+        <input type="hidden" asp-for="SuccessArea">
+        <input type="hidden" asp-for="SuccessPage">
+        <input type="hidden" asp-for="FailureArea">
+        <input type="hidden" asp-for="FailurePage">
+        <input type="hidden" asp-for="SubmitLabel">
+        <input type="hidden" asp-for="RegistrationEmailRequest.ConfirmRegistrationUrl">
+        <div class="form-group">
+            <div class="bodyguard_form-label">
+                <label asp-for="RegistrationEmailRequest.EmailAddress"></label>
+            </div>
+            <div class="bodyguard_form-input">
+                <input type="text" class="form-control" asp-for="RegistrationEmailRequest.EmailAddress" value="@formStatus.GetAttemptedValue("RegistrationEmailRequest.EmailAddress")"/>
+            </div>
+            <div class="bodyguard_form-error">
+                <span asp-validation-for="RegistrationEmailRequest.EmailAddress" class="text-danger">@Html.Raw(formStatus.GetError("RegistrationEmailRequest.EmailAddress"))</span>
+            </div>
+        </div>
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary btn-sm btn-block">@Model.SubmitLabel</button>
+        </div>
+    </div>
+</form>

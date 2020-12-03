@@ -36,6 +36,12 @@ namespace Michaelsoft.BodyGuard.Client.Models.Forms
         public string RegistrationPage { get; set; } = "/Registration";
 
         public string RegistrationLabel { get; set; } = "Register";
+        
+        public string RegistrationEmailArea { get; set; } = "Authentication";
+
+        public string RegistrationEmailPage { get; set; } = "/RegistrationEmail";
+
+        public string RegistrationEmailLabel { get; set; } = "Resend email";
 
         public string PasswordRecoveryArea { get; set; } = "Authentication";
 

@@ -108,5 +108,41 @@ namespace Michaelsoft.BodyGuard.Client.Services
             return baseApiResult.Response;
         }
 
+        public async Task<ConfirmRegistrationResponse> ConfirmRegistration(string token)
+        {
+            var confirmRegistrationRequest = new ConfirmRegistrationRequest
+            {
+                Token = token
+            };
+
+            var baseApiResult =
+                await PostRequest<ConfirmRegistrationResponse>("ConfirmRegistration", confirmRegistrationRequest);
+
+            if (!baseApiResult.Success)
+                throw new Exception(baseApiResult.Message);
+
+            return baseApiResult.Response;
+        }
+
+        public async Task<RegistrationEmailResponse> SendRegistrationEmail(string emailAddress,
+                                                                           int ttlSeconds,
+                                                                           string confirmRegistrationUrl)
+        {
+            var registrationEmailRequest = new RegistrationEmailRequest
+            {
+                EmailAddress = emailAddress,
+                TtlSeconds = ttlSeconds,
+                ConfirmRegistrationUrl = ApplicationBasePath + confirmRegistrationUrl
+            };
+
+            var baseApiResult =
+                await PostRequest<RegistrationEmailResponse>("RegistrationEmail", registrationEmailRequest);
+
+            if (!baseApiResult.Success)
+                throw new Exception(baseApiResult.Message);
+
+            return baseApiResult.Response;
+        }
+
     }
 }

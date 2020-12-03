@@ -1,0 +1,4 @@
+﻿Confirm Registration
+================================================
+You successfully registered your account:
+Go to {{confirmRegistrationUrl}} to activate it!

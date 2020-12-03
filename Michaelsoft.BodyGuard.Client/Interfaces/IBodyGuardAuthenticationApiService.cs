@@ -25,5 +25,11 @@ namespace Michaelsoft.BodyGuard.Client.Interfaces
                                                                int ttlSeconds,
                                                                string validateRecoveryUrl);
 
+        public Task<ConfirmRegistrationResponse> ConfirmRegistration(string token);
+
+        public Task<RegistrationEmailResponse> SendRegistrationEmail(string emailAddress,
+                                                                     int ttlSeconds,
+                                                                     string confirmRegistrationUrl);
+
     }
 }

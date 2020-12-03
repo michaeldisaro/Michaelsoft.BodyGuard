@@ -120,6 +120,7 @@ namespace Michaelsoft.BodyGuard.Server.Services
             var hashedEmail = emailAddress.Sha1();
             var user = GetByHashedEmail(hashedEmail);
             if (user == null) throw new UserNotFoundException();
+            if (user.Confirmed == null) throw new UserNotConfirmed();
             return VerifyPassword(user, password) ? user : throw new WrongPasswordException();
         }
 
@@ -144,6 +145,14 @@ namespace Michaelsoft.BodyGuard.Server.Services
             if (user == null) throw new UserNotFoundException();
             user.Updated = DateTime.Now;
             user.EncryptedData = EncryptUserData(userData);
+            _users.ReplaceOne(u => u.Id == user.Id, user);
+        }
+
+        public void ConfirmUser(string id)
+        {
+            var user = GetById(id);
+            if (user == null) throw new UserNotFoundException();
+            user.Confirmed = DateTime.Now;
             _users.ReplaceOne(u => u.Id == user.Id, user);
         }
 
@@ -174,7 +183,7 @@ namespace Michaelsoft.BodyGuard.Server.Services
         }
 
         public void HasRole(string id,
-                        List<string> roles)
+                            List<string> roles)
         {
             Can(id, roles, new Dictionary<string, string>(), false);
         }

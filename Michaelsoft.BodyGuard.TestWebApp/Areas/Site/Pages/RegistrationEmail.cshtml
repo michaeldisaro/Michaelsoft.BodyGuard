@@ -1,0 +1,30 @@
+﻿@page
+@using Michaelsoft.BodyGuard.Client.Models.Forms
+@using Michaelsoft.BodyGuard.Common.HttpModels.Authentication
+@model RegistrationEmail
+
+@{
+    ViewData["Title"] = "Resend Registration Email";
+}
+
+<div class="text-center">
+    <legend class="display-4">BodyGuard Resend Registratio Email Test</legend>
+    <div class="site-form-container">
+        @{
+            await Html.RenderPartialAsync(
+                                          "~/Views/Shared/_RegistrationEmailForm.cshtml",
+                                          new RegistrationEmailForm
+                                          {
+                                              SuccessArea = "Site",
+                                              SuccessPage = "/Success",
+                                              FailureArea = "Site",
+                                              FailurePage = "/RegistrationEmail",
+                                              SubmitLabel = "Richiedi l'email di conferma",
+                                              RegistrationEmailRequest = new RegistrationEmailRequest
+                                              {
+                                                  ConfirmRegistrationUrl = "/Site/ConfirmRegistration?token={{token}}"
+                                              }
+                                          });
+        }
+    </div>
+</div>

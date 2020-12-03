@@ -34,6 +34,10 @@ namespace Michaelsoft.BodyGuard.Common.HttpModels.Authentication
         public string PasswordConfirm { get; set; }
 
         public User UserData { get; set; }
+        
+        public int TtlSeconds { get; set; } = 48 * 3600;
+
+        public string ConfirmRegistrationUrl { get; set; } = "/Authentication/ConfirmRegistration?token={{token}}";
 
     }
 }

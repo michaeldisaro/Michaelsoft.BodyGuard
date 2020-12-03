@@ -4,6 +4,7 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UserSecretsId>883afc4f-a3fa-44dd-b432-675fab2675f7</UserSecretsId>
   </PropertyGroup>
+  
   <ItemGroup>
     <PackageReference Include="BCrypt.Net-Next" Version="4.0.0" />
     <PackageReference Include="Michaelsoft.Mailer" Version="0.0.1" />
@@ -11,7 +12,20 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
     <PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="5.6.3" />
   </ItemGroup>
+  
   <ItemGroup>
     <ProjectReference Include="..\Michaelsoft.BodyGuard.Common\Michaelsoft.BodyGuard.Common.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Emails\**">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Emails\ConfirmRegistration.txt" />
+    <Content Include="Emails\PasswordRecovery.txt" />
+  </ItemGroup>
+  
 </Project>
