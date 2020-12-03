@@ -15,7 +15,7 @@ namespace Michaelsoft.BodyGuard.Client.Models.Forms
 
         public string FailurePage { get; set; } = "/ValidateRecovery";
 
-        public string SubmitLabel { get; set; } = "Change your password";
+        public string SubmitLabel { get; set; } = "submit_password_change";
 
     }
 }

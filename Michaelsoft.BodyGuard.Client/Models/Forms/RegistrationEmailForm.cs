@@ -15,7 +15,7 @@ namespace Michaelsoft.BodyGuard.Client.Models.Forms
 
         public string FailurePage { get; set; } = "/RegistrationEmail";
 
-        public string SubmitLabel { get; set; } = "Send confirmation email";
+        public string SubmitLabel { get; set; } = "submit_confirmation_request";
 
     }
 }

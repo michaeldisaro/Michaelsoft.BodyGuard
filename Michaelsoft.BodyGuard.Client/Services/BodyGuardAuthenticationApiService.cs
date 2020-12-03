@@ -5,6 +5,7 @@ using Michaelsoft.BodyGuard.Client.Interfaces;
 using Michaelsoft.BodyGuard.Client.Settings;
 using Michaelsoft.BodyGuard.Common.HttpModels.Authentication;
 using Michaelsoft.BodyGuard.Common.Models;
+using Michaelsoft.BodyGuard.Common.Settings;
 using Microsoft.AspNetCore.Http;
 
 namespace Michaelsoft.BodyGuard.Client.Services
@@ -96,7 +97,7 @@ namespace Michaelsoft.BodyGuard.Client.Services
             {
                 EmailAddress = emailAddress,
                 TtlSeconds = ttlSeconds,
-                ValidateRecoveryUrl = ApplicationBasePath + validateRecoveryUrl
+                ValidateRecoveryUrl = validateRecoveryUrl
             };
 
             var baseApiResult =
@@ -132,7 +133,7 @@ namespace Michaelsoft.BodyGuard.Client.Services
             {
                 EmailAddress = emailAddress,
                 TtlSeconds = ttlSeconds,
-                ConfirmRegistrationUrl = ApplicationBasePath + confirmRegistrationUrl
+                ConfirmRegistrationUrl = confirmRegistrationUrl
             };
 
             var baseApiResult =

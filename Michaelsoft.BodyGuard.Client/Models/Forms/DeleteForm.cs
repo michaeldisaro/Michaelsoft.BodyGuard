@@ -16,7 +16,7 @@ namespace Michaelsoft.BodyGuard.Client.Models.Forms
 
         public string FailurePage { get; set; } = "/Failure";
 
-        public string SubmitLabel { get; set; } = "Delete";
+        public string SubmitLabel { get; set; } = "submit_delete";
 
     }
 }

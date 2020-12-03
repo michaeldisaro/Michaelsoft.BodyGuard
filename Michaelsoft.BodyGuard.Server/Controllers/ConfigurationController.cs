@@ -24,7 +24,9 @@ namespace Michaelsoft.BodyGuard.Server.Controllers
         public void ConfigureCommonSettings([FromBody]
                                             CommonSettings commonSettings)
         {
+            _commonSettings.BaseApplicationPath = commonSettings.BaseApplicationPath;
             _commonSettings.IdentitySettings = commonSettings.IdentitySettings;
+            _commonSettings.PasswordSettings = commonSettings.PasswordSettings;
         }
 
     }

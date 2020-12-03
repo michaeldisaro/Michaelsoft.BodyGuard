@@ -5,12 +5,14 @@
 @using Michaelsoft.BodyGuard.Common.Models
 @using Michaelsoft.BodyGuard.Common.Settings
 @using Microsoft.AspNetCore.Http
+@using Microsoft.AspNetCore.Mvc.Localization
 @using Microsoft.AspNetCore.Mvc.Rendering
 @using Microsoft.Extensions.Options
 @model Michaelsoft.BodyGuard.Client.Models.Forms.UpdateForm
 @inject IHttpContextAccessor HttpContextAccessor
 @inject IBodyGuardUserApiService BodyGuardUserApiService
 @inject IOptions<CommonSettings> CommonSettings
+@inject IViewLocalizer Localizer
 
 @{
     var userId = HttpContextAccessor.HttpContext.Request.Query["id"].ToString();
@@ -46,7 +48,7 @@
         {
             <div class="form-group">
                 <div class="bodyguard_form-label">
-                    @Html.DisplayName(propertyInfo.GetDisplayName())
+                    @Html.DisplayName(Localizer.GetString(propertyInfo.GetDisplayName()))
                 </div>
                 <div class="bodyguard_form-input">
                     @Html.TextBox($"User.{propertyInfo.Name}", formStatus.GetAttemptedValue($"User.{propertyInfo.Name}") ?? propertyInfo.GetValue(Model.User, null), new {@class = "form-control"})

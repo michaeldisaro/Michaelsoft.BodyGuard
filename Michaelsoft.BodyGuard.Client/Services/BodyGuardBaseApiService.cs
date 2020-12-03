@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Michaelsoft.BodyGuard.Client.Models.Apis;
 using Michaelsoft.BodyGuard.Client.Settings;
 using Michaelsoft.BodyGuard.Common.Extensions;
+using Michaelsoft.BodyGuard.Common.Settings;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.WebUtilities;
 using Newtonsoft.Json;

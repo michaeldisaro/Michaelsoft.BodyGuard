@@ -6,6 +6,7 @@ using Michaelsoft.BodyGuard.Client.Interfaces;
 using Michaelsoft.BodyGuard.Client.Settings;
 using Michaelsoft.BodyGuard.Common.HttpModels.Authentication;
 using Michaelsoft.BodyGuard.Common.HttpModels.Authorization;
+using Michaelsoft.BodyGuard.Common.Settings;
 using Microsoft.AspNetCore.Http;
 
 namespace Michaelsoft.BodyGuard.Client.Services

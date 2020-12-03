@@ -24,23 +24,23 @@
                                               LoginSuccessPage = "/Success",
                                               LoginFailureArea = "Site",
                                               LoginFailurePage = "/Failure",
-                                              LoginLabel = "Accedi",
+                                              LoginLabel = "login",
                                               LogoutSuccessArea = "Site",
                                               LogoutSuccessPage = "/Success",
                                               LogoutFailureArea = "Site",
                                               LogoutFailurePage = "/Failure",
-                                              LogoutLabel = "Esci",
+                                              LogoutLabel = "logout",
                                               UserClaim = AdditionalClaims.FullName,
-                                              UserMessage = "Benvenuto:",
+                                              UserMessage = "welcome_user",
                                               RegistrationArea = "Site",
                                               RegistrationPage = "/Registration",
-                                              RegistrationLabel = "... oppure registrati",
+                                              RegistrationLabel = "link_register", // to use original label that you can override
                                               RegistrationEmailArea = "Site",
                                               RegistrationEmailPage = "/RegistrationEmail",
-                                              RegistrationEmailLabel = "Non hai confermato il tuo account?",
+                                              RegistrationEmailLabel = "app_confirm_recovery", // to use you resource file
                                               PasswordRecoveryArea = "Site",
                                               PasswordRecoveryPage = "/PasswordRecovery",
-                                              PasswordRecoveryLabel = "Hai dimenticato la password?"
+                                              PasswordRecoveryLabel = "app_password_recovery" // to use you resource file
                                           });
         }
     </div>
@@ -60,8 +60,7 @@
                                           FailurePage = "/Index"
                                       });
 
-        <a asp-area="Site" asp-page="/ManageRoles">Gestione ruoli</a>
+        <a asp-area="Site" asp-page="/ManageRoles">Manage users roles</a>
     }
-
 
 </div>

@@ -46,12 +46,11 @@ namespace Michaelsoft.BodyGuard.TestWebApp
                 app.UseHsts();
             }
             
+            app.AddBodyGuard();
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseRouting();
             app.UseAuthorization();
-            
-            app.AddBodyGuard();
 
             app.UseEndpoints(endpoints =>
             {

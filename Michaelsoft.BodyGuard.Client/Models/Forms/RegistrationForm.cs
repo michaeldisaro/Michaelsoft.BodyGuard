@@ -15,7 +15,7 @@ namespace Michaelsoft.BodyGuard.Client.Models.Forms
 
         public string FailurePage { get; set; } = "/Registration";
 
-        public string SubmitLabel { get; set; } = "Login";
+        public string SubmitLabel { get; set; } = "submit_register";
 
     }
 }

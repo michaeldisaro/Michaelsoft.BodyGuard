@@ -2,9 +2,11 @@
 @using Michaelsoft.BodyGuard.Client.Models.Forms
 @using Michaelsoft.BodyGuard.Common.Extensions
 @using Microsoft.AspNetCore.Http
+@using Microsoft.AspNetCore.Mvc.Localization
 @model Michaelsoft.BodyGuard.Client.Models.Forms.ManageRolesForm
 @inject IHttpContextAccessor Accessor
 @inject IBodyGuardAuthorizationApiService AuthorizationApiService
+@inject IViewLocalizer Localizer
 
 @{
     var formStatus = TempData.Get<FormStatus>("FormStatus");
@@ -52,12 +54,12 @@
         <div class="row">
             <div class="col-6">
                 <div class="form-group">
-                    <button type="submit" asp-area="Authorization" asp-page="/ManageRoles" asp-page-handler="Assign" class="btn btn-primary btn-sm btn-block">@Model.AssignRoleLabel</button>
+                    <button type="submit" asp-area="Authorization" asp-page="/ManageRoles" asp-page-handler="Assign" class="btn btn-primary btn-sm btn-block">@Localizer[Model.AssignRoleLabel]</button>
                 </div>
             </div>
             <div class="col-6">
                 <div class="form-group">
-                    <button type="submit" asp-area="Authorization" asp-page="/ManageRoles" asp-page-handler="Revoke" class="btn btn-danger btn-sm btn-block">@Model.RevokeRoleLabel</button>
+                    <button type="submit" asp-area="Authorization" asp-page="/ManageRoles" asp-page-handler="Revoke" class="btn btn-danger btn-sm btn-block">@Localizer[Model.RevokeRoleLabel]</button>
                 </div>
 
             </div>

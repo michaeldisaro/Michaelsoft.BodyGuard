@@ -10,7 +10,7 @@ namespace Michaelsoft.BodyGuard.Client.Models.Lists
 
         public string UpdateArea { get; set; } = "User";
 
-        public string UpdateLabel { get; set; } = "Update";
+        public string UpdateLabel { get; set; } = "link_update";
         
         public string SuccessArea { get; set; } = "Result";
 

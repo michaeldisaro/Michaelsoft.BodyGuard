@@ -19,9 +19,9 @@ namespace Michaelsoft.BodyGuard.Client.Models.Forms
 
         public string FailurePage { get; set; } = "/Failure";
 
-        public string AssignRoleLabel { get; set; } = "Assign role";
+        public string AssignRoleLabel { get; set; } = "submit_assign_role";
 
-        public string RevokeRoleLabel { get; set; } = "Revoke role";
+        public string RevokeRoleLabel { get; set; } = "submit_revoke_role";
 
     }
 }

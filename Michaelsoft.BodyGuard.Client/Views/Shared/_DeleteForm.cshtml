@@ -1,4 +1,6 @@
-﻿@model Michaelsoft.BodyGuard.Client.Models.Forms.DeleteForm
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@model Michaelsoft.BodyGuard.Client.Models.Forms.DeleteForm
+@inject IViewLocalizer Localizer
 
 <form method="post" asp-area="User" asp-page="/Delete">
     <div class="update-form">
@@ -9,7 +11,7 @@
         <input type="hidden" asp-for="SubmitLabel">
         <input type="hidden" asp-for="Id">
         <div class="form-group">
-            <button type="submit" class="btn btn-danger btn-sm btn-block">@Model.SubmitLabel</button>
+            <button type="submit" class="btn btn-danger btn-sm btn-block">@Localizer[Model.SubmitLabel]</button>
         </div>
     </div>
 </form>

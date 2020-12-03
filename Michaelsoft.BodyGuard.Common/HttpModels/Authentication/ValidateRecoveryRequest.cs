@@ -12,7 +12,7 @@ namespace Michaelsoft.BodyGuard.Common.HttpModels.Authentication
         [MinLength(5)]
         [MaxLength(320)]
         [EmailAddress]
-        [Display(Name = "Email Address")]
+        [Display(Name = "email_address")]
         public string EmailAddress { get; set; }
 
         [Required]
@@ -20,7 +20,7 @@ namespace Michaelsoft.BodyGuard.Common.HttpModels.Authentication
         [MinLength(6)]
         [MaxLength(64)]
         [ValidatePassword]
-        [Display(Name = "New Password")]
+        [Display(Name = "new_password")]
         public string NewPassword { get; set; }
 
         [Required]
@@ -29,7 +29,7 @@ namespace Michaelsoft.BodyGuard.Common.HttpModels.Authentication
         [MaxLength(64)]
         [ValidatePassword]
         [Compare("NewPassword")]
-        [Display(Name = "New Password Confirm")]
+        [Display(Name = "new_password_confirm")]
         public string NewPasswordConfirm { get; set; }
 
         [Required]

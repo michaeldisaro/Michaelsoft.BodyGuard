@@ -4,10 +4,12 @@
 @using Michaelsoft.BodyGuard.Common.Extensions
 @using Michaelsoft.BodyGuard.Common.Models
 @using Michaelsoft.BodyGuard.Common.Settings
+@using Microsoft.AspNetCore.Mvc.Localization
 @using Microsoft.Extensions.Options
 @model Michaelsoft.BodyGuard.Client.Models.Lists.UserList
 @inject IBodyGuardUserApiService BodyGuardUserApiService
 @inject IOptions<CommonSettings> CommonSettings
+@inject IViewLocalizer Localizer
 
 @{
     List<User> users;
@@ -17,7 +19,7 @@
     }
     catch (Exception)
     {
-        <p class="text-danger">Unauthorized.</p>
+        <p class="text-danger">@Localizer["unauthorized"]</p>
         return;
     }
     if (!users.Any())
@@ -48,7 +50,7 @@
                     @foreach (var propertyInfo in userDataProperties)
                     {
                         <div>
-                            <dt class="d-inline-block">@Html.DisplayName(propertyInfo.GetDisplayName()):&nbsp;</dt>
+                            <dt class="d-inline-block">@Html.DisplayName(Localizer.GetString(propertyInfo.GetDisplayName())):&nbsp;</dt>
                             <dd class="d-inline-block">@userType.GetProperty(propertyInfo.Name)?.GetValue(userData, null)</dd>
                         </div>
                     }
@@ -57,7 +59,7 @@
                 <div class="card-footer">
                     <div class="row">
                         <div class="col-6">
-                            <a class="btn btn-primary btn-sm btn-block" asp-area="@Model.UpdateArea" asp-page="@Model.UpdatePage" asp-route-id="@userData.Id">@Model.UpdateLabel</a>
+                            <a class="btn btn-primary btn-sm btn-block" asp-area="@Model.UpdateArea" asp-page="@Model.UpdatePage" asp-route-id="@userData.Id">@Localizer[Model.UpdateLabel]</a>
                         </div>
                         <div class="col-6">
                             @{

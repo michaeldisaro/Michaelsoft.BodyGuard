@@ -1,7 +1,10 @@
 ﻿@using Michaelsoft.BodyGuard.Client.Utilities
 @using Microsoft.AspNetCore.Http
+@using Microsoft.AspNetCore.Mvc.Localization
 @model Michaelsoft.BodyGuard.Client.Models.Forms.AuthenticationForm
 @inject IHttpContextAccessor Accessor
+@inject IViewLocalizer Localizer
+
 @{
     var nick = JwtUtility.GetUserClaim(Model.UserClaim);
 }
@@ -38,23 +41,23 @@
                 </div>
             </div>
             <div class="form-group">
-                <button type="submit" class="btn btn-primary btn-sm btn-block">@Model.LoginLabel</button>
+                <button type="submit" class="btn btn-primary btn-sm btn-block">@Localizer[Model.LoginLabel]</button>
             </div>
         </div>
     </form>
     <div>
         <span class="registration-link">
-            <a asp-area="@Model.RegistrationArea" asp-page="@Model.RegistrationPage">@Model.RegistrationLabel</a>
+            <a asp-area="@Model.RegistrationArea" asp-page="@Model.RegistrationPage">@Localizer[Model.RegistrationLabel]</a>
         </span>
     </div>
     <div>
         <span class="registration-email-link">
-            <a asp-area="@Model.RegistrationEmailArea" asp-page="@Model.RegistrationEmailPage">@Model.RegistrationEmailLabel</a>
+            <a asp-area="@Model.RegistrationEmailArea" asp-page="@Model.RegistrationEmailPage">@Localizer[Model.RegistrationEmailLabel]</a>
         </span>
     </div>
     <div>
         <span class="password-recovery-link">
-            <a asp-area="@Model.PasswordRecoveryArea" asp-page="@Model.PasswordRecoveryPage">@Model.PasswordRecoveryLabel</a>
+            <a asp-area="@Model.PasswordRecoveryArea" asp-page="@Model.PasswordRecoveryPage">@Localizer[Model.PasswordRecoveryLabel]</a>
         </span>
     </div>
 }
@@ -68,8 +71,8 @@ else
             <input type="hidden" asp-for="LogoutFailurePage">
             <input type="hidden" asp-for="LogoutLabel">
             <div class="form-group">
-                <label>@Model.UserMessage @nick</label>
-                <button type="submit" class="btn btn-primary btn-sm btn-block">@Model.LogoutLabel</button>
+                <label>@Localizer[Model.UserMessage] @nick</label>
+                <button type="submit" class="btn btn-primary btn-sm btn-block">@Localizer[Model.LogoutLabel]</button>
             </div>
         </div>
     </form>

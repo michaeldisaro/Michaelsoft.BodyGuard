@@ -16,6 +16,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Views" />
+    <EmbeddedResource Include="resources\**">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
   </ItemGroup>
+
 </Project>

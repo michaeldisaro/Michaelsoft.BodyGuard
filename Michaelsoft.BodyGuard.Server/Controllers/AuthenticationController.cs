@@ -24,6 +24,8 @@ namespace Michaelsoft.BodyGuard.Server.Controllers
 
         private readonly UserService _userService;
 
+        private readonly string _baseApplicationPath;
+
         private readonly IdentitySettings _identitySettings;
 
         private readonly TokenService _tokenService;
@@ -37,6 +39,7 @@ namespace Michaelsoft.BodyGuard.Server.Controllers
         {
             _mailer = mailer;
             _tokenService = tokenService;
+            _baseApplicationPath = commonSettings.Value.BaseApplicationPath;
             _identitySettings = commonSettings.Value.IdentitySettings;
             _userService = userService;
         }
@@ -57,7 +60,8 @@ namespace Michaelsoft.BodyGuard.Server.Controllers
                 var tokenValue = (user.Id + StringHelper.RandomString(10, "$*#+%") + DateTime.Now.ToString("O")).Sha1();
                 var token = _tokenService.Create
                     (TokenTypes.ConfirmRegistration, tokenValue, user.Id, userCreateRequest.TtlSeconds);
-                var confirmRegistrationUrl = userCreateRequest.ConfirmRegistrationUrl.Replace("{{token}}", token.Value);
+                var confirmRegistrationUrl = _baseApplicationPath +
+                                             userCreateRequest.ConfirmRegistrationUrl.Replace("{{token}}", token.Value);
                 _mailer.SendMailUsingTemplateAsync
                     (
                      new Dictionary<string, string>
@@ -178,7 +182,8 @@ namespace Michaelsoft.BodyGuard.Server.Controllers
                 var tokenValue = (user.Id + StringHelper.RandomString(10, "$*#+%") + DateTime.Now.ToString("O")).Sha1();
                 var token = _tokenService.Create
                     (TokenTypes.PasswordRecovery, tokenValue, user.Id, passwordRecoveryRequest.TtlSeconds);
-                var validateRecoveryUrl = passwordRecoveryRequest.ValidateRecoveryUrl.Replace("{{token}}", token.Value);
+                var validateRecoveryUrl = _baseApplicationPath +
+                                          passwordRecoveryRequest.ValidateRecoveryUrl.Replace("{{token}}", token.Value);
                 _mailer.SendMailUsingTemplateAsync
                     (
                      new Dictionary<string, string>
@@ -236,8 +241,9 @@ namespace Michaelsoft.BodyGuard.Server.Controllers
                 var tokenValue = (user.Id + StringHelper.RandomString(10, "$*#+%") + DateTime.Now.ToString("O")).Sha1();
                 var token = _tokenService.Create
                     (TokenTypes.ConfirmRegistration, tokenValue, user.Id, registrationEmailRequest.TtlSeconds);
-                var confirmRegistrationUrl =
-                    registrationEmailRequest.ConfirmRegistrationUrl.Replace("{{token}}", token.Value);
+                var confirmRegistrationUrl = _baseApplicationPath +
+                                             registrationEmailRequest.ConfirmRegistrationUrl.Replace("{{token}}",
+                                                 token.Value);
                 _mailer.SendMailUsingTemplateAsync
                     (
                      new Dictionary<string, string>

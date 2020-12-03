@@ -8,6 +8,7 @@ using Michaelsoft.BodyGuard.Client.Settings;
 using Michaelsoft.BodyGuard.Common.Extensions;
 using Michaelsoft.BodyGuard.Common.HttpModels.Authentication;
 using Michaelsoft.BodyGuard.Common.Models;
+using Michaelsoft.BodyGuard.Common.Settings;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 
