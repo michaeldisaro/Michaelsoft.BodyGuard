@@ -59,8 +59,8 @@ jobs:
     #    and modify them (or add more) to build your code if your project
     #    uses a compiled language
 
-    - run: |
-      dotnet build -f netcoreapp3.1 Michaelsoft.BodyGuard.sln
+    - name: Build
+      run: dotnet build -f netcoreapp3.1 Michaelsoft.BodyGuard.sln
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v1
